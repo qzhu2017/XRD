@@ -386,20 +386,47 @@ class crystal(object):
 
         return cell_para
 
-    def d_hkl(self, hkl):
-        """ 3x3 representation -> 1x6 (a, b, c, alpha, beta, gamma)"""
-        
-        hkl = np.array(hkl)
-        d = np.dot(hkl, self.rec_matrix)
-        d_hkl = 1/np.linalg.norm(d)
-        return d_hkl
+class XRD(object):
+    """a class of crystal structure. 
+    Attributes:
+        cell_para: a,b,c, alpha, beta, gamma
+        cell_matrix: 3*3 matrix
+        rec_matrix: reciprocal of cell matrix
+        atom_type:  elemental type (e.g. Na Cl)
+        composition: chemical composition (e.g., [1,1])
+        coordinate: atomic positions (e.g., [[0,0,0],[0.5,0.5,0.5]])
+    """
 
-    def all_dhkl(self, wavelength=1.54184, max2theta=2*pi):
+    def __init__(self, crystal, wavelength=1.54184, max2theta=2*pi):
+        """Return a XRD object with the proper info"""
+        self.wavelength = wavelength
+        self.max2theta = max2theta
+        self.all_dhkl(crystal, wavelength, max2theta)
+        self.atom_scatter(crystal)
+        self.structure_factor(crystal)
+        self.intensity()
+        self.pxrd()
+
+    def by_hkl(self, hkl):
+        """ d for any give abitray [h,k,l] index """
+        id1 = np.where(np.all(self.hkl_list == np.array(hkl), axis=1 ))
+        print(len(id1))
+        print(len(id1[0]))
+        print('  2theta     d_hkl     hkl       Intensity')
+        for i in id1[0]:
+           #print(len(i), self.xrd_intensity[i])
+           print('%8.3f  %8.3f   [%2d %2d %2d] %8.2f' % \
+                 (np.degrees(self.theta2[i]), self.d_hkl[i], \
+                  self.hkl_list[i,0], self.hkl_list[i,1], self.hkl_list[i,2], \
+                  self.xrd_intensity[i] ))        
+        return np.degrees(self.theta2[id1]), self.d_hkl[id1], self.xrd_intensity[id1] 
+
+    def all_dhkl(self, crystal, wavelength, max2theta):
         """ 3x3 representation -> 1x6 (a, b, c, alpha, beta, gamma)"""
         d_min = wavelength/max2theta*pi
-        h1 = int(np.linalg.norm(self.cell_para[0])/d_min)
-        k1 = int(np.linalg.norm(self.cell_para[1])/d_min)
-        l1 = int(np.linalg.norm(self.cell_para[2])/d_min)
+        h1 = int(np.linalg.norm(crystal.cell_para[0])/d_min)
+        k1 = int(np.linalg.norm(crystal.cell_para[1])/d_min)
+        l1 = int(np.linalg.norm(crystal.cell_para[2])/d_min)
         h = np.arange(-h1,h1)
         k = np.arange(-k1,k1)
         l = np.arange(-l1,l1)
@@ -407,49 +434,95 @@ class crystal(object):
         hkl = np.array((np.meshgrid(h,k,l))).transpose()
         hkl_list = np.reshape(hkl, [len(h)*len(k)*len(l),3])
         hkl_list = hkl_list[np.where(hkl_list.any(axis=1))[0]]
-        #print('list',hkl_list)
-        d_hkl = 1/np.linalg.norm( np.dot(hkl_list, self.rec_matrix), axis=1)
+        d_hkl = 1/np.linalg.norm( np.dot(hkl_list, crystal.rec_matrix), axis=1)
         shortlist = d_hkl > (d_min)
-        #print(shortlist) 
         d_hkl = d_hkl[shortlist]
         hkl_list = hkl_list[shortlist]
         sintheta = wavelength/2/d_hkl
-        #print('sin(theta)', 2*np.degrees(np.arcsin(sintheta)))
-        return hkl_list, d_hkl, sintheta
 
-    def atom_scatter(self, d_hkl):
+        self.theta = np.arcsin(sintheta)
+        self.hkl_list = hkl_list
+        self.d_hkl = d_hkl
+        
+        #return hkl_list, d_hkl, sintheta
+
+    def atom_scatter(self, crystal):
         """ N*M array; N: atoms, M: N_hkl"""
-        f = np.zeros([sum(self.composition), len(d_hkl)])
-        d0 = 1/2/d_hkl
+        f = np.zeros([sum(crystal.composition), len(self.d_hkl)])
+        d0 = 1/2/self.d_hkl
         count = 0
-        for i, ele in enumerate(self.atom_type):
+        for i, ele in enumerate(crystal.atom_type):
             c = Element(ele).scatter
             f_tmp = c[0]*np.exp(-c[4]*d0) + \
                     c[1]*np.exp(-c[5]*d0) + \
                     c[2]*np.exp(-c[6]*d0) + \
                     c[3]*np.exp(-c[7]*d0) + c[8]
-            for j in range(count,count+self.composition[i]):
+            for j in range(count,count+crystal.composition[i]):
                 f[j] = f_tmp
-            count += self.composition[i]
-        return f
+            count += crystal.composition[i]
+
+        self.f = f
    
-    def structure_factor(self, f, hkl_list):
+    def structure_factor(self, crystal):
         """ N*1 array"""
         F = []
-        for fj, hkl in zip(f.transpose(), hkl_list):
-            F_tmp = np.exp(-2*pi*1j*np.dot(self.coordinate, hkl.transpose()))
+        for fj, hkl in zip(self.f.transpose(), self.hkl_list):
+            F_tmp = np.exp(-2*pi*1j*np.dot(crystal.coordinate, hkl.transpose()))
             F.append(np.dot(fj, F_tmp))
-        return np.array(F)
 
-    def PXRD_intensity(self, F, sintheta):
-        a=np.abs(F)*np.abs(F)
-        theta = np.arcsin(sintheta)
+        self.F = np.array(F)
+
+    def intensity(self):
         
-        LP = 1/sintheta**2/np.cos(theta)
-        P = 1+np.cos(2*theta)**2
-        I = (np.abs(F))**2*LP*P
-        return I, 2*theta
+        LP = 1/np.sin(self.theta)**2/np.cos(self.theta)
+        P = 1 + np.cos(2*self.theta)**2
+        I = (np.abs(self.F))**2*LP*P
+        self.xrd_intensity = I
+        self.theta2 = 2*self.theta
+
+    def pxrd(self):
+
+        rank = np.argsort(self.theta2)
+        PL = []
+        last = []
+        for i in rank:
+            if self.xrd_intensity[i] > 0.01:
+               angle = np.degrees(self.theta2[i])
+               if PL is None:
+                  PL.append([angle, self.d_hkl[i], \
+                             self.hkl_list[i,0], self.hkl_list[i,1], self.hkl_list[i,2], \
+                             self.xrd_intensity[i]])
+               elif angle == last:
+                  PL[-1][-1] += self.xrd_intensity[i]
+               else:
+                  PL.append([angle, self.d_hkl[i], \
+                             self.hkl_list[i,0], self.hkl_list[i,1], self.hkl_list[i,2], \
+                             self.xrd_intensity[i]])
+               last = angle
+        PL = (np.array(PL))
+        PL[:,-1] = PL[:,-1]/max(PL[:,-1])
+        self.pxrd = PL
+
+    def plot_pxrd(self, filename=None):
+
+        print('  2theta     d_hkl     hkl       Intensity')
+        for i in self.pxrd:
+            print('%8.3f  %8.3f   [%2d %2d %2d] %8.2f' % (i[0], i[1], i[2], i[3], i[4], i[5]))
+            plt.bar(i[0],i[-1], color='b')
+            label =  str(int(i[2])) + str(int(i[3])) + str(int(i[4])) 
+            plt.text(i[0]-5, i[-1], label)
    
+        ax=plt.gca()
+        plt.grid()
+        plt.xlim(0,180)
+        plt.xlabel('2θ')
+        plt.ylabel('Intensity(CPS)')
+        plt.title('The simulated PXRD of '+test.name)
+        if filename is None:
+           plt.show()
+        else:
+           plt.savefig(filename)
+
 if __name__ == "__main__":
 
     #lattice = 5.692*np.eye(3)
@@ -470,49 +543,8 @@ if __name__ == "__main__":
     #               coordinate = coordinate)
     #test = crystal('POSCAR',filename='POSCAR.mp-22862_NaCl')
     test = crystal('POSCAR',filename='POSCAR-SrF')
-    #print('Read Structue')
-    #print(test.cell_matrix)
-    #print(test.cell_para)
-    #print(test.atom_type)
-    #print(test.composition)
-    #print(test.coordinate)
-    #print(test.d_hkl([6,0,0]))
-    hkl, d_hkl, sintheta = test.all_dhkl()
-    f = test.atom_scatter(d_hkl)
-    F = test.structure_factor(f, hkl)
-
-    I, theta2 = test.PXRD_intensity(F, sintheta)
-    rank = np.argsort(theta2)
-    PL = []
-    last = []
-    for i in rank:
-        #print(hkl[i], I[i])
-        if I[i] > 0.01:
-           angle = np.degrees(theta2[i])
-           if PL is None:
-              PL.append([angle, d_hkl[i], hkl[i,0], hkl[i,1], hkl[i,2], I[i]])
-           elif angle == last:
-              PL[-1][-1] += I[i]
-           else:
-              PL.append([angle, d_hkl[i], hkl[i,0], hkl[i,1], hkl[i,2], I[i]])
-           last = angle
-    PL = (np.array(PL))
-    PL[:,-1] = PL[:,-1]/max(PL[:,-1])
-
-    print('  2theta     d_hkl     hkl       Intensity')
-
-    for i in PL:
-        print('%8.3f  %8.3f   [%2d %2d %2d] %8.2f' % (i[0], i[1], i[2], i[3], i[4], i[5]))
-        plt.bar(i[0],i[-1])
-        label =  str(int(i[2])) + str(int(i[3])) + str(int(i[4])) 
-        plt.text(i[0]-5, i[-1], label)
-   
-    ax=plt.gca()
-    plt.grid()
-    plt.xlim(0,180)
-    plt.xlabel('2θ')
-    plt.ylabel('Intensity(CPS)')
-    plt.title('The simulated PXRD of '+test.name)
-    plt.show()
+    xrd = XRD(test)   
+    a,b,c = xrd.by_hkl([6,0,0])
+    xrd.plot_pxrd()
 
 
