@@ -366,7 +366,17 @@ class crystal(object):
             self.name += ele
             if num > 1:
                self.name += str(num)
-        
+   
+    #def show(self, L=2):
+    #    """show crystal structure"""
+    #    
+    #    for i in range(-L, L+1):
+    #        for j in range(-L, L+1):
+    #            for k in range(-L, L+1):
+    #                for m in self.coordinate:
+    #                    
+    #                    sphere(pos=vector(m[0], m[1], m[2]), radius=R)
+    
     @staticmethod
     def rec_lat(matrix):
         """ calculate the reciprocal lattice """
@@ -385,6 +395,8 @@ class crystal(object):
         cell_para[3] = angle(matrix[1], matrix[2])
 
         return cell_para
+    
+
 
 class XRD(object):
     """a class of crystal structure. 
