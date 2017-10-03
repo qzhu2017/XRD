@@ -475,7 +475,7 @@ class XRD(object):
         self.F = np.array(F)
 
     def intensity(self):
-        
+        """" Calculate intensity, return N*1 array """
         LP = 1/np.sin(self.theta)**2/np.cos(self.theta)
         P = 1 + np.cos(2*self.theta)**2
         I = (np.abs(self.F))**2*LP*P
@@ -483,7 +483,9 @@ class XRD(object):
         self.theta2 = 2*self.theta
 
     def pxrd(self):
-
+        """ Group the equivalent hkl planes together by 2\theta angle
+            N*6 arrays, Angle, d_hkl, h, k, l, intensity
+        """
         rank = np.argsort(self.theta2)
         PL = []
         last = []
@@ -506,25 +508,40 @@ class XRD(object):
         self.pxrd = PL
 
     def plot_pxrd(self, filename=None):
+        """ plot PXRD """
 
         print('  2theta     d_hkl     hkl       Intensity')
         dx = np.degrees(self.max2theta)
         for i in self.pxrd:
             print('%8.3f  %8.3f   [%2d %2d %2d] %8.2f' % (i[0], i[1], i[2], i[3], i[4], i[5]))
             plt.bar(i[0],i[-1], color='b', width=dx/180)
-            label =  str(int(i[2])) + str(int(i[3])) + str(int(i[4])) 
-            plt.text(i[0]-dx/60, i[-1], label)
+            label = self.draw_hkl(i[2:5])
+            plt.text(i[0]-dx/40, i[-1], label[0]+label[1]+label[2])
    
         ax=plt.gca()
         plt.grid()
         plt.xlim(0,dx)
         plt.xlabel('2θ')
         plt.ylabel('Intensity')
-        plt.title('The simulated PXRD of '+self.name)
+        plt.title('The simulated PXRD of '+self.name+ ', $\lambda$='+str(self.wavelength)+'$\AA$')
         if filename is None:
            plt.show()
         else:
            plt.savefig(filename)
+
+    @staticmethod
+    def draw_hkl(hkl):
+        """turn negative numbers in hkl to overbar"""
+        hkl_str= []
+        for i in hkl:
+            if i<0:
+               label = str(int(-i))
+               label = r"$\bar{" + label + '}$'
+               hkl_str.append(str(label))
+            else:
+               hkl_str.append(str(int(i)))
+
+        return hkl_str
 
 if __name__ == "__main__":
 
@@ -547,7 +564,7 @@ if __name__ == "__main__":
     #test = crystal('POSCAR',filename='POSCAR.mp-22862_NaCl')
     test = crystal('POSCAR',filename='POSCAR-SrF')
     xrd = XRD(test)   
-    a,b,c = xrd.by_hkl([6,0,0])
+    xrd.by_hkl([6,0,0])
     xrd.plot_pxrd()
 
 
