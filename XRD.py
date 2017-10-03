@@ -397,11 +397,12 @@ class XRD(object):
         coordinate: atomic positions (e.g., [[0,0,0],[0.5,0.5,0.5]])
     """
 
-    def __init__(self, crystal, wavelength=1.54184, max2theta=2*pi):
+    def __init__(self, crystal, wavelength=1.54184, max2theta=180):
         """Return a XRD object with the proper info"""
         self.wavelength = wavelength
-        self.max2theta = max2theta
-        self.all_dhkl(crystal, wavelength, max2theta)
+        self.max2theta = np.radians(max2theta)
+        self.name = crystal.name
+        self.all_dhkl(crystal)
         self.atom_scatter(crystal)
         self.structure_factor(crystal)
         self.intensity()
@@ -410,20 +411,21 @@ class XRD(object):
     def by_hkl(self, hkl):
         """ d for any give abitray [h,k,l] index """
         id1 = np.where(np.all(self.hkl_list == np.array(hkl), axis=1 ))
-        print(len(id1))
-        print(len(id1[0]))
-        print('  2theta     d_hkl     hkl       Intensity')
-        for i in id1[0]:
-           #print(len(i), self.xrd_intensity[i])
-           print('%8.3f  %8.3f   [%2d %2d %2d] %8.2f' % \
-                 (np.degrees(self.theta2[i]), self.d_hkl[i], \
-                  self.hkl_list[i,0], self.hkl_list[i,1], self.hkl_list[i,2], \
-                  self.xrd_intensity[i] ))        
-        return np.degrees(self.theta2[id1]), self.d_hkl[id1], self.xrd_intensity[id1] 
+        if id1 is None:
+           print('This hkl is not in the given 2theta range')
+        else:
+           print('  2theta     d_hkl     hkl       Intensity')
+           for i in id1[0]:
+              #print(len(i), self.xrd_intensity[i])
+              print('%8.3f  %8.3f   [%2d %2d %2d] %8.2f' % \
+                    (np.degrees(self.theta2[i]), self.d_hkl[i], \
+                     self.hkl_list[i,0], self.hkl_list[i,1], self.hkl_list[i,2], \
+                     self.xrd_intensity[i] ))        
+           #return np.degrees(self.theta2[id1]), self.d_hkl[id1], self.xrd_intensity[id1] 
 
-    def all_dhkl(self, crystal, wavelength, max2theta):
+    def all_dhkl(self, crystal):
         """ 3x3 representation -> 1x6 (a, b, c, alpha, beta, gamma)"""
-        d_min = wavelength/max2theta*pi
+        d_min = self.wavelength/self.max2theta*pi/2
         h1 = int(np.linalg.norm(crystal.cell_para[0])/d_min)
         k1 = int(np.linalg.norm(crystal.cell_para[1])/d_min)
         l1 = int(np.linalg.norm(crystal.cell_para[2])/d_min)
@@ -438,7 +440,7 @@ class XRD(object):
         shortlist = d_hkl > (d_min)
         d_hkl = d_hkl[shortlist]
         hkl_list = hkl_list[shortlist]
-        sintheta = wavelength/2/d_hkl
+        sintheta = self.wavelength/2/d_hkl
 
         self.theta = np.arcsin(sintheta)
         self.hkl_list = hkl_list
@@ -506,18 +508,19 @@ class XRD(object):
     def plot_pxrd(self, filename=None):
 
         print('  2theta     d_hkl     hkl       Intensity')
+        dx = np.degrees(self.max2theta)
         for i in self.pxrd:
             print('%8.3f  %8.3f   [%2d %2d %2d] %8.2f' % (i[0], i[1], i[2], i[3], i[4], i[5]))
-            plt.bar(i[0],i[-1], color='b')
+            plt.bar(i[0],i[-1], color='b', width=dx/180)
             label =  str(int(i[2])) + str(int(i[3])) + str(int(i[4])) 
-            plt.text(i[0]-5, i[-1], label)
+            plt.text(i[0]-dx/60, i[-1], label)
    
         ax=plt.gca()
         plt.grid()
-        plt.xlim(0,180)
+        plt.xlim(0,dx)
         plt.xlabel('2θ')
-        plt.ylabel('Intensity(CPS)')
-        plt.title('The simulated PXRD of '+test.name)
+        plt.ylabel('Intensity')
+        plt.title('The simulated PXRD of '+self.name)
         if filename is None:
            plt.show()
         else:
