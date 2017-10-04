@@ -380,7 +380,12 @@ class crystal(object):
     @staticmethod
     def rec_lat(matrix):
         """ calculate the reciprocal lattice """
-        return  np.linalg.inv(matrix) #* 2 * pi
+        rec_lat = np.zeros([3,3])
+        V = np.linalg.det(matrix)
+        rec_lat[0] = np.cross(matrix[1], matrix[2])/V
+        rec_lat[1] = np.cross(matrix[2], matrix[0])/V
+        rec_lat[2] = np.cross(matrix[0], matrix[1])/V
+        return  rec_lat #* 2 * pi
 
     @staticmethod
     def matrix2para(matrix):
@@ -417,6 +422,7 @@ class XRD(object):
         self.all_dhkl(crystal)
         self.atom_scatter(crystal)
         self.structure_factor(crystal)
+        self.rec_matrix = crystal.rec_matrix
         self.intensity()
         self.pxrd()
 
@@ -519,16 +525,18 @@ class XRD(object):
         PL[:,-1] = PL[:,-1]/max(PL[:,-1])
         self.pxrd = PL
 
-    def plot_pxrd(self, filename=None):
+    def plot_pxrd(self, filename=None, minimum_I = 0.01, show_hkl=True):
         """ plot PXRD """
 
         print('  2theta     d_hkl     hkl       Intensity')
         dx = np.degrees(self.max2theta)
         for i in self.pxrd:
-            print('%8.3f  %8.3f   [%2d %2d %2d] %8.2f' % (i[0], i[1], i[2], i[3], i[4], i[5]))
-            plt.bar(i[0],i[-1], color='b', width=dx/180)
-            label = self.draw_hkl(i[2:5])
-            plt.text(i[0]-dx/40, i[-1], label[0]+label[1]+label[2])
+            if i[-1] > minimum_I:
+               print('%8.3f  %8.3f   [%2d %2d %2d] %8.2f' % (i[0], i[1], i[2], i[3], i[4], i[5]))
+               plt.bar(i[0],i[-1], color='b', width=dx/180)
+               if show_hkl:
+                  label = self.draw_hkl(i[2:5])
+                  plt.text(i[0]-dx/40, i[-1], label[0]+label[1]+label[2])
    
         ax=plt.gca()
         plt.grid()
@@ -540,6 +548,31 @@ class XRD(object):
            plt.show()
         else:
            plt.savefig(filename)
+
+    #def plot_Laue(self, filename=None, projection=[0,0,1]):
+    #    """ plot  Laue graphs"""
+    #    maxI = max(self.xrd_intensity)
+    #    for hkl,i in zip(self.hkl_list, self.xrd_intensity):
+    #        if i/maxI > 0.01:
+    #           if np.dot(hkl, np.array(projection))==0:
+    #              xyz = np.dot(hkl,self.rec_matrix)
+    #              angle1 = angle(xyz, projection)
+    #              r = np.linalg.norm(xyz)
+    #              label = self.draw_hkl(hkl)
+    #              x,y = r*np.cos(angle1), r*np.sin(angle1)
+    #              plt.scatter(x, y, c='b', s=i/maxI*50)
+    #              plt.text(x, y, label[0]+label[1]+label[2])
+   
+    #    ax=plt.gca()
+    #    ax.set_aspect('equal')
+    #    ax.set_xticks([])
+    #    ax.set_yticks([])
+
+    #    plt.title('The simulated XRD of '+self.name)
+    #    if filename is None:
+    #       plt.show()
+    #    else:
+    #       plt.savefig(filename)
 
     @staticmethod
     def draw_hkl(hkl):
@@ -573,10 +606,11 @@ if __name__ == "__main__":
     #               atom_type = atomtype, 
     #               composition = composition, 
     #               coordinate = coordinate)
-    #test = crystal('POSCAR',filename='POSCAR.mp-22862_NaCl')
-    test = crystal('POSCAR',filename='POSCAR-SrF')
+    test = crystal('POSCAR',filename='POSCAR-NaCl')
+    #test = crystal('POSCAR',filename='POSCAR-SrF')
     xrd = XRD(test)   
-    xrd.by_hkl([6,0,0])
+    #xrd.by_hkl([6,0,0])
     xrd.plot_pxrd()
+    #xrd.plot_Laue(projection=[1,1,1])
 
 
