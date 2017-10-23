@@ -1,8 +1,7 @@
 # XRD
 X-ray diffraction calculations.
 
-This branch is initally planned for my Computational Physics class in 2017 fall.
-https://github.com/qzhu2017/2017-cmp
+This branch is initally planned for my [Computational Physics class in 2017 fall](https://github.com/qzhu2017/2017-cmp)
 
 Currently, there are three classes,
 - Element
@@ -21,4 +20,4 @@ To perform XRD calculation, one needs to provide the following info
 
 The atomic scattering factor is calculated from 9-parameter equation by Don Cromer and J. Mann.
 
-More detailed usage could be found in the jupyter notebook.
+More detailed usage could be found in the [jupyter notebook](https://github.com/qzhu2017/XRD/blob/master/Demo.ipynb).
