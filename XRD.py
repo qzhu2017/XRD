@@ -751,7 +751,7 @@ if __name__ == "__main__":
     test = crystal('cif',filename='1000041.cif')
     xrd = XRD(test)   
     #xrd.by_hkl([6,0,0])
-    xrd.plot_pxrd(show_hkl=False)
+    xrd.plot_pxrd(show_hkl=True)
     #xrd.plot_Laue(projection=[1,1,1])
 
 
