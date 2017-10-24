@@ -1,6 +1,8 @@
 from math import acos, pi
 import numpy as np
 import matplotlib.pyplot as plt
+import re
+from math import sin,cos,sqrt
 
 def angle(a,b):
     """ calculate the angle between vector a and b """
@@ -313,11 +315,145 @@ class crystal(object):
            self.from_dict(lattice, atom_type, composition, coordinate)
     
     def from_cif(self, filename):
-        """Read the structure from cif file"""
-        return None
+        cif = np.genfromtxt(filename, dtype=str, delimiter='\n')
+
+        #read lattice constants, axial angles, fractional coordiantes and line No. of equiv points
+        lc_flag = angle_flag = xyz_flag = fract_flag = 0
+        for ii, lines in enumerate(cif):
+            if '_cell_length_a' in lines:
+                lc_a = float(lines.split(' ',1)[1])
+                lc_b = float(cif[ii+1].split(' ',1)[1])
+                lc_c = float(cif[ii+2].split(' ',1)[1])
+                lc_temp = lc_a, lc_b, lc_c
+                lattice_constants = np.array(lc_temp)
+                lc_flag = 1
+            elif '_cell_angle_alpha' in lines:
+                alpha = float(lines.split(' ',1)[1])
+                beta = float(cif[ii+1].split(' ',1)[1])
+                gamma = float(cif[ii+2].split(' ',1)[1])
+                aangle_temp = alpha, beta, gamma
+                axial_angles = np.array(aangle_temp)
+                angle_flag = 1
+            elif '_symmetry_equiv_pos_as_xyz' in lines:#start point choice to be decided
+                head_xyz = ii+1
+                xyz_flag = -1
+            elif xyz_flag == -1 and 'loop_' in lines:
+                xyz_flag = 1
+                tail_xyz = ii-1
+            elif '_atom_site_type_symbol' in lines:
+                symbol_no = ii    #line index of atom_type
+                atom_type = []
+                fract_xyz = []
+                jj = ii
+                while 'loop_' not in cif[jj]:
+                    jj = jj - 1
+                count = 0
+                for kk in range(jj+1, len(cif)):
+                    if '_atom_site_' in cif[kk]:
+                        count += 1
+                        if '_atom_site_fract_x' in cif[kk]:
+                            fractx_no = kk
+                    else:
+                        break
+                while len(cif[kk].split(' ')) == count:
+                    sub = cif[kk].split(' ')
+                    m_symbol = re.compile("([A-Z]+[a-z]*)")
+                    type_temp = m_symbol.findall(sub[symbol_no-jj-1])
+                    atom_type.append(type_temp[0])
+                    fract_temp = float(sub[fractx_no-jj-1]), float(sub[fractx_no-jj]), float(sub[fractx_no-jj+1])
+                    fract_xyz.append(np.array(fract_temp))
+                    kk += 1
+                fract_flag = 1
+            elif lc_flag*angle_flag*xyz_flag*fract_flag:                                                       
+                break
+
+        #collect lattice parameters into cell_para
+        cell_para = np.zeros(6)
+        for ii in range(0,3):
+            cell_para[ii] = lattice_constants[ii]
+            cell_para[ii+3]  = np.radians(axial_angles[ii])
+
+        #calculate lattice vectors from lattice constants and axial angles
+        lattice = np.zeros([3,3])
+        b_x = lc_b*cos(cell_para[5]); b_y = lc_b*sin(cell_para[5])
+        c_x = lc_c*cos(cell_para[4]); c_y = lc_c*np.cos(cell_para[3])*np.sin(cell_para[5])
+        c_z = sqrt(lc_c**2-c_x**2-c_y**2)
+        lattice[0] = np.array([lc_a, 0, 0])
+        lattice[1] = np.array([b_x, b_y, 0])
+        lattice[2] = np.array([c_x, c_y, c_z])
+        lattice = np.around(lattice,8)
+
+        #function generates rotation matrices and translation vectors from equivalent points
+        def xyz2sym_ops(string):
+            #rotational matrix dictionary
+            rot_dic = {}
+            rot_dic['x'] = np.array([1.0,0,0])
+            rot_dic['y'] = np.array([0,1.0,0])
+            rot_dic['z'] = np.array([0,0,1.0])
+            parts = string.strip().replace(' ','').lower().split(',')
+            rot_mat = []
+            rot_temp = np.array([0.,0.,0.])
+            trans_vec = np.array([0.,0.,0.])
+            #use re module to read xyz strings
+            m_rot = re.compile(r"([+-]?)([\d\.]*)/?([\d\.]*)([x-z])")
+            m_trans = re.compile(r"([+-]?)([\d\.]+)/?([\d\.]*)(?![x-z])")
+            for jj,item in enumerate(parts):
+                #rotation matrix
+                for ii,m in enumerate(m_rot.finditer(item)):
+                    coef = -1 if m.group(1) == '-' else 1
+                    if m.group(2) != '':
+                        if m.group(3) != '':
+                            coef *= float(m.group(2))/float(m.group(3))
+                        else:
+                            coef *= float(m.group(2))
+                    if ii == 0:                  
+                        rot_temp = rot_dic[m.group(4)]*coef
+                    else:
+                        rot_temp += rot_dic[m.group(4)]*coef
+                rot_mat.append(rot_temp)
+                #translation vector
+                for m in m_trans.finditer(item):
+                    coef = -1 if m.group(1) == '-' else 1
+                    if m.group(3) != '':
+                        coef = float(m.group(2))/float(m.group(3))
+                    else:
+                        coef = float(m.group(2))
+                    trans_vec[jj] = 1.0*coef
+            return (rot_mat, trans_vec)
+                       
+        #generates all coordinates from rotation matrices and translation vectors
+        sym_coordinates = {}
+        for ii,item in enumerate(atom_type):
+            for jj in range(head_xyz, tail_xyz):
+                raw_lines = cif[jj].strip().split(' ',1)
+                if raw_lines[0].isdigit():
+                    lines = raw_lines[1].strip("'")
+                else:
+                    lines = raw_lines[0].strip("'")
+                mat_vec = xyz2sym_ops(lines)
+                sym_temp = np.dot(mat_vec[0], fract_xyz[ii].transpose()) + mat_vec[1]
+                if jj == head_xyz:
+                    sym_coordinates[item] = []
+                sym_coordinates[item].append(sym_temp)
+                
+        #remove equivalent points and keep the unique ones
+        #get the numbers of atoms per species
+        coordinate = []
+        composition = []
+        for item in sym_coordinates.keys():
+            raw_equiv = np.array(sym_coordinates[item])
+            raw_equiv = raw_equiv - np.floor(raw_equiv)
+            raw_equiv = np.around(raw_equiv, 4)
+            raw_equiv = np.unique(raw_equiv, axis=0)
+            composition.append(len(raw_equiv))
+            if coordinate == []:
+                coordinate = raw_equiv
+            else:
+                coordinate = np.concatenate((coordinate,raw_equiv),axis=0)
+        self.from_dict(lattice, cell_para, atom_type, composition, coordinate)
 
     def from_POSCAR(self, filename):
-        """Read the structure from POSCAR"""
+
         f = open(filename)
 
         tag = f.readline()
@@ -352,14 +488,18 @@ class crystal(object):
         f.close()
         if cartesian:
             coordinate *= lattice_constant
-        self.from_dict(lattice, atom_type, composition, coordinate)
+        cell_para = []
+        self.from_dict(lattice, cell_para, atom_type, composition, coordinate)
 
-    def from_dict(self, lattice, atom_type, composition, coordinate):
+    def from_dict(self, lattice, cell_para, atom_type, composition, coordinate):
         self.cell_matrix = np.array(lattice) 
         self.atom_type = atom_type
         self.composition = np.array(composition)
         self.coordinate = np.array(coordinate)
-        self.cell_para = self.matrix2para(self.cell_matrix)
+        if cell_para == []:
+            self.cell_para = self.matrix2para(self.cell_matrix)
+        else:
+            self.cell_para = np.array(cell_para)
         self.rec_matrix = self.rec_lat(self.cell_matrix)
         self.name = ''
         for ele, num in zip(self.atom_type, self.composition):
@@ -606,11 +746,12 @@ if __name__ == "__main__":
     #               atom_type = atomtype, 
     #               composition = composition, 
     #               coordinate = coordinate)
-    test = crystal('POSCAR',filename='POSCAR-NaCl')
+    #test = crystal('POSCAR',filename='POSCAR-NaCl')
     #test = crystal('POSCAR',filename='POSCAR-SrF')
+    test = crystal('cif',filename='NaCl.cif')
     xrd = XRD(test)   
     #xrd.by_hkl([6,0,0])
-    xrd.plot_pxrd()
+    xrd.plot_pxrd(show_hkl=True)
     #xrd.plot_Laue(projection=[1,1,1])
 
 
