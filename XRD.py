@@ -748,7 +748,7 @@ if __name__ == "__main__":
     #               coordinate = coordinate)
     #test = crystal('POSCAR',filename='POSCAR-NaCl')
     #test = crystal('POSCAR',filename='POSCAR-SrF')
-    test = crystal('cif',filename='1000041.cif')
+    test = crystal('cif',filename='NaCl.cif')
     xrd = XRD(test)   
     #xrd.by_hkl([6,0,0])
     xrd.plot_pxrd(show_hkl=True)
