@@ -693,11 +693,11 @@ class XRD(object):
     def plot_pxrd(self, filename=None, minimum_I = 0.01, show_hkl=True):
         """ plot PXRD """
 
-        print('  2theta     d_hkl     hkl       Intensity')
+        #print('  2theta     d_hkl     hkl       Intensity')
         dx = np.degrees(self.max2theta)
         for i in self.pxrd:
             if i[-1] > minimum_I:
-               print('%8.3f  %8.3f   [%2d %2d %2d] %8.2f' % (i[0], i[1], i[2], i[3], i[4], i[5]))
+               #print('%8.3f  %8.3f   [%2d %2d %2d] %8.2f' % (i[0], i[1], i[2], i[3], i[4], i[5]))
                plt.bar(i[0],i[-1], color='b', width=dx/180)
                if show_hkl:
                   label = self.draw_hkl(i[2:5])
@@ -708,7 +708,7 @@ class XRD(object):
         plt.xlim(0,dx)
         plt.xlabel('2θ')
         plt.ylabel('Intensity')
-        plt.title('The simulated PXRD of '+self.name+ ', $\lambda$='+str(self.wavelength)+'$\AA$')
+        plt.title('PXRD of '+self.name+ ', $\lambda$='+str(self.wavelength)+'$\AA$')
         if filename is None:
            plt.show()
         else:
@@ -754,27 +754,50 @@ class XRD(object):
 
         return hkl_str
 
-if __name__ == "__main__":
+from optparse import OptionParser
+import pandas as pd
+from tabulate import tabulate
 
-    #lattice = 5.692*np.eye(3)
-    #atomtype = ['Na', 'Cl']
-    #composition = [4,4]
-    #coordinate = [[0,0,0],
-    #              [0.5,0.5,0],
-    #              [0,0.5,0.5],
-    #              [0.5,0,0.5],
-    #              [0.5,0.5,0.5],
-    #              [0.5,0,0],
-    #              [0,0,0.5],
-    #              [0,0.5,0]]
-    #test = crystal(fileformat='dict', filename=None, \
-    #               lattice = lattice,
-    #               atom_type = atomtype, 
-    #               composition = composition, 
-    #               coordinate = coordinate)
-    #test = crystal('POSCAR',filename='POSCAR-NaCl')
-    for name in ['alpha','gamma','delta']:
-        fname = 'POSCAR-P3N5-'+name
-        test = crystal('POSCAR',filename=fname)
-        xrd = XRD(test, wavelength=0.4959, max2theta=20)   
-        xrd.plot_pxrd(show_hkl=True, filename=name+'.png', minimum_I = 0.01)
+if __name__ == "__main__":
+    #-------------------------------- Options -------------------------
+    parser = OptionParser()
+    parser.add_option("-m", "--hkl", dest="hkl", metavar='hkl index',
+                      help="show hkl_index info, e.g., [1,0,0]")
+    parser.add_option("-a", "--angle", dest="max2theta", default=180,
+                      help="2theta angle range, default=180", metavar="angle")
+    parser.add_option("-t", "--transform", dest="trans", metavar="files",
+                      help="export file in different format")
+    parser.add_option("-p", "--plot", dest="plot", default='yes',
+                      help="plot pxrd, default: yes", metavar="plot")
+    parser.add_option("-w", "--wavelength", dest="wavelength", default=1.54184,
+                      help="wavelength: 1.54184", metavar="wave")
+    parser.add_option("-c", "--crystal", dest="structure",default='',
+                      help="crystal from file, cif or poscar, REQUIRED", metavar="crystal")
+
+    (options, args) = parser.parse_args()    
+    if options.structure.find('cif') > 0:
+       fileformat = 'cif'
+    else:
+       fileformat = 'POSCAR'
+
+    test = crystal(fileformat, filename=options.structure)
+    if options.plot == 'yes' or options.hkl is not None:
+       xrd = XRD(test, wavelength=options.wavelength, \
+                       max2theta=options.max2theta)   
+       col_name = {'2theta': xrd.pxrd[:,0], \
+                   'd_hkl':  xrd.pxrd[:,1], \
+                   'h': xrd.pxrd[:,2], \
+                   'k': xrd.pxrd[:,3], \
+                   'l': xrd.pxrd[:,4], \
+                   'Intensity':xrd.pxrd[:,5]}
+       df = pd.DataFrame(col_name)
+       print(tabulate(df, headers='keys', tablefmt='psql'))
+
+       if options.plot == 'yes':
+          xrd.plot_pxrd(filename=options.structure+'.png', minimum_I = 0.01)
+ 
+    #for name in ['alpha','gamma','delta']:
+    #    fname = 'POSCAR-P3N5-'+name
+    #    test = crystal('POSCAR',filename=fname)
+    #    xrd = XRD(test, wavelength=0.4959, max2theta=20)   
+    #    xrd.plot_pxrd(show_hkl=True, filename=name+'.png', minimum_I = 0.01)
