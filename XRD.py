@@ -337,10 +337,14 @@ class crystal(object):
             elif '_symmetry_equiv_pos_as_xyz' in lines:#start point choice to be decided
                 head_xyz = ii+1
                 xyz_flag = -1
+            elif '_symop_operation_xyz' in lines:#start point choice to be decided
+                head_xyz = ii+1
+                xyz_flag = -1
             elif xyz_flag == -1 and 'loop_' in lines:
                 xyz_flag = 1
                 tail_xyz = ii-1
-            elif '_atom_site_type_symbol' in lines:
+            #elif '_atom_site_type_symbol' in lines:
+            elif '_atom_site_label' in lines:
                 symbol_no = ii    #line index of atom_type
                 atom_type = []
                 fract_xyz = []
@@ -583,18 +587,26 @@ class XRD(object):
 
     def all_dhkl(self, crystal):
         """ 3x3 representation -> 1x6 (a, b, c, alpha, beta, gamma)"""
-        d_min = self.wavelength/self.max2theta*pi/2
-        h1 = int(np.linalg.norm(crystal.cell_para[0])/d_min)
-        k1 = int(np.linalg.norm(crystal.cell_para[1])/d_min)
-        l1 = int(np.linalg.norm(crystal.cell_para[2])/d_min)
+        #d_min = self.wavelength/self.max2theta*pi/2
+        d_min = self.wavelength/sin(self.max2theta/2)/2
+        h1 = 2*int(np.linalg.norm(crystal.cell_para[0])/d_min)
+        k1 = 2*int(np.linalg.norm(crystal.cell_para[1])/d_min)
+        l1 = 2*int(np.linalg.norm(crystal.cell_para[2])/d_min)
         h = np.arange(-h1,h1)
         k = np.arange(-k1,k1)
         l = np.arange(-l1,l1)
-
+        
         hkl = np.array((np.meshgrid(h,k,l))).transpose()
         hkl_list = np.reshape(hkl, [len(h)*len(k)*len(l),3])
         hkl_list = hkl_list[np.where(hkl_list.any(axis=1))[0]]
         d_hkl = 1/np.linalg.norm( np.dot(hkl_list, crystal.rec_matrix), axis=1)
+        #for ix, a in enumerate(hkl_list):
+        #    if np.array_equal(a, np.array([1,-1,3])) is True:
+        #       print(a)
+        #       break
+        #
+        #print(ix, hkl_list[ix], d_hkl[ix], d_min)
+
         shortlist = d_hkl > (d_min)
         d_hkl = d_hkl[shortlist]
         hkl_list = hkl_list[shortlist]
@@ -747,11 +759,11 @@ if __name__ == "__main__":
     #               composition = composition, 
     #               coordinate = coordinate)
     #test = crystal('POSCAR',filename='POSCAR-NaCl')
-    #test = crystal('POSCAR',filename='POSCAR-SrF')
-    test = crystal('cif',filename='NaCl.cif')
-    xrd = XRD(test)   
+    test = crystal('POSCAR',filename='POSCAR-P3N5-alpha')
+    #test = crystal('cif',filename='NaCl.cif')
+    xrd = XRD(test, wavelength=0.4959, max2theta=20)   
     #xrd.by_hkl([6,0,0])
-    xrd.plot_pxrd(show_hkl=True)
+    xrd.plot_pxrd(show_hkl=True, filename='1.png')
     #xrd.plot_Laue(projection=[1,1,1])
 
 
