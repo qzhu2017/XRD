@@ -1,4 +1,4 @@
-from math import acos, pi
+from math import acos, pi, ceil
 import numpy as np
 import matplotlib.pyplot as plt
 import re
@@ -454,7 +454,7 @@ class crystal(object):
                 coordinate = raw_equiv
             else:
                 coordinate = np.concatenate((coordinate,raw_equiv),axis=0)
-        self.from_dict(lattice, cell_para, atom_type, composition, coordinate)
+        self.from_dict(lattice, atom_type, composition, coordinate)
 
     def from_POSCAR(self, filename):
 
@@ -493,17 +493,14 @@ class crystal(object):
         if cartesian:
             coordinate *= lattice_constant
         cell_para = []
-        self.from_dict(lattice, cell_para, atom_type, composition, coordinate)
+        self.from_dict(lattice, atom_type, composition, coordinate)
 
-    def from_dict(self, lattice, cell_para, atom_type, composition, coordinate):
+    def from_dict(self, lattice, atom_type, composition, coordinate):
         self.cell_matrix = np.array(lattice) 
         self.atom_type = atom_type
         self.composition = np.array(composition)
         self.coordinate = np.array(coordinate)
-        if cell_para == []:
-            self.cell_para = self.matrix2para(self.cell_matrix)
-        else:
-            self.cell_para = np.array(cell_para)
+        self.cell_para = self.matrix2para(self.cell_matrix)
         self.rec_matrix = self.rec_lat(self.cell_matrix)
         self.name = ''
         for ele, num in zip(self.atom_type, self.composition):
@@ -589,9 +586,25 @@ class XRD(object):
         """ 3x3 representation -> 1x6 (a, b, c, alpha, beta, gamma)"""
         #d_min = self.wavelength/self.max2theta*pi/2
         d_min = self.wavelength/sin(self.max2theta/2)/2
-        h1 = 2*int(np.linalg.norm(crystal.cell_para[0])/d_min)
-        k1 = 2*int(np.linalg.norm(crystal.cell_para[1])/d_min)
-        l1 = 2*int(np.linalg.norm(crystal.cell_para[2])/d_min)
+  
+        # This block is to find the shortest d_hkl, 
+        # for all basic directions (1,0,0), (0,1,0), (1,1,0), (1,-1,0) and so on, 26 in total 
+        hkl_max = np.array([1,1,1])
+        for h1 in [-1, 0, 1]:
+            for k1 in [-1, 0, 1]:
+                for l1 in [-1, 0, 1]:
+                    hkl_index = np.array([[h1,k1,l1]])
+                    d = float(np.linalg.norm( np.dot(hkl_index, crystal.rec_matrix), axis=1))
+                    if d>0:
+                       multiple = 1/d/d_min
+                       hkl_index *= round(multiple)
+                       for i in range(len(hkl_max)):
+                           if hkl_max[i] < hkl_index[0,i]:
+                              hkl_max[i] = hkl_index[0,i]
+        #h1 = 2*ceil(np.linalg.norm(crystal.cell_para[0])/d_min)
+        #k1 = 2*ceil(np.linalg.norm(crystal.cell_para[1])/d_min)
+        #l1 = 2*ceil(np.linalg.norm(crystal.cell_para[2])/d_min)
+        h1, k1, l1 = hkl_max
         h = np.arange(-h1,h1)
         k = np.arange(-k1,k1)
         l = np.arange(-l1,l1)
@@ -666,7 +679,7 @@ class XRD(object):
                   PL.append([angle, self.d_hkl[i], \
                              self.hkl_list[i,0], self.hkl_list[i,1], self.hkl_list[i,2], \
                              self.xrd_intensity[i]])
-               elif angle == last:
+               elif abs(angle-last) < 1e-4:
                   PL[-1][-1] += self.xrd_intensity[i]
                else:
                   PL.append([angle, self.d_hkl[i], \
@@ -700,6 +713,7 @@ class XRD(object):
            plt.show()
         else:
            plt.savefig(filename)
+           plt.close()
 
     #def plot_Laue(self, filename=None, projection=[0,0,1]):
     #    """ plot  Laue graphs"""
@@ -759,11 +773,8 @@ if __name__ == "__main__":
     #               composition = composition, 
     #               coordinate = coordinate)
     #test = crystal('POSCAR',filename='POSCAR-NaCl')
-    test = crystal('POSCAR',filename='POSCAR-P3N5-alpha')
-    #test = crystal('cif',filename='NaCl.cif')
-    xrd = XRD(test, wavelength=0.4959, max2theta=20)   
-    #xrd.by_hkl([6,0,0])
-    xrd.plot_pxrd(show_hkl=True, filename='1.png')
-    #xrd.plot_Laue(projection=[1,1,1])
-
-
+    for name in ['alpha','gamma','delta']:
+        fname = 'POSCAR-P3N5-'+name
+        test = crystal('POSCAR',filename=fname)
+        xrd = XRD(test, wavelength=0.4959, max2theta=20)   
+        xrd.plot_pxrd(show_hkl=True, filename=name+'.png', minimum_I = 0.01)
