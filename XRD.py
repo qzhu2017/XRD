@@ -664,12 +664,17 @@ class XRD(object):
         I = (np.abs(self.F))**2*LP*P
         self.xrd_intensity = I
         self.theta2 = 2*self.theta
+        rank = np.argsort(self.theta2)
+        self.theta2 = self.theta2[rank]
+        self.hkl_list = self.hkl_list[rank]
+        self.d_hkl = self.d_hkl[rank]
+        self.xrd_intensity = self.xrd_intensity[rank]
 
     def pxrd(self):
         """ Group the equivalent hkl planes together by 2\theta angle
             N*6 arrays, Angle, d_hkl, h, k, l, intensity
         """
-        rank = np.argsort(self.theta2)
+        rank = range(len(self.theta2)) #np.argsort(self.theta2)
         PL = []
         last = []
         for i in rank:
@@ -775,6 +780,9 @@ if __name__ == "__main__":
                       help="crystal from file, cif or poscar, REQUIRED", metavar="crystal")
     parser.add_option("-f", "--full", dest="full",default='no',
                       help="show full hkl reflections", metavar="full")
+    parser.add_option("-i", "--intensity", dest="minimum_I",default=0.01,
+                      help="the hkl with minimum intensity", metavar="intensity")
+
 
 
     (options, args) = parser.parse_args()    
@@ -795,21 +803,19 @@ if __name__ == "__main__":
                       'l': xrd.pxrd[:,4], \
                       'Intensity':xrd.pxrd[:,5]}
        else:
-          rank1 = xrd.xrd_intensity > 0.001
+          rank1 = xrd.xrd_intensity > options.minimum_I
           col_name = {'2theta':    np.degrees(xrd.theta2[rank1]), \
                       'd_hkl':     xrd.d_hkl[rank1],\
-                      'hkl':       list(xrd.hkl_list[rank1]), \
+                      'h':         xrd.hkl_list[rank1,0], \
+                      'k':         xrd.hkl_list[rank1,1], \
+                      'l':         xrd.hkl_list[rank1,2], \
                       'Intensity': xrd.xrd_intensity[rank1] }
 
-          #PL.append([angle, self.d_hkl[i], \
-          #              self.hkl_list[i,0], self.hkl_list[i,1], self.hkl_list[i,2], \
-          #              self.xrd_intensity[i]])
-
        df = pd.DataFrame(col_name)
-       print(tabulate(df, headers='keys', tablefmt='psql'))
+       print(tabulate(df, headers='keys')) #, tablefmt='psql'))
 
        if options.plot == 'yes':
-          xrd.plot_pxrd(filename=options.structure+'.png', minimum_I = 0.01)
+          xrd.plot_pxrd(filename=options.structure+'.png', minimum_I = options.minimum_I)
  
     #for name in ['alpha','gamma','delta']:
     #    fname = 'POSCAR-P3N5-'+name
