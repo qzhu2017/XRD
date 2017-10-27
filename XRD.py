@@ -773,6 +773,9 @@ if __name__ == "__main__":
                       help="wavelength: 1.54184", metavar="wave")
     parser.add_option("-c", "--crystal", dest="structure",default='',
                       help="crystal from file, cif or poscar, REQUIRED", metavar="crystal")
+    parser.add_option("-f", "--full", dest="full",default='no',
+                      help="show full hkl reflections", metavar="full")
+
 
     (options, args) = parser.parse_args()    
     if options.structure.find('cif') > 0:
@@ -784,12 +787,24 @@ if __name__ == "__main__":
     if options.plot == 'yes' or options.hkl is not None:
        xrd = XRD(test, wavelength=options.wavelength, \
                        max2theta=options.max2theta)   
-       col_name = {'2theta': xrd.pxrd[:,0], \
-                   'd_hkl':  xrd.pxrd[:,1], \
-                   'h': xrd.pxrd[:,2], \
-                   'k': xrd.pxrd[:,3], \
-                   'l': xrd.pxrd[:,4], \
-                   'Intensity':xrd.pxrd[:,5]}
+       if options.full in  ['no', 'No', 'NO']:
+          col_name = {'2theta': xrd.pxrd[:,0], \
+                      'd_hkl':  xrd.pxrd[:,1], \
+                      'h': xrd.pxrd[:,2], \
+                      'k': xrd.pxrd[:,3], \
+                      'l': xrd.pxrd[:,4], \
+                      'Intensity':xrd.pxrd[:,5]}
+       else:
+          rank1 = xrd.xrd_intensity > 0.001
+          col_name = {'2theta':    np.degrees(xrd.theta2[rank1]), \
+                      'd_hkl':     xrd.d_hkl[rank1],\
+                      'hkl':       list(xrd.hkl_list[rank1]), \
+                      'Intensity': xrd.xrd_intensity[rank1] }
+
+          #PL.append([angle, self.d_hkl[i], \
+          #              self.hkl_list[i,0], self.hkl_list[i,1], self.hkl_list[i,2], \
+          #              self.xrd_intensity[i]])
+
        df = pd.DataFrame(col_name)
        print(tabulate(df, headers='keys', tablefmt='psql'))
 
