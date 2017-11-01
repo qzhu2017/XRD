@@ -786,9 +786,8 @@ class XRD(object):
         #print('  2theta     d_hkl     hkl       Intensity')
         dx = np.degrees(self.max2theta)
         for i in self.pxrd:
+            plt.bar(i[0],i[-1], color='b', width=dx/180)
             if i[-1] > minimum_I:
-               #print('%8.3f  %8.3f   [%2d %2d %2d] %8.2f' % (i[0], i[1], i[2], i[3], i[4], i[5]))
-               plt.bar(i[0],i[-1], color='b', width=dx/180)
                if show_hkl:
                   label = self.draw_hkl(i[2:5])
                   plt.text(i[0]-dx/40, i[-1], label[0]+label[1]+label[2])
