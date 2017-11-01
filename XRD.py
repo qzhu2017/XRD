@@ -854,20 +854,20 @@ if __name__ == "__main__":
     parser = OptionParser()
     parser.add_option("-m", "--hkl", dest="hkl", metavar='hkl index',
                       help="show hkl_index info, e.g., [1,0,0]")
-    parser.add_option("-a", "--angle", dest="max2theta", default=180,
+    parser.add_option("-a", "--angle", dest="max2theta", default=180, type='float',
                       help="2theta angle range, default=180", metavar="angle")
     parser.add_option("-t", "--transform", dest="trans", metavar="files",
                       help="export file in different format")
     parser.add_option("-p", "--plot", dest="plot", default='yes',
                       help="plot pxrd, default: yes", metavar="plot")
-    parser.add_option("-w", "--wavelength", dest="wavelength", default=1.54184,
+    parser.add_option("-w", "--wavelength", dest="wavelength", default=1.54184, type='float',
                       help="wavelength: 1.54184", metavar="wave")
     parser.add_option("-c", "--crystal", dest="structure",default='',
                       help="crystal from file, cif or poscar, REQUIRED", metavar="crystal")
     parser.add_option("-f", "--full", dest="full",default='no',
                       help="show full hkl reflections", metavar="full")
-    parser.add_option("-i", "--intensity", dest="minimum_I",default=0.01,
-                      help="the hkl with minimum intensity", metavar="intensity")
+    parser.add_option("-i", "--intensity", dest="minimum_I",default=0.01, type='float',
+                      help="the minimum intensity to show, default 0.01", metavar="intensity")
 
 
 
