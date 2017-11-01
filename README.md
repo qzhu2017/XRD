@@ -69,3 +69,5 @@ $ python XRD.py -c NaCl.cif
 18  163.127     0.737297   0.779354   -6    4    0
 ```
 It will also generate a png file with PXRD plot as follows
+![NaCl](https://github.com/qzhu2017/XRD/blob/master/images/NaCl.cif.png)
+
