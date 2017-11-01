@@ -22,6 +22,8 @@ To perform XRD calculation, one needs to provide the following info
 The atomic scattering factor is calculated from 9-parameter equation by Don Cromer and J. Mann.
 
 More detailed usage could be found in the [jupyter notebook](https://github.com/qzhu2017/XRD/blob/master/Demo.ipynb).
+
+## usage
 ```
 $ python XRD.py -h
 Usage: XRD.py [options]
@@ -43,7 +45,8 @@ Options:
   -i intensity, --intensity=intensity
                         the minimum intensity to show, default 0.01
  ```
- To execute, one just needs to run the followings,
+ ## execute 
+ one just needs to run the followings,
 ```
 $ python XRD.py -c NaCl.cif
       2theta    Intensity     d_hkl    h    k    l
