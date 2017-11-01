@@ -315,145 +315,12 @@ class crystal(object):
            self.from_dict(lattice, atom_type, composition, coordinate)
     
     def from_cif(self, filename):
-        cif = np.genfromtxt(filename, dtype=str, delimiter='\n')
-
-        #read lattice constants, axial angles, fractional coordiantes and line No. of equiv points
-        lc_flag = angle_flag = xyz_flag = fract_flag = 0
-        for ii, lines in enumerate(cif):
-            if '_cell_length_a' in lines:
-                lc_a = float(lines.split(' ',1)[1])
-                lc_b = float(cif[ii+1].split(' ',1)[1])
-                lc_c = float(cif[ii+2].split(' ',1)[1])
-                lc_temp = lc_a, lc_b, lc_c
-                lattice_constants = np.array(lc_temp)
-                lc_flag = 1
-            elif '_cell_angle_alpha' in lines:
-                alpha = float(lines.split(' ',1)[1])
-                beta = float(cif[ii+1].split(' ',1)[1])
-                gamma = float(cif[ii+2].split(' ',1)[1])
-                aangle_temp = alpha, beta, gamma
-                axial_angles = np.array(aangle_temp)
-                angle_flag = 1
-            elif '_symmetry_equiv_pos_as_xyz' in lines:#start point choice to be decided
-                head_xyz = ii+1
-                xyz_flag = -1
-            elif '_symop_operation_xyz' in lines:#start point choice to be decided
-                head_xyz = ii+1
-                xyz_flag = -1
-            elif xyz_flag == -1 and 'loop_' in lines:
-                xyz_flag = 1
-                tail_xyz = ii-1
-            #elif '_atom_site_type_symbol' in lines:
-            elif '_atom_site_label' in lines:
-                symbol_no = ii    #line index of atom_type
-                atom_type = []
-                fract_xyz = []
-                jj = ii
-                while 'loop_' not in cif[jj]:
-                    jj = jj - 1
-                count = 0
-                for kk in range(jj+1, len(cif)):
-                    if '_atom_site_' in cif[kk]:
-                        count += 1
-                        if '_atom_site_fract_x' in cif[kk]:
-                            fractx_no = kk
-                    else:
-                        break
-                while len(cif[kk].split(' ')) == count:
-                    sub = cif[kk].split(' ')
-                    m_symbol = re.compile("([A-Z]+[a-z]*)")
-                    type_temp = m_symbol.findall(sub[symbol_no-jj-1])
-                    atom_type.append(type_temp[0])
-                    fract_temp = float(sub[fractx_no-jj-1]), float(sub[fractx_no-jj]), float(sub[fractx_no-jj+1])
-                    fract_xyz.append(np.array(fract_temp))
-                    kk += 1
-                fract_flag = 1
-            elif lc_flag*angle_flag*xyz_flag*fract_flag:                                                       
-                break
-
-        #collect lattice parameters into cell_para
-        cell_para = np.zeros(6)
-        for ii in range(0,3):
-            cell_para[ii] = lattice_constants[ii]
-            cell_para[ii+3]  = np.radians(axial_angles[ii])
-
-        #calculate lattice vectors from lattice constants and axial angles
-        lattice = np.zeros([3,3])
-        b_x = lc_b*cos(cell_para[5]); b_y = lc_b*sin(cell_para[5])
-        c_x = lc_c*cos(cell_para[4]); c_y = lc_c*np.cos(cell_para[3])*np.sin(cell_para[5])
-        c_z = sqrt(lc_c**2-c_x**2-c_y**2)
-        lattice[0] = np.array([lc_a, 0, 0])
-        lattice[1] = np.array([b_x, b_y, 0])
-        lattice[2] = np.array([c_x, c_y, c_z])
-        lattice = np.around(lattice,8)
-
-        #function generates rotation matrices and translation vectors from equivalent points
-        def xyz2sym_ops(string):
-            #rotational matrix dictionary
-            rot_dic = {}
-            rot_dic['x'] = np.array([1.0,0,0])
-            rot_dic['y'] = np.array([0,1.0,0])
-            rot_dic['z'] = np.array([0,0,1.0])
-            parts = string.strip().replace(' ','').lower().split(',')
-            rot_mat = []
-            rot_temp = np.array([0.,0.,0.])
-            trans_vec = np.array([0.,0.,0.])
-            #use re module to read xyz strings
-            m_rot = re.compile(r"([+-]?)([\d\.]*)/?([\d\.]*)([x-z])")
-            m_trans = re.compile(r"([+-]?)([\d\.]+)/?([\d\.]*)(?![x-z])")
-            for jj,item in enumerate(parts):
-                #rotation matrix
-                for ii,m in enumerate(m_rot.finditer(item)):
-                    coef = -1 if m.group(1) == '-' else 1
-                    if m.group(2) != '':
-                        if m.group(3) != '':
-                            coef *= float(m.group(2))/float(m.group(3))
-                        else:
-                            coef *= float(m.group(2))
-                    if ii == 0:                  
-                        rot_temp = rot_dic[m.group(4)]*coef
-                    else:
-                        rot_temp += rot_dic[m.group(4)]*coef
-                rot_mat.append(rot_temp)
-                #translation vector
-                for m in m_trans.finditer(item):
-                    coef = -1 if m.group(1) == '-' else 1
-                    if m.group(3) != '':
-                        coef = float(m.group(2))/float(m.group(3))
-                    else:
-                        coef = float(m.group(2))
-                    trans_vec[jj] = 1.0*coef
-            return (rot_mat, trans_vec)
-                       
-        #generates all coordinates from rotation matrices and translation vectors
-        sym_coordinates = {}
-        for ii,item in enumerate(atom_type):
-            for jj in range(head_xyz, tail_xyz):
-                raw_lines = cif[jj].strip().split(' ',1)
-                if raw_lines[0].isdigit():
-                    lines = raw_lines[1].strip("'")
-                else:
-                    lines = raw_lines[0].strip("'")
-                mat_vec = xyz2sym_ops(lines)
-                sym_temp = np.dot(mat_vec[0], fract_xyz[ii].transpose()) + mat_vec[1]
-                if jj == head_xyz:
-                    sym_coordinates[item] = []
-                sym_coordinates[item].append(sym_temp)
-                
-        #remove equivalent points and keep the unique ones
-        #get the numbers of atoms per species
-        coordinate = []
-        composition = []
-        for item in sym_coordinates.keys():
-            raw_equiv = np.array(sym_coordinates[item])
-            raw_equiv = raw_equiv - np.floor(raw_equiv)
-            raw_equiv = np.around(raw_equiv, 4)
-            raw_equiv = np.unique(raw_equiv, axis=0)
-            composition.append(len(raw_equiv))
-            if coordinate == []:
-                coordinate = raw_equiv
-            else:
-                coordinate = np.concatenate((coordinate,raw_equiv),axis=0)
+        cif_struc = cif(filename)
+        lattice = self.para2matrix(cif_struc.cell_para)
+        print(lattice)
+        composition = cif_struc.composition
+        coordinate = cif_struc.coordinate
+        atom_type = cif_struc.atom_type
         self.from_dict(lattice, atom_type, composition, coordinate)
 
     def from_POSCAR(self, filename):
@@ -541,8 +408,227 @@ class crystal(object):
         cell_para[3] = angle(matrix[1], matrix[2])
 
         return cell_para
-    
 
+    @staticmethod
+    def para2matrix(cell_para):
+        """ 1x6 (a, b, c, alpha, beta, gamma) -> 3x3 representation -> """
+        matrix = np.zeros([3,3])
+        matrix[0][0] = cell_para[0]
+        matrix[1][0] = cell_para[1]*cos(cell_para[5])
+        matrix[1][1] = cell_para[1]*sin(cell_para[5])
+        matrix[2][0] = cell_para[2]*cos(cell_para[4])
+        matrix[2][1] = cell_para[2]*cos(cell_para[3])*sin(cell_para[4])
+        matrix[2][2] = sqrt(cell_para[2]**2 - matrix[2][0]**2 - matrix[2][1]**2)
+        
+        return matrix
+    
+class cif(object):
+    """a class of cif reader
+    Attributes:
+        wavelength: default: 1.54181a, namely Cu-Ka
+        max2theta: the range of 2theta angle
+        intensity: intensities for all hkl planes
+        pxrd: powder diffraction data
+    """
+
+    def __init__(self, filename):
+        """Return a XRD object with the proper info"""
+        self.from_file(filename)
+        self.parse_cell()
+        self.parse_atom()
+        self.apply_symops()
+
+    def from_file(self, filename):
+        cif = np.genfromtxt(filename, dtype=str, delimiter='\n')
+        
+        # 3 modes in each flag:  
+        # 0: not started; 
+        # 1: reading; 
+        # 2: done
+        flags = {'cell':0, 'symops':0, 'atom':0}
+
+        atom = {}
+        cell = {}
+        symops = {'string':[], 'matrix':[]}
+
+        for lines in cif:
+
+            if 'loop_' in lines:  
+                #if a _loop lines starts, the current reading flag switch to 0
+                for item in flags.keys():
+                    if flags[item] == 1:
+                        flags[item] = 2
+
+            elif '_cell_length_' in lines or '_cell_angle_' in lines:
+                #_cell_length_a          4.77985
+
+                flags['cell'] = 1
+                cell_str = lines.split()
+                item = cell_str[0].replace(' ','')
+                value = float(cell_str[1].split("(")[0])
+                cell[item] = value
+
+            elif '_symmetry_equiv_pos_as_xyz' in lines:
+                #_symmetry_equiv_pos_as_xyz
+                flags['symops'] = 1
+      
+            elif '_space_group_symop_operation_xyz' in lines:
+                #_space_group_symop_operation_xyz
+                flags['symops'] = 1
+                
+            elif flags['symops'] == 1:
+                #1, 'x, y, z'
+                #    x, -y, z
+                raw_line = lines.strip().strip("'").split(' ', 1)
+                if raw_line[0].isdigit():     
+                    sym_str = raw_line[1].strip("'")
+                else:
+                    sym_str = lines.strip().strip("'").replace(' ', '')
+                sym_str = sym_str.replace("'","")
+                symops['string'].append(sym_str)
+                symops['matrix'].append(self.xyz2sym_ops(sym_str))
+
+            elif '_atom_site' in lines: 
+                flags['atom'] = 1
+                atom_str = lines.replace(' ','')
+                item = atom_str
+                atom[item] = []
+
+            elif flags['atom'] == 1:
+                raw_line = lines.split()
+                for i, item in enumerate(atom.keys()):
+                    raw_text = raw_line[i]
+                    
+                    if item.find('fract')>0:
+                       value = float(raw_text.split("(")[0])
+                    elif item.find('symbol')>0:
+                       m_symbol = re.compile("([A-Z]+[a-z]*)")
+                       value = str(m_symbol.findall(raw_text)).strip("[]").strip("''")
+                       #print(raw_text, value)
+                    else:
+                       value = raw_text
+                       
+                    atom[item].append(value)
+
+            elif flags['cell'] + flags['symops'] + flags['atom'] == 6:
+                break
+
+        self.cell = cell
+        self.atom = atom
+        self.symops = symops
+   
+    def parse_cell(self):
+        cell_para = np.zeros(6)
+        cell = self.cell
+        for item in cell.keys():
+            if item.find('_length_a') > 0:
+                cell_para[0] = cell[item]
+            elif item.find('_length_b') > 0:
+                cell_para[1] = cell[item]
+            elif item.find('_length_c') > 0:
+                cell_para[2] = cell[item]
+            elif item.find('_angle_alpha') > 0:
+                cell_para[3] = np.radians(cell[item])
+            elif item.find('_angle_beta') > 0:
+                cell_para[4] = np.radians(cell[item])
+            elif item.find('_angle_gamma') > 0:
+                cell_para[5] = np.radians(cell[item])
+        self.cell_para = cell_para
+
+    def parse_atom(self):
+        atom = self.atom
+        N_atom = len(atom['_atom_site_fract_x'])
+        cif_xyz = np.zeros([N_atom, 3])
+
+        for item in atom.keys():
+            if item.find('_fract_x') > 0:
+                cif_xyz[:,0] = np.array(atom[item])
+            elif item.find('_fract_y') > 0:
+                cif_xyz[:,1] = np.array(atom[item])
+            elif item.find('_fract_z') > 0:
+                cif_xyz[:,2] = np.array(atom[item])
+
+        self.cif_xyz = cif_xyz
+
+    #generates all coordinates from rotation matrices and translation vectors
+    def apply_symops(self):
+        fract_xyz = self.cif_xyz
+        symops_matrix = self.symops['matrix']
+        atom_type = self.atom['_atom_site_type_symbol']
+        sym_coordinates = {}
+        
+        for item in atom_type:
+            sym_coordinates[item] = []
+
+
+        for ii,item in enumerate(atom_type):
+            for mat_vec in symops_matrix:
+                sym_temp = np.dot(mat_vec[0], fract_xyz[ii].transpose()) + mat_vec[1]
+                sym_coordinates[item].append(sym_temp)
+        self.coordinate, self.composition, self.atom_type = \
+                      self.remove_duplicate(sym_coordinates)
+
+    #remove equivalent points and keep the unique ones
+    #get the numbers of atoms per species
+    @staticmethod
+    def remove_duplicate(sym_coordinates):
+        coordinate = []
+        composition = []
+        atom_type = []
+        for item in sym_coordinates.keys():
+            atom_type.append(item)
+            raw_equiv = np.array(sym_coordinates[item])
+            raw_equiv = raw_equiv - np.floor(raw_equiv)
+            raw_equiv = np.around(raw_equiv, 4)
+            raw_equiv = np.unique(raw_equiv, axis=0)
+            composition.append(len(raw_equiv))
+            if coordinate == []:
+                coordinate = raw_equiv
+            else:
+                coordinate = np.concatenate((coordinate,raw_equiv),axis=0)
+
+        return coordinate, composition, atom_type
+
+
+    #function generates rotation matrices and translation vectors from equivalent points
+    @staticmethod
+    def xyz2sym_ops(string):
+        #rotational matrix dictionary
+        rot_dic = {}
+        rot_dic['x'] = np.array([1.0,0,0])
+        rot_dic['y'] = np.array([0,1.0,0])
+        rot_dic['z'] = np.array([0,0,1.0])
+        parts = string.strip().replace(' ','').lower().split(',')
+        rot_mat = []
+        rot_temp = np.array([0.,0.,0.])
+        trans_vec = np.array([0.,0.,0.])
+        #use re module to read xyz strings
+        m_rot = re.compile(r"([+-]?)([\d\.]*)/?([\d\.]*)([x-z])")
+        m_trans = re.compile(r"([+-]?)([\d\.]+)/?([\d\.]*)(?![x-z])")
+        for jj,item in enumerate(parts):
+            #rotation matrix
+            for ii,m in enumerate(m_rot.finditer(item)):
+                coef = -1 if m.group(1) == '-' else 1
+                if m.group(2) != '':
+                    if m.group(3) != '':
+                        coef *= float(m.group(2))/float(m.group(3))
+                    else:
+                        coef *= float(m.group(2))
+                if ii == 0:                  
+                    rot_temp = rot_dic[m.group(4)]*coef
+                else:
+                    rot_temp += rot_dic[m.group(4)]*coef
+            rot_mat.append(rot_temp)
+            #translation vector
+            for m in m_trans.finditer(item):
+                coef = -1 if m.group(1) == '-' else 1
+                if m.group(3) != '':
+                    coef = float(m.group(2))/float(m.group(3))
+                else:
+                    coef = float(m.group(2))
+                trans_vec[jj] = 1.0*coef
+        return (rot_mat, trans_vec)
+         
 
 class XRD(object):
     """a class of crystal structure. 
