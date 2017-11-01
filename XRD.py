@@ -317,7 +317,6 @@ class crystal(object):
     def from_cif(self, filename):
         cif_struc = cif(filename)
         lattice = self.para2matrix(cif_struc.cell_para)
-        print(lattice)
         composition = cif_struc.composition
         coordinate = cif_struc.coordinate
         atom_type = cif_struc.atom_type
