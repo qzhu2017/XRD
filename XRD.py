@@ -182,11 +182,7 @@ class Element:
         return els
 
     def get_sf(self, pos):
-        with open(os.path.join(os.path.dirname(__file__),
-               "atomic_scattering_params.json")) as f:
-                ATOMIC_SCATTERING_PARAMS = json.load(f)
-                els = ATOMIC_SCATTERING_PARAMS[pos]
-        return els
+        pass
 
     def all_z(self):
         return self.get_all(0)
