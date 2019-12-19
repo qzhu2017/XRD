@@ -182,7 +182,11 @@ class Element:
         return els
 
     def get_sf(self, pos):
-        pass
+        with open(os.path.join(os.path.dirname(__file__),
+               "atomic_scattering_params.json")) as f:
+                ATOMIC_SCATTERING_PARAMS = json.load(f)
+                els = ATOMIC_SCATTERING_PARAMS[pos]
+        return els
 
     def all_z(self):
         return self.get_all(0)
@@ -265,6 +269,7 @@ class crystal(object):
         if cartesian:
             coordinate *= lattice_constant
         cell_para = []
+        self.coordinate = np.array(composition)
         self.from_dict(lattice, atom_type, composition, coordinate)
 
     def from_dict(self, lattice, atom_type, composition, coordinate):
@@ -279,7 +284,6 @@ class crystal(object):
             self.name += ele
             if num > 1:
                self.name += str(num)
-   
     #def show(self, L=2):
     #    """show crystal structure"""
     #    
@@ -546,15 +550,20 @@ class XRD(object):
         coordinate: atomic positions (e.g., [[0,0,0],[0.5,0.5,0.5]])
     """
 
-    def __init__(self, crystal, wavelength=1.54184, max2theta=180):
+    def __init__(self, crystal, wavelength=1.54184, max2theta=180, profiling=None, fwhm = None, preferred_orientation = False):
         """Return a XRD object with the proper info"""
         self.wavelength = wavelength
         self.max2theta = np.radians(max2theta)
         self.name = crystal.name
+        self.profiling = profiling
+        self.fwhm = fwhm
+        self.preferred_orientation = preferred_orientation
+        
         self.all_dhkl(crystal)
         self.intensity(crystal)
-        self.pxrdf()
-
+        self.pxrdf()     
+    
+        
     def by_hkl(self, hkl):
         
         # this is a simple print statement, does not need to be optimized
@@ -620,6 +629,7 @@ class XRD(object):
         """
 
         # open a json file with atomic scattering parameters, should eventuall go to Element class
+
         with open(os.path.join(os.path.dirname(__file__),
                        "atomic_scattering_params.json")) as f:
                         ATOMIC_SCATTERING_PARAMS = json.load(f)
@@ -630,11 +640,11 @@ class XRD(object):
         coeffs = []
         zs = []
         occus = []
+        
         for elem,N_elem in zip(crystal.atom_type,crystal.composition):
             for N in range(N_elem):
                 c = ATOMIC_SCATTERING_PARAMS[elem]
                 z = Element(elem).z
-
                 coeffs.append(c)
                 zs.append(z)
                 occus.append(1) # HOW TO GENERALIZE OCCUPANCIES TERM
@@ -648,6 +658,8 @@ class XRD(object):
         SCALED_INTENSITY_TOL = 1e-3 # threshold for intensities
         
         ind = 0
+        intense = []
+        angle = []
         for hkl, s2, theta, d_hkl in zip(self.hkl_list, d0, self.theta, self.d_hkl):
             
             # calculate the scattering factor sf
@@ -675,10 +687,10 @@ class XRD(object):
                 peaks[two_thetas[ind[0][0]]][1].append(tuple(hkl))
             else:
                 peaks[two_theta] = [I * lf, [tuple(hkl)],d_hkl]
-                two_thetas.append(two_theta)
-        
+          
         # obtain important intensities (defined by SCALED_INTENSITY_TOL)
         # and corresponding 2*theta, hkl plane + multiplicity, and d_hkl
+        # print(peaks.keys())
         max_intensity = max([v[0] for v in peaks.values()])
         x = []
         y = []
@@ -694,15 +706,62 @@ class XRD(object):
                 hkls.append([{"hkl": hkl, "multiplicity": mult}
                              for hkl, mult in fam.items()])
                 d_hkls.append(v[2])
-       
+               
         self.theta2 = x
         self.xrd_intensity = y
         self.hkl_list = hkls
         self.d_hkl = d_hkls
 
+        if self.profiling != None:
+            self.get_profile(max_intensity)
+ 
+    def get_profile(self, max_intensity):
+    
+        """
+        Here gaussian and lorentzian profiling functions are smeared over the obtained
+        intensities (self.xrd_intensity) from previous calculations.
+          
+        Individual profiles of each intensity are superimposed, giving a net profiling function
+        for the structure.
+  
+        The profile will be plotted with the original plot and stored as a class variable as 
+        self.gpeaks.
+        """
+
+        # profile parameters
+        N = 500
+        tail = 10
+
+        assert self.fwhm != None, "User must include a value for FWHM when profiling!"
+        assert isinstance(self.fwhm, float) or isinstance(self.fwhm, int), "User must include a value for FWHM that is a number!" 
+        
+        # initiate profiling arrays
+        self.gpeaks = np.zeros(N)
+        self.thetas = np.linspace(min(self.theta2)-tail,max(self.theta2)+tail,N)
+
+        # loop over each 2theta and intensity obtained earlier 
+        for theta,peak in zip(self.theta2,self.xrd_intensity):
+            if self.profiling == 'gaussian':
+                profile = self.gaussian_profile(peak,theta)
+            elif self.profiling == 'lorentzian':
+                profile = self.lorentzian_profile(peak,theta)
+            else:
+                raise NotImplementedError
+            # add to total profile
+            self.gpeaks += profile
+        self.gpeaks/=max_intensity
+
+    def gaussian_profile(self, maxI, max_theta):
+        tmp = ((self.thetas - max_theta)/self.fwhm)**2
+        return maxI * np.exp(-4*np.log(2)*tmp)
+    
+    def lorentzian_profile(self, maxI, max_theta):
+        tmp = 1 + 4*((self.thetas - max_theta)/self.fwhm)**2
+        return maxI * 1/tmp
+        
     def pxrdf(self):
         """
-        Group the equivalent hkl planes together by 2\theta angle
+                Group the equivalent hkl planes together by 2\theta angle
         N*6 arrays, Angle, d_hkl, h, k, l, intensity
         """
         
@@ -723,9 +782,17 @@ class XRD(object):
         PL = (np.array(PL))
         PL[:,-1] = PL[:,-1]/max(PL[:,-1])
         self.pxrd = PL
-
+        # print(PL[0],PL[-1])
+    
     def plot_pxrd(self, filename=None, minimum_I = 0.01, show_hkl=True):
         """ plot PXRD """
+
+
+
+        plt.figure(figsize=(20,10))
+
+        if self.profiling != None:
+            plt.plot(self.thetas,self.gpeaks,'g-',label = str(self.profiling) + ' profiling')
 
         dx = np.degrees(self.max2theta)
         for i in self.pxrd:
@@ -734,20 +801,21 @@ class XRD(object):
                if show_hkl:
                   label = self.draw_hkl(i[2:5])
                   plt.text(i[0]-dx/40, i[-1], label[0]+label[1]+label[2])
-
+        
         ax=plt.gca()
         plt.grid()
         plt.xlim(0,dx)
         plt.xlabel('2θ')
         plt.ylabel('Intensity')
         plt.title('PXRD of '+self.name+ ', $\lambda$='+str(self.wavelength)+'$\AA$')
+        
         if filename is None:
            plt.show()
-        """
+        
         else:
            plt.savefig(filename)
            plt.close()
-        """
+    
     def get_unique_families(self,hkls):
         """
         Returns unique families of Miller indices. Families must be permutations
@@ -758,7 +826,7 @@ class XRD(object):
             {hkl: multiplicity}: A dict with unique hkl and multiplicity.
         """
 
-    # TODO: Definitely can be sped up.
+       # TODO: Definitely can be sped up.
         def is_perm(hkl1, hkl2):
             h1 = np.abs(hkl1)
             h2 = np.abs(hkl2)
