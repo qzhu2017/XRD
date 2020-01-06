@@ -550,7 +550,8 @@ class XRD(object):
         coordinate: atomic positions (e.g., [[0,0,0],[0.5,0.5,0.5]])
     """
 
-    def __init__(self, crystal, wavelength=1.54184, max2theta=180, profiling=None, fwhm = None, preferred_orientation = False):
+    def __init__(self, crystal, wavelength=1.54184, max2theta=180, profiling=None, 
+                 fwhm = None, preferred_orientation = False, march_parameter = None):
         """Return a XRD object with the proper info"""
         self.wavelength = wavelength
         self.max2theta = np.radians(max2theta)
@@ -558,7 +559,7 @@ class XRD(object):
         self.profiling = profiling
         self.fwhm = fwhm
         self.preferred_orientation = preferred_orientation
-        
+        self.march_parameter = march_parameter
         self.all_dhkl(crystal)
         self.intensity(crystal)
         self.pxrdf()     
@@ -600,7 +601,6 @@ class XRD(object):
                     hkl_max[i] = index[0,i]
         
         h1, k1, l1 = hkl_max
-
 
         h = np.arange(-h1,h1+1)
         k = np.arange(-k1,k1+1)
@@ -650,9 +650,10 @@ class XRD(object):
                 occus.append(1) # HOW TO GENERALIZE OCCUPANCIES TERM
 
         coeffs = np.array(coeffs)
-
         peaks = {}
         two_thetas = []
+
+        self.march_parameter = 1
 
         TWO_THETA_TOL = 1e-5 # tolerance to find repeating angles
         SCALED_INTENSITY_TOL = 1e-3 # threshold for intensities
@@ -672,6 +673,13 @@ class XRD(object):
             # calculate the lorentz polarization factor lf
             lf = (1 + cos(2 * theta) ** 2) / (sin(theta) ** 2 * cos(theta))
 
+            # calculate the preferred orientation factor
+            if self.preferred_orientation != False:
+                G = self.march_parameter
+                po = ((G * np.cos(theta))**2 + 1/G * np.sin(theta)**2)**(-3/2) 
+            else:
+                po = 1
+    
             # calculate the intensity I
             I = (f * f.conjugate()).real
             
@@ -683,10 +691,10 @@ class XRD(object):
 
             # append intensity, hkl plane, and thetas to lists
             if len(ind[0]) > 0:
-                peaks[two_thetas[ind[0][0]]][0] += I * lf
+                peaks[two_thetas[ind[0][0]]][0] += I * lf * po
                 peaks[two_thetas[ind[0][0]]][1].append(tuple(hkl))
             else:
-                peaks[two_theta] = [I * lf, [tuple(hkl)],d_hkl]
+                peaks[two_theta] = [I * lf * po, [tuple(hkl)],d_hkl]
           
         # obtain important intensities (defined by SCALED_INTENSITY_TOL)
         # and corresponding 2*theta, hkl plane + multiplicity, and d_hkl
@@ -749,7 +757,7 @@ class XRD(object):
                 raise NotImplementedError
             # add to total profile
             self.gpeaks += profile
-        self.gpeaks/=max_intensity
+        self.gpeaks/=np.max(self.gpeaks) #max_intensity
 
     def gaussian_profile(self, maxI, max_theta):
         tmp = ((self.thetas - max_theta)/self.fwhm)**2
@@ -811,11 +819,11 @@ class XRD(object):
         
         if filename is None:
            plt.show()
-        
+        """ 
         else:
            plt.savefig(filename)
            plt.close()
-    
+        """
     def get_unique_families(self,hkls):
         """
         Returns unique families of Miller indices. Families must be permutations
