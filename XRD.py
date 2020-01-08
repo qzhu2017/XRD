@@ -653,7 +653,7 @@ class XRD(object):
         self.peaks = {}
         two_thetas = []
 
-        self.march_parameter = 1
+        # self.march_parameter = 1
 
         TWO_THETA_TOL = 1e-5 # tolerance to find repeating angles
         SCALED_INTENSITY_TOL = 1e-3 # threshold for intensities
