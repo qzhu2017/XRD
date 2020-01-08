@@ -755,11 +755,6 @@ class XRD(object):
 
         # loop over each 2theta and intensity obtained earlier
         for theta,peak in zip(self.theta2,self.xrd_intensity):
-        # for i,j in zip(range(len(self.theta2)), range(len(self.xrd_intensity))):
-            # if i == 0
-            # elem = [np.where(v[0] == self.xrd_intensity) for v in self.peaks.values()]
-            # print(elem)
-            # tmp = np.linspace(theta-tail,theta+tail,N)
             if self.profiling == 'gaussian':
                 profile = self.gaussian_profile(peak,theta)
             elif self.profiling == 'lorentzian':
@@ -769,24 +764,8 @@ class XRD(object):
                 profile = eta * self.lorentzian_profile(peak,theta) + (1-eta) * self.gaussian_profile(peak,theta)
             else:
                 raise NotImplementedError
-            # gpeaks.append(profile)
-            # gtwo_thetas.append(tmp)
-            # plt.plot(tmp,profile)
-            # plt.plot(theta,peak,'ko')
-            # add to total profile
             self.gpeaks += profile
-            # print(self.gpeaks)
         self.gpeaks/=np.max(self.gpeaks) #max_intensity
-        # plt.show()
-        # self.gpeaks = np.concatenate(gpeaks,axis = 0)
-        # print(gtwo_thetas)
-        # self.gtwo_thetas = np.concatenate(gtwo_thetas,axis = 0)
-        # print(self.gtwo_thetas)
-        # self.gpeaks /= max_intensity
-        # self.xrd_intensity = [i/max(self.xrd_intensity) for i in self.xrd_intensity]
-        # plt.plot(self.theta2,self.xrd_intensity,'o')
-        # plt.plot(self.gtwo_thetas,self.gpeaks)
-        # plt.show()
     def gaussian_profile(self, maxI, max_theta):
         tmp = ((self.gtwo_thetas - max_theta)/self.fwhm)**2
         return maxI * np.exp(-4*np.log(2)*tmp)
