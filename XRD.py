@@ -656,16 +656,14 @@ class XRD(object):
         # self.march_parameter = 1
 
         TWO_THETA_TOL = 1e-5 # tolerance to find repeating angles
-        SCALED_INTENSITY_TOL = 1e-3 # threshold for intensities
+        SCALED_INTENSITY_TOL = 1e-5 # threshold for intensities
         
         ind = 0
         intense = []
         angle = []
-
-        rawI = []
-        rawtwo_theta = []
+        count = 0
         for hkl, s2, theta, d_hkl in zip(self.hkl_list, d0, self.theta, self.d_hkl):
-            
+            count+=1
             # calculate the scattering factor sf
             g_dot_r = np.dot(crystal.coordinate, np.transpose([hkl])).T[0]
             sf = zs - 41.78214 * s2 * np.sum(coeffs[:, :, 0] * np.exp(-coeffs[:, :, 1] * s2), axis=1)
@@ -694,8 +692,8 @@ class XRD(object):
 
             # append intensity, hkl plane, and thetas to lists
             if len(ind[0]) > 0:
-                self.peaks[two_thetas[ind[0][0]]][0] += I * lf * po
-                self.peaks[two_thetas[ind[0][0]]][1].append(tuple(hkl))
+                 self.peaks[two_thetas[ind[0][0]]][0] += I * lf * po
+                 self.peaks[two_thetas[ind[0][0]]][1].append(tuple(hkl))
             else:
                 self.peaks[two_theta] = [I * lf * po, [tuple(hkl)],d_hkl]
                 two_thetas.append(two_theta)
@@ -708,7 +706,9 @@ class XRD(object):
         y = []
         hkls = []
         d_hkls = []
+        count = 0 
         for k in sorted(self.peaks.keys()):
+            count +=1
             v = self.peaks[k]
             fam = self.get_unique_families(v[1])
             if v[0] / max_intensity * 100 > SCALED_INTENSITY_TOL:
@@ -718,7 +718,6 @@ class XRD(object):
                 hkls.append([{"hkl": hkl, "multiplicity": mult}
                              for hkl, mult in fam.items()])
                 d_hkls.append(v[2])
-               
         self.theta2 = x
         self.xrd_intensity = y
         self.hkl_list = hkls
@@ -741,22 +740,24 @@ class XRD(object):
         """
 
         # profile parameters
-        N = 1500
-        tail = 5 
+        N = 100
+        tail = 2 
 
         assert self.fwhm != None, "User must include a value for FWHM when profiling!"
         assert isinstance(self.fwhm, float) or isinstance(self.fwhm, int), "User must include a value for FWHM that is a number!" 
         
         # initiate profiling arrays
-        self.gpeaks = np.zeros(N)
-        self.gtwo_thetas = np.linspace(min(self.theta2)-tail,max(self.theta2)+tail,N)
-        # gpeaks = []
-        # gtwo_thetas = []
-
+        # self.gpeaks = np.zeros(N)
+        # self.gtwo_thetas = np.linspace(min(self.theta2)-tail,max(self.theta2)+tail,N)
+        self.gintegral = []
+        self.ind_peaks = []
+        self.ind_thetas = []
         # loop over each 2theta and intensity obtained earlier
-        for theta,peak in zip(self.theta2,self.xrd_intensity):
+        for i,j in zip(range(len(self.theta2)),range(len(self.xrd_intensity))):
+            tmp = np.linspace(self.theta2[i]-tail,self.theta2[i]+tail,N)
+            peak, theta = self.xrd_intensity[j], self.theta2[i] 
             if self.profiling == 'gaussian':
-                profile = self.gaussian_profile(peak,theta)
+                profile = self.gaussian_profile(peak,theta,tmp)
             elif self.profiling == 'lorentzian':
                 profile = self.lorentzian_profile(peak,theta)
             elif self.profiling == 'psuedo_voigt':
@@ -764,17 +765,27 @@ class XRD(object):
                 profile = eta * self.lorentzian_profile(peak,theta) + (1-eta) * self.gaussian_profile(peak,theta)
             else:
                 raise NotImplementedError
-            self.gpeaks += profile
-        self.gpeaks/=np.max(self.gpeaks) #max_intensity
-    def gaussian_profile(self, maxI, max_theta):
-        tmp = ((self.gtwo_thetas - max_theta)/self.fwhm)**2
+            profile *= np.cos(tmp/180*np.pi)
+            self.ind_peaks.append(profile)
+            self.ind_thetas.append(tmp)
+               
+
+        self.ind_peaks = np.array(self.ind_peaks)
+        self.ind_thetas = np.array(self.ind_thetas)
+         
+        self.gpeaks = np.concatenate((self.ind_peaks))
+        self.gpeaks /= np.max(self.gpeaks)
+        self.gtwo_thetas = np.concatenate((self.ind_thetas))
+
+
+    def gaussian_profile(self, maxI, max_theta,tmp):
+        tmp = ((tmp - max_theta)/self.fwhm)**2
         return maxI * np.exp(-4*np.log(2)*tmp)
     
     def lorentzian_profile(self, maxI, max_theta):
         tmp = 1 + 4*((self.gtwo_thetas - max_theta)/self.fwhm)**2
         return maxI * 1/tmp
 
-        
     def pxrdf(self):
         """
                 Group the equivalent hkl planes together by 2\theta angle
