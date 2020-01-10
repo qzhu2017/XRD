@@ -8,6 +8,9 @@ import sys
 import json
 import os
 import collections
+import scipy
+import scipy.integrate as integrate    
+
 
 def angle(a,b):
     """ calculate the angle between vector a and b """
@@ -745,46 +748,132 @@ class XRD(object):
 
         assert self.fwhm != None, "User must include a value for FWHM when profiling!"
         assert isinstance(self.fwhm, float) or isinstance(self.fwhm, int), "User must include a value for FWHM that is a number!" 
+        # list to store all 
+        ind_peaks = []
+        ind_thetas = []
         
-        # initiate profiling arrays
-        # self.gpeaks = np.zeros(N)
-        # self.gtwo_thetas = np.linspace(min(self.theta2)-tail,max(self.theta2)+tail,N)
-        self.gintegral = []
-        self.ind_peaks = []
-        self.ind_thetas = []
-        # loop over each 2theta and intensity obtained earlier
         for i,j in zip(range(len(self.theta2)),range(len(self.xrd_intensity))):
-            tmp = np.linspace(self.theta2[i]-tail,self.theta2[i]+tail,N)
-            peak, theta = self.xrd_intensity[j], self.theta2[i] 
+            peak, theta = self.xrd_intensity[j], self.theta2[i]
+            tmp = np.linspace(theta-tail,theta+tail,N)
             if self.profiling == 'gaussian':
                 profile = self.gaussian_profile(peak,theta,tmp)
             elif self.profiling == 'lorentzian':
-                profile = self.lorentzian_profile(peak,theta)
+                profile = self.lorentzian_profile(peak,theta,tmp)
             elif self.profiling == 'psuedo_voigt':
                 eta = 0.5 
-                profile = eta * self.lorentzian_profile(peak,theta) + (1-eta) * self.gaussian_profile(peak,theta)
+                profile = eta * self.lorentzian_profile(peak,theta,tmp) + \
+                        (1-eta) * self.gaussian_profile(peak,theta,tmp)
             else:
                 raise NotImplementedError
-            profile *= np.cos(tmp/180*np.pi)
-            self.ind_peaks.append(profile)
-            self.ind_thetas.append(tmp)
+            
+            profile *= np.cos(tmp/180*np.pi) # this may or may not stay here
+            ind_peaks.append(profile)
+            ind_thetas.append(tmp)
                
-
-        self.ind_peaks = np.array(self.ind_peaks)
-        self.ind_thetas = np.array(self.ind_thetas)
-         
-        self.gpeaks = np.concatenate((self.ind_peaks))
+        # store all individual peaks into and 2thetas in array
+        ind_peaks = np.array(ind_peaks)
+        ind_thetas = np.array(ind_thetas)
+        self.ind_patterns = (ind_thetas,ind_peaks)
+        # place indicudial peaks and 2thets into single arrays
+        self.gpeaks = np.concatenate((ind_peaks))
         self.gpeaks /= np.max(self.gpeaks)
-        self.gtwo_thetas = np.concatenate((self.ind_thetas))
+        self.gtwo_thetas = np.concatenate((ind_thetas))
 
-
-    def gaussian_profile(self, maxI, max_theta,tmp):
-        tmp = ((tmp - max_theta)/self.fwhm)**2
+    def gaussian_profile(self, maxI, max_theta, alpha):
+        tmp = ((alpha - max_theta)/self.fwhm)**2
         return maxI * np.exp(-4*np.log(2)*tmp)
     
-    def lorentzian_profile(self, maxI, max_theta):
-        tmp = 1 + 4*((self.gtwo_thetas - max_theta)/self.fwhm)**2
+    def lorentzian_profile(self, maxI, max_theta, alpha):
+        tmp = 1 + 4*((alpha - max_theta)/self.fwhm)**2
         return maxI * 1/tmp
+
+    def calculate_similarity(self, patternf, patterng):
+
+        
+        """
+        patternf: first pxrd profile - tuple (individual 2thetas, individual peaks)
+        patterng: second pxrd profile - tuple (individual 2thetas, individual peaks)
+        
+        For peaks in patterns, calculate similarity function for paired peaks.
+        Sum S for each peak and divide by number of peaks.
+        This will give us S for pattern - pattern comparison.
+        
+        """
+        N = 100
+
+        theta2f, peaksf = patternf[0], patternf[1]
+        theta2g, peaksg = patterng[0], patterng[1]
+        num_peaksf, num_peaksg = peaksf.shape[0], peaksg.shape[0]
+        
+        if num_peaksg == num_peaksg:
+            num_peaks = num_peaksf = num_peaksg
+            
+            S = 0 
+
+            # pointwise shift between peaks
+            rfg = np.linspace(-1,1,N)
+            # in this for loop I will find S for each comparison and sum them up
+            for xf_i, yf_i, xg_i, yg_i in zip(theta2f, peaksf, theta2g, peaksg):
+                
+                # introduce a shift to speed up calculations
+                shift = xf_i - (xf_i/np.mean(xf_i) - 1)
+                
+                """get data for pattern 1"""
+                xf_i  = xf_i/np.mean(xf_i) - 1 
+                index = np.where(yf_i == np.max(yf_i))[0][0]
+                Iof_i = yf_i[index]
+                xof_i = xf_i[index]
+
+                """get data for pattern 2"""
+                xg_i -= shift
+                index = np.where(yg_i == np.max(yg_i))[0][0]
+                Iog_i = yg_i[index]
+                xog_i = xg_i[index]
+                
+                # define the range of x values to integrate over
+                tmp = np.concatenate((xf_i,xg_i))
+                tmp = np.sort(tmp)
+                xfg_i = np.linspace(tmp[0],tmp[-1],N)
+                Si = self.integrate_xcorrelation(xfg_i, rfg, xof_i, xog_i, Iof_i, Iog_i) /\
+                    np.sqrt(self.integrate_acorrelation(xf_i, rfg, xof_i, Iof_i) *\
+                            self.integrate_acorrelation(xg_i, rfg, xog_i, Iog_i))
+                S+=Si
+        return S/num_peaks
+
+    def integrate_xcorrelation(self, xfg, rfg, xof, xog, Iof, Iog, l=0.6):
+        
+        c = -4*np.log(2)/self.fwhm**2
+        tmp = 0
+
+        for xi, ri in zip(xfg,rfg):
+            if np.abs(ri) < l:
+                integrand = lambda xi, ri, xof ,xog ,c , l: (1 - np.abs(ri)/l) *\
+                             np.exp(c*((xi-xof)**2 + (xi+ri-xog)**2))
+                tmp += integrate.dblquad(integrand, rfg[-1], rfg[0], xfg[-1], xfg[0],\
+                             args = (xof,xog,c,l))[0]
+            else:
+                tmp += 0
+        
+        return np.abs(Iof*Iog*tmp)
+    
+    def integrate_acorrelation(self, x, rfg, xo, Io, l = 0.6):
+
+        c = -4*np.log(2)/self.fwhm**2
+        tmp = 0
+
+        for xi, ri in zip(x,rfg):
+            if np.abs(ri) < l:
+                integrand = lambda xi, ri, xo, c, l: (1 - np.abs(ri)/l) *\
+                            np.exp(c*((xi-xo)**2 + (xi+ri-xo)**2))
+                tmp += integrate.dblquad(integrand, rfg[-1], rfg[0], x[-1], x[0],\
+                                         args = (xo,c,l))[0]
+            else:
+                tmp += 0
+
+        return np.abs(Io**2*tmp)
+
+
+
 
     def pxrdf(self):
         """
