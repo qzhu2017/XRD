@@ -10,6 +10,7 @@ import os
 import collections
 import scipy
 import scipy.integrate as integrate    
+import itertools
 
 
 def angle(a,b):
@@ -743,20 +744,24 @@ class XRD(object):
         """
 
         # profile parameters
-        N = 100
+        self.N = 1000
         tail = 2 
 
         assert self.fwhm != None, "User must include a value for FWHM when profiling!"
         assert isinstance(self.fwhm, float) or isinstance(self.fwhm, int), "User must include a value for FWHM that is a number!" 
-        # list to store all 
-        ind_peaks = []
-        ind_thetas = []
         
+        self.r = np.linspace(-1,1,self.N)
+        gpeaks = np.zeros((self.N))
+        g2thetas = np.linspace(np.min(self.theta2) - tail, np.max(self.theta2) + tail, self.N)
+        gpeaks_r = np.zeros((self.N))
+        g2thetas_r = g2thetas + self.r
+
         for i,j in zip(range(len(self.theta2)),range(len(self.xrd_intensity))):
             peak, theta = self.xrd_intensity[j], self.theta2[i]
-            tmp = np.linspace(theta-tail,theta+tail,N)
+
             if self.profiling == 'gaussian':
-                profile = self.gaussian_profile(peak,theta,tmp)
+                profile = self.gaussian_profile(peak,theta,g2thetas)
+                profile_r = self.gaussian_profile(peak,theta,g2thetas_r)
             elif self.profiling == 'lorentzian':
                 profile = self.lorentzian_profile(peak,theta,tmp)
             elif self.profiling == 'psuedo_voigt':
@@ -766,18 +771,18 @@ class XRD(object):
             else:
                 raise NotImplementedError
             
-            profile *= np.cos(tmp/180*np.pi) # this may or may not stay here
-            ind_peaks.append(profile)
-            ind_thetas.append(tmp)
-               
-        # store all individual peaks into and 2thetas in array
-        ind_peaks = np.array(ind_peaks)
-        ind_thetas = np.array(ind_thetas)
-        self.ind_patterns = (ind_thetas,ind_peaks)
-        # place indicudial peaks and 2thets into single arrays
-        self.gpeaks = np.concatenate((ind_peaks))
-        self.gpeaks /= np.max(self.gpeaks)
-        self.gtwo_thetas = np.concatenate((ind_thetas))
+            profile *= np.cos(g2thetas/180*np.pi) # this may or may not stay here
+            profile_r *= np.cos(g2thetas_r/180*np.pi)
+            gpeaks += profile
+            gpeaks_r += profile_r
+
+        gpeaks /= np.max(gpeaks)
+        gpeaks_r /= np.max(gpeaks_r)
+        pattern = (gpeaks,g2thetas)
+        pattern_r = (gpeaks_r,g2thetas_r)
+       
+        # store the original and r shifted patter, for use of similarity calcsn
+        self.both_patterns = (pattern,pattern_r)
 
     def gaussian_profile(self, maxI, max_theta, alpha):
         tmp = ((alpha - max_theta)/self.fwhm)**2
@@ -787,93 +792,38 @@ class XRD(object):
         tmp = 1 + 4*((alpha - max_theta)/self.fwhm)**2
         return maxI * 1/tmp
 
-    def calculate_similarity(self, patternf, patterng):
-
-        
-        """
-        patternf: first pxrd profile - tuple (individual 2thetas, individual peaks)
-        patterng: second pxrd profile - tuple (individual 2thetas, individual peaks)
-        
-        For peaks in patterns, calculate similarity function for paired peaks.
-        Sum S for each peak and divide by number of peaks.
-        This will give us S for pattern - pattern comparison.
-        
-        """
-        N = 100
-
-        theta2f, peaksf = patternf[0], patternf[1]
-        theta2g, peaksg = patterng[0], patterng[1]
-        num_peaksf, num_peaksg = peaksf.shape[0], peaksg.shape[0]
-        
-        if num_peaksg == num_peaksg:
-            num_peaks = num_peaksf = num_peaksg
-            
-            S = 0 
-
-            # pointwise shift between peaks
-            rfg = np.linspace(-1,1,N)
-            # in this for loop I will find S for each comparison and sum them up
-            for xf_i, yf_i, xg_i, yg_i in zip(theta2f, peaksf, theta2g, peaksg):
-                
-                # introduce a shift to speed up calculations
-                shift = xf_i - (xf_i/np.mean(xf_i) - 1)
-                
-                """get data for pattern 1"""
-                xf_i  = xf_i/np.mean(xf_i) - 1 
-                index = np.where(yf_i == np.max(yf_i))[0][0]
-                Iof_i = yf_i[index]
-                xof_i = xf_i[index]
-
-                """get data for pattern 2"""
-                xg_i -= shift
-                index = np.where(yg_i == np.max(yg_i))[0][0]
-                Iog_i = yg_i[index]
-                xog_i = xg_i[index]
-                
-                # define the range of x values to integrate over
-                tmp = np.concatenate((xf_i,xg_i))
-                tmp = np.sort(tmp)
-                xfg_i = np.linspace(tmp[0],tmp[-1],N)
-                Si = self.integrate_xcorrelation(xfg_i, rfg, xof_i, xog_i, Iof_i, Iog_i) /\
-                    np.sqrt(self.integrate_acorrelation(xf_i, rfg, xof_i, Iof_i) *\
-                            self.integrate_acorrelation(xg_i, rfg, xog_i, Iog_i))
-                S+=Si
-        return S/num_peaks
-
-    def integrate_xcorrelation(self, xfg, rfg, xof, xog, Iof, Iog, l=0.6):
-        
-        c = -4*np.log(2)/self.fwhm**2
-        tmp = 0
-
-        for xi, ri in zip(xfg,rfg):
-            if np.abs(ri) < l:
-                integrand = lambda xi, ri, xof ,xog ,c , l: (1 - np.abs(ri)/l) *\
-                             np.exp(c*((xi-xof)**2 + (xi+ri-xog)**2))
-                tmp += integrate.dblquad(integrand, rfg[-1], rfg[0], xfg[-1], xfg[0],\
-                             args = (xof,xog,c,l))[0]
+    def triangle(self, r, l = 0.6):
+        w = np.zeros((r.shape))
+        for i in range(r.shape[0]):
+            if np.abs(r[i]) < l:
+                func = lambda r, l : (1 - np.abs(r)/l)
+                w[i] = func(r[i],l)
             else:
-                tmp += 0
+                w[i] = 0
+        return w
+
+    def calculate_similarity(self, both_patternf, both_patterng):
+
         
-        return np.abs(Iof*Iog*tmp)
-    
-    def integrate_acorrelation(self, x, rfg, xo, Io, l = 0.6):
 
-        c = -4*np.log(2)/self.fwhm**2
-        tmp = 0
+        """
+        Arguments from self.both_patterns in XRD.get_profile
 
-        for xi, ri in zip(x,rfg):
-            if np.abs(ri) < l:
-                integrand = lambda xi, ri, xo, c, l: (1 - np.abs(ri)/l) *\
-                            np.exp(c*((xi-xo)**2 + (xi+ri-xo)**2))
-                tmp += integrate.dblquad(integrand, rfg[-1], rfg[0], x[-1], x[0],\
-                                         args = (xo,c,l))[0]
-            else:
-                tmp += 0
+        both_patternf = ((peaksf, 2thetasf), (peaksf_r, 2thetasf))
+        both_patterng = ((peaksg, 2thetasg), (peaksg_r, 2thetasg))
+        
+        _r corresponds to r shifted patterns
+        """
+                
+        (fpeak, f2theta), (fpeak_r, f2theta_r) = both_patternf
+        (gpeak, g2theta), (gpeak_r, g2theta_r) = both_patterng
+        
+        w = self.triangle(self.r)
+        S = integrate.trapz(w*np.correlate(fpeak,gpeak_r),self.r)/\
+                    np.sqrt(integrate.trapz(w*np.correlate(fpeak,fpeak_r),self.r)*\
+                    integrate.trapz(w*np.correlate(gpeak,gpeak_r),self.r))
 
-        return np.abs(Io**2*tmp)
-
-
-
+        return S        
 
     def pxrdf(self):
         """
