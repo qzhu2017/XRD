@@ -727,10 +727,10 @@ class XRD(object):
         self.hkl_list = hkls
         self.d_hkl = d_hkls
 
-        if self.profiling != None:
-            self.get_profile(max_intensity)
+        # if self.profiling != None:
+        #     self.get_profile(max_intensity)
  
-    def get_profile(self, max_intensity):
+    def get_profile(self, N):
     
         """
         Here gaussian and lorentzian profiling functions are smeared over the obtained
@@ -744,24 +744,19 @@ class XRD(object):
         """
 
         # profile parameters
-        self.N = 1000
         tail = 2 
 
         assert self.fwhm != None, "User must include a value for FWHM when profiling!"
         assert isinstance(self.fwhm, float) or isinstance(self.fwhm, int), "User must include a value for FWHM that is a number!" 
         
-        self.r = np.linspace(-1,1,self.N)
-        gpeaks = np.zeros((self.N))
-        g2thetas = np.linspace(np.min(self.theta2) - tail, np.max(self.theta2) + tail, self.N)
-        gpeaks_r = np.zeros((self.N))
-        g2thetas_r = g2thetas + self.r
+        gpeaks = np.zeros((N))
+        g2thetas = np.linspace(np.min(self.theta2) - tail, np.max(self.theta2) + tail, N)
 
         for i,j in zip(range(len(self.theta2)),range(len(self.xrd_intensity))):
             peak, theta = self.xrd_intensity[j], self.theta2[i]
 
             if self.profiling == 'gaussian':
                 profile = self.gaussian_profile(peak,theta,g2thetas)
-                profile_r = self.gaussian_profile(peak,theta,g2thetas_r)
             elif self.profiling == 'lorentzian':
                 profile = self.lorentzian_profile(peak,theta,tmp)
             elif self.profiling == 'psuedo_voigt':
@@ -771,18 +766,12 @@ class XRD(object):
             else:
                 raise NotImplementedError
             
-            profile *= np.cos(g2thetas/180*np.pi) # this may or may not stay here
-            profile_r *= np.cos(g2thetas_r/180*np.pi)
+            # profile *= np.cos(g2thetas/180*np.pi) # this may or may not stay here
             gpeaks += profile
-            gpeaks_r += profile_r
 
         gpeaks /= np.max(gpeaks)
-        gpeaks_r /= np.max(gpeaks_r)
-        pattern = (gpeaks,g2thetas)
-        pattern_r = (gpeaks_r,g2thetas_r)
-       
-        # store the original and r shifted patter, for use of similarity calcsn
-        self.both_patterns = (pattern,pattern_r)
+        self.gpeaks = gpeaks
+        self.g2thetas = g2thetas
 
     def gaussian_profile(self, maxI, max_theta, alpha):
         tmp = ((alpha - max_theta)/self.fwhm)**2
@@ -791,39 +780,6 @@ class XRD(object):
     def lorentzian_profile(self, maxI, max_theta, alpha):
         tmp = 1 + 4*((alpha - max_theta)/self.fwhm)**2
         return maxI * 1/tmp
-
-    def triangle(self, r, l = 0.6):
-        w = np.zeros((r.shape))
-        for i in range(r.shape[0]):
-            if np.abs(r[i]) < l:
-                func = lambda r, l : (1 - np.abs(r)/l)
-                w[i] = func(r[i],l)
-            else:
-                w[i] = 0
-        return w
-
-    def calculate_similarity(self, both_patternf, both_patterng):
-
-        
-
-        """
-        Arguments from self.both_patterns in XRD.get_profile
-
-        both_patternf = ((peaksf, 2thetasf), (peaksf_r, 2thetasf))
-        both_patterng = ((peaksg, 2thetasg), (peaksg_r, 2thetasg))
-        
-        _r corresponds to r shifted patterns
-        """
-                
-        (fpeak, f2theta), (fpeak_r, f2theta_r) = both_patternf
-        (gpeak, g2theta), (gpeak_r, g2theta_r) = both_patterng
-        
-        w = self.triangle(self.r)
-        S = integrate.trapz(w*np.correlate(fpeak,gpeak_r),self.r)/\
-                    np.sqrt(integrate.trapz(w*np.correlate(fpeak,fpeak_r),self.r)*\
-                    integrate.trapz(w*np.correlate(gpeak,gpeak_r),self.r))
-
-        return S        
 
     def pxrdf(self):
         """
