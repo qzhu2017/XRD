@@ -554,14 +554,12 @@ class XRD(object):
         coordinate: atomic positions (e.g., [[0,0,0],[0.5,0.5,0.5]])
     """
 
-    def __init__(self, crystal, wavelength=1.54184, max2theta=180, profiling=None, 
-                 fwhm = None, preferred_orientation = False, march_parameter = None):
+    def __init__(self, crystal, wavelength=1.54184, max2theta=180, 
+                 preferred_orientation = False, march_parameter = None):
         """Return a XRD object with the proper info"""
         self.wavelength = wavelength
         self.max2theta = np.radians(max2theta)
         self.name = crystal.name
-        self.profiling = profiling
-        self.fwhm = fwhm
         self.preferred_orientation = preferred_orientation
         self.march_parameter = march_parameter
         self.all_dhkl(crystal)
@@ -730,7 +728,7 @@ class XRD(object):
         # if self.profiling != None:
         #     self.get_profile(max_intensity)
  
-    def get_profile(self, N):
+    def get_profile(self, N, profiling, fwhm):
     
         """
         Here gaussian and lorentzian profiling functions are smeared over the obtained
@@ -746,20 +744,17 @@ class XRD(object):
         # profile parameters
         tail = 2 
 
-        assert self.fwhm != None, "User must include a value for FWHM when profiling!"
-        assert isinstance(self.fwhm, float) or isinstance(self.fwhm, int), "User must include a value for FWHM that is a number!" 
-        
         gpeaks = np.zeros((N))
         g2thetas = np.linspace(np.min(self.theta2) - tail, np.max(self.theta2) + tail, N)
 
         for i,j in zip(range(len(self.theta2)),range(len(self.xrd_intensity))):
             peak, theta = self.xrd_intensity[j], self.theta2[i]
 
-            if self.profiling == 'gaussian':
-                profile = self.gaussian_profile(peak,theta,g2thetas)
-            elif self.profiling == 'lorentzian':
+            if profiling == 'gaussian':
+                profile = self.gaussian_profile(peak,theta,g2thetas,fwhm)
+            elif profiling == 'lorentzian':
                 profile = self.lorentzian_profile(peak,theta,tmp)
-            elif self.profiling == 'psuedo_voigt':
+            elif profiling == 'psuedo_voigt':
                 eta = 0.5 
                 profile = eta * self.lorentzian_profile(peak,theta,tmp) + \
                         (1-eta) * self.gaussian_profile(peak,theta,tmp)
@@ -773,8 +768,8 @@ class XRD(object):
         self.gpeaks = gpeaks
         self.g2thetas = g2thetas
 
-    def gaussian_profile(self, maxI, max_theta, alpha):
-        tmp = ((alpha - max_theta)/self.fwhm)**2
+    def gaussian_profile(self, maxI, max_theta, alpha, fwhm):
+        tmp = ((alpha - max_theta)/fwhm)**2
         return maxI * np.exp(-4*np.log(2)*tmp)
     
     def lorentzian_profile(self, maxI, max_theta, alpha):
