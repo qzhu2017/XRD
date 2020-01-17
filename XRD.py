@@ -1,3 +1,4 @@
+
 from math import acos, pi, ceil
 import numpy as np
 import matplotlib.pyplot as plt
@@ -239,8 +240,8 @@ class crystal(object):
     def from_POSCAR(self, filename):
 
         f = open(filename)
-
         tag = f.readline()
+
         lattice_constant = float(f.readline().split()[0])
 
         # Now the lattice vectors
@@ -728,7 +729,7 @@ class XRD(object):
         # if self.profiling != None:
         #     self.get_profile(max_intensity)
  
-    def get_profile(self, N, profiling, fwhm):
+    def get_profile(self, theta2, xrd_intensity, N, profiling, fwhm):
     
         """
         Here gaussian and lorentzian profiling functions are smeared over the obtained
@@ -745,10 +746,10 @@ class XRD(object):
         tail = 2 
 
         gpeaks = np.zeros((N))
-        g2thetas = np.linspace(np.min(self.theta2) - tail, np.max(self.theta2) + tail, N)
+        g2thetas = np.linspace(np.min(theta2) - tail, np.max(theta2) + tail, N)
 
-        for i,j in zip(range(len(self.theta2)),range(len(self.xrd_intensity))):
-            peak, theta = self.xrd_intensity[j], self.theta2[i]
+        for i,j in zip(range(len(theta2)),range(len(xrd_intensity))):
+            theta, peak =  theta2[i], xrd_intensity[j]
 
             if profiling == 'gaussian':
                 profile = self.gaussian_profile(peak,theta,g2thetas,fwhm)
@@ -768,9 +769,9 @@ class XRD(object):
         self.gpeaks = gpeaks
         self.g2thetas = g2thetas
 
-    def gaussian_profile(self, maxI, max_theta, alpha, fwhm):
-        tmp = ((alpha - max_theta)/fwhm)**2
-        return maxI * np.exp(-4*np.log(2)*tmp)
+    def gaussian_profile(self, I0, theta2, alpha, fwhm):
+        tmp = ((alpha - theta2)/fwhm)**2
+        return I0 * np.exp(-4*np.log(2)*tmp)
     
     def lorentzian_profile(self, maxI, max_theta, alpha):
         tmp = 1 + 4*((alpha - max_theta)/self.fwhm)**2
