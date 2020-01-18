@@ -154,7 +154,7 @@ for poscardata, diffdata, cifFile in zip(poscarFiles,diffFiles,cifFiles):
     Sims.append(S)
     clss.append(classification)
 
-
+# output space group, classification, and similarity
 with open('valData0.csv', 'w') as f:
     writer = csv.writer(f, delimiter=',')
     writer.writerows(zip(Sgs,clss,Sims))
