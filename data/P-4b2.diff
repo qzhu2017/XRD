@@ -1,0 +1,43 @@
+      Sphaerobismoite
+      Gattow G, Schutze D
+      Zeitschrift fur Anorganische und Allgemeine Chemie 328 (1964) 44-68
+      Uber Wismutoxide. VI. Uber ein Wismut(III)-oxid mit hoherem sauerstoffgehalt
+      (beta-modifikation)
+      Note: transformed from C-42b
+      Locality: synthetic
+      _database_code_amcsd 0015771
+
+      CELL PARAMETERS:   7.7400  7.7400  5.6300   90.000   90.000   90.000
+      SPACE GROUP: P-4b2     
+      X-RAY WAVELENGTH:     1.541838
+      Cell Volume:    337.280
+      Density (g/cm3):      9.175
+      MAX. ABS. INTENSITY / VOLUME**2:      597.2421517    
+      RIR:     21.196
+      RIR based on corundum from Acta Crystallographica A38 (1982) 733-739
+               2-THETA      INTENSITY    D-SPACING   H   K   L   Multiplicity
+                25.74          1.38        3.4614    2   1   0         8
+                27.98        100.00        3.1892    2   0   1         4
+                30.31          2.51        2.9487    2   1   1         8
+                31.79         13.45        2.8150    0   0   2         2
+                32.73         23.15        2.7365    2   2   0         4
+                41.34          1.19        2.1840    2   1   2         8
+                46.27         21.78        1.9622    2   2   2         8
+                46.96          9.60        1.9350    4   0   0         4
+                48.49          1.18        1.8772    4   1   0         8
+                51.30          1.44        1.7808    4   1   1         8
+                54.33          9.43        1.6886    2   0   3         4
+                55.55         15.03        1.6543    4   2   1         8
+                57.82          5.34        1.5946    4   0   2         4
+                66.42          1.13        1.4075    0   0   4         2
+                68.59          1.48        1.3683    4   4   0         4
+                74.59          3.67        1.2723    4   2   3         8
+                75.63          1.51        1.2574    6   0   1         4
+                76.04          1.56        1.2516    2   2   4         8
+                77.58          1.16        1.2306    4   4   2         8
+                78.09          1.06        1.2238    6   2   0         8
+                85.27          1.14        1.1382    4   0   4         4
+                86.77          1.70        1.1223    6   2   2         8
+================================================================================
+       XPOW Copyright 1993 Bob Downs, Ranjini Swaminathan and Kurt Bartelmehs
+  For reference, see Downs et al. (1993) American Mineralogist 78, 1104-1107.

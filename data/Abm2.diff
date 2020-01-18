@@ -1,0 +1,53 @@
+      Smirnite
+      Mercurio D, El Farissi M, Frit B, Goursat P
+      Materials Chemistry and Physics 9 (1983) 467-476
+      Etude structurale et densification d'un nouveau materiau piezoelectrique: Bi2TeO5
+      Locality: synthetic
+      _database_code_amcsd 0014203
+
+      CELL PARAMETERS:  11.6020 16.4610  5.5230   90.000   90.000   90.000
+      SPACE GROUP: Abm2      
+      X-RAY WAVELENGTH:     1.541838
+      Cell Volume:   1054.785
+      Density (g/cm3):      7.877
+      MAX. ABS. INTENSITY / VOLUME**2:      512.9207350    
+      RIR:     21.202
+      RIR based on corundum from Acta Crystallographica A38 (1982) 733-739
+               2-THETA      INTENSITY    D-SPACING   H   K   L   Multiplicity
+                 7.62         11.75       11.6020    1   0   0         2
+                10.75          1.59        8.2305    0   2   0         2
+                13.19          1.56        6.7129    1   2   0         4
+                22.88          1.83        3.8869    2   1   1         4
+                27.60        100.00        3.2323    2   3   1         4
+                28.70          1.37        3.1108    3   1   1         4
+                30.83         15.28        2.9005    4   0   0         2
+                32.42         13.32        2.7615    0   0   2         1
+                32.64         14.07        2.7435    0   6   0         2
+                32.64          3.55        2.7435    3   3   1         4
+                45.34         12.58        2.0000    4   0   2         2
+                45.51         12.93        1.9931    4   6   0         4
+                46.67         13.11        1.9463    0   6   2         2
+                52.87         14.20        1.7318    6   3   1         4
+                54.94         13.33        1.6714    2   3   3         4
+                55.22         13.96        1.6634    2   9   1         4
+                56.98         11.21        1.6162    4   6   2         4
+                60.73          1.04        1.5249    7   3   1         4
+                64.22          1.57        1.4503    8   0   0         2
+                67.88          1.56        1.3807    0   0   4         1
+                68.39          1.99        1.3717    0  12   0         2
+                73.03          4.41        1.2956    6   3   3         4
+                73.27          4.90        1.2919    6   9   1         4
+                73.80          2.14        1.2840    8   0   2         2
+                73.92          2.16        1.2821    8   6   0         4
+                75.01          5.04        1.2662    2   9   3         4
+                76.39          2.16        1.2467    4   0   4         2
+                76.88          2.31        1.2401    4  12   0         4
+                77.37          2.06        1.2334    0   6   4         2
+                77.73          2.22        1.2285    0  12   2         2
+                83.05          2.83        1.1629    8   6   2         4
+                85.57          3.02        1.1350    4   6   4         4
+                85.92          3.52        1.1312    4  12   2         4
+                87.79          2.12        1.1119   10   3   1         4
+================================================================================
+       XPOW Copyright 1993 Bob Downs, Ranjini Swaminathan and Kurt Bartelmehs
+  For reference, see Downs et al. (1993) American Mineralogist 78, 1104-1107.

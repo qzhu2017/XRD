@@ -1,0 +1,74 @@
+data_global
+_chemical_name_mineral 'Posnjakite'
+loop_
+_publ_author_name
+'Mellini M'
+'Merlino S'
+_journal_name_full 'Zeitschrift fur Kristallographie'
+_journal_volume 149 
+_journal_year 1979
+_journal_page_first 249
+_journal_page_last 257
+_publ_section_title
+;
+ Posnjakite: [Cu4(OH)6(H2O)O] octahedral sheets in its structure
+;
+_database_code_amcsd 0010806
+_chemical_compound_source 'Fowey Consols, England'
+_chemical_formula_sum 'Cu4 S O11 H8'
+_chemical_formula_sum ''
+_cell_length_a 10.578
+_cell_length_b 6.345
+_cell_length_c 7.863
+_cell_angle_alpha 90
+_cell_angle_beta 117.98
+_cell_angle_gamma 90
+_cell_volume 466.057
+_exptl_crystal_density_diffrn      3.351
+_symmetry_space_group_name_H-M 'P 1 a 1'
+loop_
+_space_group_symop_operation_xyz
+  'x,y,z'
+  '1/2+x,-y,z'
+loop_
+_atom_site_label
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_U_iso_or_equiv
+Cu1   0.56210   0.51890   0.97740 ?
+Cu2   0.07300   0.98560   0.01850 ?
+Cu3   0.81990   0.74940   0.00270 ?
+Cu4   0.31930   0.75310  -0.00120 ?
+S   0.63330   0.71790   0.42330 ?
+O1   0.36100   0.54400   0.84700   0.01140
+O2   0.86200   0.99800   0.88500   0.00887
+O3   0.28000   0.95300   0.14900   0.01013
+O4   0.03400   0.72100   0.12100   0.01393
+O-H5   0.77400   0.49600   0.11900   0.01646
+O6   0.60900   0.77600   0.87900   0.00887
+O7   0.56100   0.75300   0.20900   0.01140
+O8   0.04500   0.70000   0.70700   0.02153
+O9   0.03000   0.25100   0.49400   0.04939
+O10   0.25600   0.14300   0.51500   0.03293
+O11   0.18400   0.50900   0.45800   0.05573
+H1   0.34000   0.51000   0.84000   0.02533
+H2   0.35000   0.02000   0.79000   0.02533
+H3   0.32000   0.89000   0.31000   0.02533
+H4   0.08000   0.71000   0.26000   0.02533
+H6   0.58000   0.77000   0.81000   0.02533
+H81   0.01000   0.60000   0.61000   0.02533
+H82   0.01000   0.72000   0.62000   0.02533
+loop_
+_atom_site_aniso_label
+_atom_site_aniso_U_11
+_atom_site_aniso_U_22
+_atom_site_aniso_U_33
+_atom_site_aniso_U_12
+_atom_site_aniso_U_13
+_atom_site_aniso_U_23
+Cu1 0.00309 0.00653 0.01417 0.00000 0.00427 0.00156
+Cu2 0.00707 0.00938 0.01197 0.00000 0.00263 0.00179
+Cu3 0.00575 0.00653 0.01368 0.00000 0.00460 0.00134
+Cu4 0.00884 0.00857 0.01197 0.00000 0.00526 -0.00067
+S 0.01459 0.01897 0.00708 -0.00210 0.00000 0.00000

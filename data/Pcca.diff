@@ -1,0 +1,43 @@
+      Graphite
+      Fayos J
+      Journal of Solid State Chemistry 148 (1999) 278-285
+      Possible 3D carbon structures as progressive intermediates in graphite
+      to diamond phase transition
+      Note: mathematical model, phase: gra_crbl43_ch
+      _database_code_amcsd 0013981
+
+      CELL PARAMETERS:   4.7000  5.9780  4.4480   90.000   90.000   90.000
+      SPACE GROUP: Pcca      
+      X-RAY WAVELENGTH:     1.541838
+      Cell Volume:    124.974
+      Density (g/cm3):      2.553
+      MAX. ABS. INTENSITY / VOLUME**2:      13.61872757    
+      RIR:      1.737
+      RIR based on corundum from Acta Crystallographica A38 (1982) 733-739
+               2-THETA      INTENSITY    D-SPACING   H   K   L   Multiplicity
+                14.82        100.00        5.9780    0   1   0         2
+                29.89         29.46        2.9890    0   2   0         2
+                31.48          3.91        2.8421    1   1   1         8
+                38.30          4.02        2.3500    2   0   0         2
+                40.56          6.74        2.2240    0   0   2         2
+                41.14          6.04        2.1940    1   2   1         8
+                41.28          1.50        2.1871    2   1   0         4
+                43.41          1.45        2.0844    0   1   2         4
+                45.52          3.69        1.9927    0   3   0         2
+                46.26         15.29        1.9627    2   1   1         8
+                47.73          4.45        1.9054    1   1   2         8
+                51.20          1.30        1.7843    0   2   2         4
+                53.73          2.54        1.7061    2   2   1         8
+                54.07          7.41        1.6960    1   3   1         8
+                55.05          4.24        1.6681    1   2   2         8
+                66.01          1.38        1.4152    1   3   2         8
+                71.18          2.50        1.3247    3   2   1         8
+                77.83          7.24        1.2272    2   1   3         8
+                80.00          5.21        1.1994    1   4   2         8
+                81.01          3.94        1.1869    3   3   1         8
+                82.01          1.41        1.1750    4   0   0         2
+                83.63          1.94        1.1563    2   2   3         8
+                86.87          1.66        1.1213    1   5   1         8
+================================================================================
+       XPOW Copyright 1993 Bob Downs, Ranjini Swaminathan and Kurt Bartelmehs
+  For reference, see Downs et al. (1993) American Mineralogist 78, 1104-1107.

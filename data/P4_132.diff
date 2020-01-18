@@ -1,0 +1,36 @@
+      Manganese-beta
+      Shoemaker C B, Shoemaker D P, Hopkins T E, Yindepit S
+      Acta Crystallographica B34 (1978) 3573-3576
+      Refinement of the structure of beta-manganese and of related phase in the
+      Mn-Ni-Si system
+      Locality: Synthetic
+      _database_code_amcsd 0009651
+
+      CELL PARAMETERS:   6.3150  6.3150  6.3150   90.000   90.000   90.000
+      SPACE GROUP: P4_132    
+      X-RAY WAVELENGTH:     1.541838
+      Cell Volume:    251.837
+      Density (g/cm3):      7.244
+      MAX. ABS. INTENSITY / VOLUME**2:      132.6875888    
+      RIR:      5.964
+      RIR based on corundum from Acta Crystallographica A38 (1982) 733-739
+               2-THETA      INTENSITY    D-SPACING   H   K   L   Multiplicity
+                19.88          3.63        4.4654    1   1   0        12
+                31.68          4.45        2.8242    2   1   0        24
+                42.97        100.00        2.1050    2   2   1        24
+                45.42         56.79        1.9970    3   1   0        24
+                47.77         24.62        1.9040    3   1   1        24
+                52.23          1.25        1.7515    3   2   0        24
+                54.36          8.32        1.6878    3   2   1        24
+                62.39          4.36        1.4885    4   1   1        24
+                66.18          4.03        1.4121    4   2   0        24
+                75.24          1.13        1.2630    4   3   0        24
+                76.99         16.90        1.2385    4   3   1        24
+                76.99          2.49        1.2385    5   1   0        24
+                78.74          3.52        1.2153    5   1   1        24
+                82.20          8.86        1.1727    4   3   2        24
+                82.20          6.24        1.1727    5   2   0        24
+                83.93          3.77        1.1530    5   2   1        24
+================================================================================
+       XPOW Copyright 1993 Bob Downs, Ranjini Swaminathan and Kurt Bartelmehs
+  For reference, see Downs et al. (1993) American Mineralogist 78, 1104-1107.

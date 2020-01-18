@@ -1,0 +1,59 @@
+data_global
+_chemical_name_mineral 'Polyhalite'
+loop_
+_publ_author_name
+'Schlatti M'
+'Sahl K'
+'Zemann A'
+'Zemann J'
+_journal_name_full 'Tschermaks Mineralogische und Petrographische Mitteilungen'
+_journal_volume 14 
+_journal_year 1970
+_journal_page_first 75
+_journal_page_last 86
+_publ_section_title
+;
+ Die kristallstruktur des polyhalits, K2Ca2Mg(SO4)4(H2O)2
+;
+_database_code_amcsd 0015636
+_chemical_formula_sum 'K2 Ca2 Mg S4 O18 H4'
+_chemical_formula_sum ''
+_cell_length_a 11.69
+_cell_length_b 16.330
+_cell_length_c 7.60
+_cell_angle_alpha 91.6
+_cell_angle_beta 90.0
+_cell_angle_gamma 91.9
+_cell_volume 1449.459
+_exptl_crystal_density_diffrn      2.763
+_symmetry_space_group_name_H-M 'F -1'
+loop_
+_space_group_symop_operation_xyz
+  'x,y,z'
+  'x,1/2+y,1/2+z'
+  '1/2+x,y,1/2+z'
+  '1/2+x,1/2+y,z'
+  '-x,-y,-z'
+  '-x,1/2-y,1/2-z'
+  '1/2-x,-y,1/2-z'
+  '1/2-x,1/2-y,-z'
+loop_
+_atom_site_label
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_U_iso_or_equiv
+K   0.13189   0.28615   0.63004   0.01646
+Ca   0.11914   0.37120   0.12619   0.01013
+Mg   0.00000   0.00000   0.00000   0.00950
+S1   0.12582   0.07054   0.63225   0.00823
+S2   0.12061   0.17896   0.11415   0.00861
+O1   0.02782   0.12014   0.59472   0.01900
+O2   0.22760   0.12428   0.66306   0.01317
+O3   0.10304   0.01950   0.78843   0.01431
+O4   0.14787   0.01101   0.48555   0.01710
+O5   0.13167   0.22955   0.27763   0.01710
+O6   0.09617   0.23414   0.96862   0.01697
+O7   0.02245   0.11814   0.13130   0.01558
+O8   0.22550   0.13457   0.08081   0.01431
+Wat9   0.13515   0.45748   0.63492   0.01343

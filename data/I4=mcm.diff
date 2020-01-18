@@ -1,0 +1,44 @@
+      Anyuiite
+      Wyckoff R W G
+      Crystal Structures 1 (1963) 239-444
+      Second edition. Interscience Publishers, New York, New York
+      _database_code_amcsd 0011802
+
+      CELL PARAMETERS:   7.3100  7.3100  5.6440   90.000   90.000   90.000
+      SPACE GROUP: I4/mcm    
+      X-RAY WAVELENGTH:     1.541838
+      Cell Volume:    301.593
+      Density (g/cm3):     13.463
+      MAX. ABS. INTENSITY / VOLUME**2:      707.8764352    
+      RIR:     17.121
+      RIR based on corundum from Acta Crystallographica A38 (1982) 733-739
+               2-THETA      INTENSITY    D-SPACING   H   K   L   Multiplicity
+                17.15         11.56        5.1690    1   1   0         4
+                31.63        100.00        2.8289    2   1   1        16
+                31.71          5.71        2.8220    0   0   2         2
+                34.71         19.18        2.5845    2   2   0         4
+                36.27         33.39        2.4769    1   1   2         8
+                38.96         48.47        2.3116    3   1   0         8
+                40.38         44.07        2.2337    2   0   2         8
+                47.72          1.58        1.9059    2   2   2         8
+                53.16          2.27        1.7230    3   3   0         4
+                54.23         19.47        1.6914    4   1   1        16
+                56.28          8.52        1.6346    4   2   0         8
+                56.43         16.74        1.6306    2   1   3        16
+                60.34         11.80        1.5339    4   0   2         8
+                63.23         22.80        1.4706    3   3   2         8
+                66.05          1.19        1.4144    4   2   2        16
+                66.24          4.85        1.4110    0   0   4         2
+                71.48          7.18        1.3198    5   2   1        16
+                73.25          1.72        1.2922    4   4   0         4
+                73.38          6.75        1.2903    4   1   3        16
+                74.19          6.80        1.2781    5   1   2        16
+                75.89          5.59        1.2537    5   3   0         8
+                77.00          3.02        1.2385    2   2   4         8
+                78.51          5.47        1.2183    6   0   0         4
+                79.60          9.41        1.2044    3   1   4        16
+                87.09          3.85        1.1190    5   4   1        16
+                88.91          3.59        1.1008    5   2   3        16
+================================================================================
+       XPOW Copyright 1993 Bob Downs, Ranjini Swaminathan and Kurt Bartelmehs
+  For reference, see Downs et al. (1993) American Mineralogist 78, 1104-1107.

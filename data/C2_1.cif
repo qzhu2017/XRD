@@ -1,0 +1,61 @@
+data_global
+_chemical_name_mineral 'Tridymite'
+loop_
+_publ_author_name
+'Graetsch H'
+_journal_name_full 'Physics and Chemistry of Minerals'
+_journal_volume 28 
+_journal_year 2001
+_journal_page_first 313
+_journal_page_last 321
+_publ_section_title
+;
+ X-ray powder diffraction study on the modulated high temperature forms
+ of SiO2 tridymite between 110 and 220 C
+ Sample: T = 150 C
+;
+_database_code_amcsd 0008552
+_chemical_compound_source 'Synthetic'
+_chemical_formula_sum 'Si O2'
+_chemical_formula_sum ''
+_cell_length_a 8.7560
+_cell_length_b 5.0108
+_cell_length_c 8.2153
+_cell_angle_alpha 90
+_cell_angle_beta 90.2825
+_cell_angle_gamma 90
+_cell_volume 360.438
+_exptl_crystal_density_diffrn      2.214
+_symmetry_space_group_name_H-M 'C 1 21 1'
+loop_
+_space_group_symop_operation_xyz
+  'x,y,z'
+  '1/2+x,1/2+y,z'
+  '-x,1/2+y,-z'
+  '1/2-x,+y,-z'
+loop_
+_atom_site_label
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_U_iso_or_equiv
+Si1   0.17590   0.54890   0.68450   0.06150
+Si2   0.15720   0.44650   0.30980   0.04760
+O1   0.33500  -0.00630  -0.00310   0.09590
+O2  -0.01300   0.42550   0.25370   0.10090
+O3   0.25760   0.32160   0.77550   0.11650
+O4   0.24190   0.67380   0.21470   0.11480
+loop_
+_atom_site_aniso_label
+_atom_site_aniso_U_11
+_atom_site_aniso_U_22
+_atom_site_aniso_U_33
+_atom_site_aniso_U_12
+_atom_site_aniso_U_13
+_atom_site_aniso_U_23
+Si1 0.03700 0.08200 0.06500 -0.01300 0.00900 -0.00400
+Si2 0.05500 0.03600 0.05200 -0.00300 0.00800 -0.00900
+O1 0.13100 0.13100 0.02600 -0.04300 0.00600 0.01000
+O2 0.02500 0.15000 0.12800 -0.03400 -0.04000 -0.05600
+O3 0.17700 0.12000 0.05400 0.11600 -0.06300 -0.05000
+O4 0.13800 0.07100 0.13500 -0.02300 0.00700 0.03900

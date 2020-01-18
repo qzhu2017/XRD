@@ -1,0 +1,56 @@
+data_global
+_chemical_name_mineral 'Brushite'
+loop_
+_publ_author_name
+'Schofield P F'
+'Knight K S'
+'van der Houwen J A M'
+'Valsami-Jones E'
+_journal_name_full 'Physics and Chemistry of Minerals'
+_journal_volume 31 
+_journal_year 2004
+_journal_page_first 606
+_journal_page_last 624
+_publ_section_title
+;
+ The role of hydrogen bonding in the thermal expansion and dehydration
+ of brushite, di-calcium phosphate dihydrate
+ Sample: T = 4.2 K
+;
+_database_code_amcsd 0008880
+_chemical_formula_sum 'Ca P O6 D5'
+_chemical_formula_sum ''
+_cell_length_a 5.79903
+_cell_length_b 15.1254
+_cell_length_c 6.18398
+_cell_angle_alpha 90
+_cell_angle_beta 116.429
+_cell_angle_gamma 90
+_cell_volume 485.724
+_exptl_crystal_density_diffrn      2.422
+_symmetry_space_group_name_H-M 'I 1 a 1'
+loop_
+_space_group_symop_operation_xyz
+  'x,y,z'
+  '1/2+x,1/2+y,1/2+z'
+  '1/2+x,-y,z'
+  '+x,1/2-y,1/2+z'
+loop_
+_atom_site_label
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_U_iso_or_equiv
+Ca   0.50000   0.32740   0.25000   0.00380
+P  -0.00940   0.32270   0.72850   0.00020
+OD1  -0.00970   0.36790  -0.03510   0.00400
+O2   0.25560   0.28190   0.82150   0.00250
+O3  -0.06500   0.39330   0.54150   0.00340
+O4   0.77910   0.25320   0.63550   0.00120
+OD2O1   0.36760   0.42580   0.48610   0.00400
+OD2O2   0.52570   0.44640   0.01350   0.00770
+D1  -0.09790   0.33030   0.03460   0.01690
+D2   0.38440   0.48940   0.49200   0.01390
+D3   0.20500   0.41220   0.48620   0.01590
+D4   0.51170   0.51070   0.01600   0.02220
+D5   0.50070   0.43320   0.85460   0.02480

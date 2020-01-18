@@ -1,0 +1,49 @@
+data_global
+_amcsd_formula_title 'O8 Pb3 V2'
+loop_
+_publ_author_name
+'Garnier P'
+'Calvarin G'
+'Berar J'
+'Weigel D'
+_journal_name_full 'Materials Research Bulletin'
+_journal_volume 19 
+_journal_year 1984
+_journal_page_first 407
+_journal_page_last 414
+_publ_section_title
+;
+ Etude des Phases Ferroelastiques de Pb3 V2 O8: Determination de
+ la Maille Cristalline de la Phase $-alpha Ferroelectrique Basse Temperature
+ _cod_database_code 1008163
+;
+_database_code_amcsd 0016103
+_chemical_formula_sum 'Pb3 V2 O8'
+_chemical_formula_sum ''
+_cell_length_a 7.460
+_cell_length_b 6.191
+_cell_length_c 9.348
+_cell_angle_alpha 90
+_cell_angle_beta 116.63
+_cell_angle_gamma 90
+_cell_volume 385.937
+_exptl_crystal_density_diffrn      7.327
+_symmetry_space_group_name_H-M 'A 1 2 1'
+loop_
+_space_group_symop_operation_xyz
+  'x,y,z'
+  'x,1/2+y,1/2+z'
+  '-x,y,-z'
+  '-x,1/2+y,1/2-z'
+loop_
+_atom_site_label
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+Pb1   0.00000   0.00000   0.00000
+Pb2   0.38700   0.55100   0.28100
+V1   0.21000   0.02400   0.40900
+O1   0.25200   0.30900   0.05700
+O2   0.27000   0.70300   0.01800
+O3   0.30700   0.95100   0.29100
+O4   0.04100   0.48400   0.23700

@@ -1,0 +1,68 @@
+data_global
+_amcsd_formula_title 'CsAlSiO4'
+loop_
+_publ_author_name
+'Gatta G D'
+'Rotiroti N'
+'Zanazzi P F'
+'Rieder M'
+'Drabek M'
+'Weiss Z'
+'Klaska R'
+_journal_name_full 'American Mineralogist'
+_journal_volume 93 
+_journal_year 2008
+_journal_page_first 988
+_journal_page_last 995
+_publ_section_title
+;
+ Synthesis and crystal structure of the feldspathoid CsAlSiO4: An
+ open-framework silicate and potential nuclear waste disposal phase
+;
+_database_code_amcsd 0004598
+_chemical_compound_source 'Synthetic'
+_chemical_formula_sum 'Cs Si Al O4'
+_chemical_formula_sum ''
+_cell_length_a 9.414
+_cell_length_b 5.435
+_cell_length_c 8.875
+_cell_angle_alpha 90
+_cell_angle_beta 90
+_cell_angle_gamma 90
+_cell_volume 454.090
+_exptl_crystal_density_diffrn      3.686
+_symmetry_space_group_name_H-M 'P c 21 n'
+loop_
+_space_group_symop_operation_xyz
+  'x,y,z'
+  '1/2-x,y,1/2+z'
+  '1/2+x,1/2+y,1/2-z'
+  '-x,1/2+y,-z'
+loop_
+_atom_site_label
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_U_iso_or_equiv
+Cs   0.20052   0.50015   0.50043   0.01591
+Si   0.08469   0.00040   0.19052   0.00470
+Al   0.41511  -0.00360   0.31650   0.00410
+O1   0.08770  -0.00470   0.01040   0.01610
+O2   0.00240  -0.24130   0.25020   0.01100
+O3   0.00400   0.24040   0.25510   0.02000
+O4   0.24370   0.00340   0.25360   0.02410
+loop_
+_atom_site_aniso_label
+_atom_site_aniso_U_11
+_atom_site_aniso_U_22
+_atom_site_aniso_U_33
+_atom_site_aniso_U_12
+_atom_site_aniso_U_13
+_atom_site_aniso_U_23
+Cs 0.01750 0.01460 0.01570 0.00140 0.00023 0.00001
+Si 0.00560 0.00340 0.00520 -0.00210 -0.00050 0.00180
+Al 0.00470 0.00230 0.00530 0.00060 -0.00030 -0.00080
+O1 0.03200 0.01300 0.00350 0.00300 0.00170 0.00100
+O2 0.01500 0.01200 0.00700 -0.00500 -0.00700 0.00300
+O3 0.03400 0.01300 0.01200 -0.00300 0.00800 0.00300
+O4 0.01000 0.03400 0.02800 0.00100 -0.00560 -0.00900

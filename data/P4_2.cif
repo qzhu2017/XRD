@@ -1,0 +1,49 @@
+data_global
+_chemical_name_mineral 'Pinnoite'
+loop_
+_publ_author_name
+'Krogh-Moe J'
+_journal_name_full 'Acta Crystallographica'
+_journal_volume 23 
+_journal_year 1967
+_journal_page_first 500
+_journal_page_last 501
+_publ_section_title
+;
+ A note on the structure of pinnoite
+;
+_database_code_amcsd 0009314
+_chemical_formula_sum 'Mg B2 O7 H6'
+_chemical_formula_sum ''
+_cell_length_a 7.62
+_cell_length_b 7.62
+_cell_length_c 8.19
+_cell_angle_alpha 90
+_cell_angle_beta 90
+_cell_angle_gamma 90
+_cell_volume 475.547
+_exptl_crystal_density_diffrn      2.290
+_symmetry_space_group_name_H-M 'P 42'
+loop_
+_space_group_symop_operation_xyz
+  'x,y,z'
+  '-y,x,1/2+z'
+  '-x,-y,z'
+  'y,-x,1/2+z'
+loop_
+_atom_site_label
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_U_iso_or_equiv
+Mg   0.24870   0.24870   0.22900   0.00811
+B1   0.38830   0.37610   0.87380   0.00266
+B2   0.11190   0.10910   0.58300   0.01203
+O1   0.00000   0.00000   0.98410   0.01077
+O2   0.50000   0.50000   0.45120   0.00823
+O-H3   0.33520   0.23880   0.99160   0.01064
+O-H4   0.15980   0.26380   0.47090   0.01203
+O-H5   0.47950   0.29130   0.73000   0.00405
+O-H6   0.01760   0.19790   0.71830   0.01115
+O-H7   0.24500   0.48230   0.80280   0.00684
+O-H8   0.27040   0.01760   0.63870   0.00545

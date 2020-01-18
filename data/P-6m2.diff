@@ -1,0 +1,28 @@
+      Qusongite
+      Fang Q, Bai W, Yang J, Xu X, Li G, Shi N, Xiong M, Rong H
+      American Mineralogist 94 (2009) 387-290
+      Qusong (WC): A new mineral
+      Locality: Luobusa ophiolite, Qusong County, Tibet, China
+      _database_code_amcsd 0004855
+
+      CELL PARAMETERS:   2.9020  2.9020  2.8310   90.000   90.000  120.000
+      SPACE GROUP: P-6m2     
+      X-RAY WAVELENGTH:     1.541838
+      Cell Volume:     20.647
+      Density (g/cm3):     15.749
+      MAX. ABS. INTENSITY / VOLUME**2:      890.3172866    
+      RIR:     18.408
+      RIR based on corundum from Acta Crystallographica A38 (1982) 733-739
+               2-THETA      INTENSITY    D-SPACING   H   K   L   Multiplicity
+                31.60         43.37        2.8310    0   0   1         2
+                35.73        100.00        2.5132    1   0   0         3
+                48.43         90.84        1.8795    1   0   1         6
+                64.19         18.79        1.4510    1   1   0         6
+                66.00          5.70        1.4155    0   0   2         2
+                73.31         20.23        1.2913    1   1   1        12
+                75.69          9.58        1.2566    2   0   0         3
+                77.37         17.89        1.2333    1   0   2         6
+                84.32         15.22        1.1485    2   0   1         6
+================================================================================
+       XPOW Copyright 1993 Bob Downs, Ranjini Swaminathan and Kurt Bartelmehs
+  For reference, see Downs et al. (1993) American Mineralogist 78, 1104-1107.

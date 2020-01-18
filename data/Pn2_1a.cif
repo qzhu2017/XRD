@@ -1,0 +1,47 @@
+data_global
+_amcsd_formula_title 'Cs O4 P Zn'
+loop_
+_publ_author_name
+'Blum D'
+'Durif A'
+'Averbuch-Pouchot M'
+_journal_name_full 'Ferroelectrics'
+_journal_volume 69 
+_journal_year 1986
+_journal_page_first 283
+_journal_page_last 292
+_publ_section_title
+;
+ Crystal structures of the three forms of Cs Zn P O4
+ _cod_database_code 1007237
+;
+_database_code_amcsd 0015919
+_chemical_formula_sum 'Cs Zn P O4'
+_chemical_formula_sum ''
+_cell_length_a 9.236
+_cell_length_b 5.462
+_cell_length_c 9.342
+_cell_angle_alpha 90
+_cell_angle_beta 90
+_cell_angle_gamma 90
+_cell_volume 471.276
+_exptl_crystal_density_diffrn      4.133
+_symmetry_space_group_name_H-M 'P n 21 a'
+loop_
+_space_group_symop_operation_xyz
+  'x,y,z'
+  '1/2+x,y,1/2-z'
+  '1/2-x,1/2+y,1/2+z'
+  '-x,1/2+y,-z'
+loop_
+_atom_site_label
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+Cs1   0.00250   0.25290   0.19869
+Zn1   0.17140   0.25000   0.58380
+P1   0.80650   0.25000   0.58850
+O1  -0.03670   0.26500   0.60100
+O2   0.73780   0.17600   0.72800
+O3   0.25130   0.00700   0.45500
+O4   0.75980   0.07100   0.47500

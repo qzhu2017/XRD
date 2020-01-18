@@ -1,0 +1,85 @@
+data_global
+_amcsd_formula_title 'Er4 Ir13 Si9'
+loop_
+_publ_author_name
+'Verniere A'
+'Lejay P'
+'Bordet P'
+'Chenavas J'
+'Tholence J'
+'Boucherle J'
+'Keller N'
+_journal_name_full 'Journal of Alloys and Compounds'
+_journal_volume 218 
+_journal_year 1995
+_journal_page_first 197
+_journal_page_last 203
+_publ_section_title
+;
+ Crystal structure and physical properties of new ternary silicides R4T13X9
+ (R, rare earth or uranium; T, rhodium or iridium; X, silicon or germanium)
+ _cod_database_code 1008678
+;
+_database_code_amcsd 0016564
+_chemical_formula_sum 'Er4 Ir13 Si9'
+_chemical_formula_sum ''
+_cell_length_a 18.84799
+_cell_length_b 10.918
+_cell_length_c 3.9153
+_cell_angle_alpha 90
+_cell_angle_beta 90
+_cell_angle_gamma 90
+_cell_volume 805.700
+_exptl_crystal_density_diffrn     14.100
+_symmetry_space_group_name_H-M 'P n m m'
+loop_
+_space_group_symop_operation_xyz
+  'x,y,z'
+  'x,y,1/2-z'
+  '-x,-y,1/2+z'
+  'x,1/2-y,z'
+  '-x,1/2+y,-z'
+  '-x,1/2+y,1/2+z'
+  'x,1/2-y,1/2-z'
+  '-x,-y,-z'
+loop_
+_atom_site_label
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+Er1   0.79224   0.05920   0.25000
+Er2   0.48040   0.75000   0.25000
+Er3   0.97840   0.25000   0.25000
+Ir1   0.66439   0.06640   0.75000
+Ir2   0.85797   0.25000   0.75000
+Ir3   0.65711   0.25000   0.25000
+Ir4   0.22752   0.25000   0.75000
+Ir5   0.46076   0.06070   0.25000
+Ir6   0.04654   0.04960   0.75000
+Ir7   0.85708   0.87430   0.75000
+Ir8   0.64473   0.87770   0.25000
+Si1   0.60160   0.75000   0.75000
+Si2   0.58440   0.43040   0.25000
+Si3   0.91830   0.06110   0.75000
+Si4   0.89750   0.75000   0.25000
+Si5   0.27080   0.37780   0.25000
+Si6   0.26660   0.75000   0.25000
+loop_
+_atom_site_aniso_label
+_atom_site_aniso_U_11
+_atom_site_aniso_U_22
+_atom_site_aniso_U_33
+_atom_site_aniso_U_12
+_atom_site_aniso_U_13
+_atom_site_aniso_U_23
+Er1 0.00710 0.01040 0.00520 0.00150 0.00000 0.00000
+Er2 0.00730 0.00760 0.00510 0.00000 0.00000 0.00000
+Er3 0.00610 0.00850 0.00520 0.00000 0.00000 0.00000
+Ir1 0.00410 0.00600 0.00290 0.00000 0.00000 0.00000
+Ir2 0.00230 0.00790 0.01950 0.00000 0.00000 0.00000
+Ir3 0.00520 0.00580 0.00440 0.00000 0.00000 0.00000
+Ir4 0.00240 0.00670 0.00320 0.00000 0.00000 0.00000
+Ir5 0.00180 0.00710 0.00420 0.00020 0.00000 0.00000
+Ir6 0.00410 0.00760 0.00280 -0.00130 0.00000 0.00000
+Ir7 0.00310 0.00610 0.00280 -0.00100 0.00000 0.00000
+Ir8 0.00430 0.00550 0.00440 0.00000 0.00000 0.00000

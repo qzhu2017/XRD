@@ -1,0 +1,22 @@
+      Iron
+      Wilburn D R, Bassett W A
+      American Mineralogist 63 (1978) 591-596
+      Hydrostatic compression of iron and related compounds: An overview
+      P = 1 Kbar
+      _database_code_amcsd 0000670
+
+      CELL PARAMETERS:   2.8660  2.8660  2.8660   90.000   90.000   90.000
+      SPACE GROUP: Im3m      
+      X-RAY WAVELENGTH:     1.541838
+      Cell Volume:     23.541
+      Density (g/cm3):      7.877
+      MAX. ABS. INTENSITY / VOLUME**2:      305.1494647    
+      RIR:     12.614
+      RIR based on corundum from Acta Crystallographica A38 (1982) 733-739
+               2-THETA      INTENSITY    D-SPACING   H   K   L   Multiplicity
+                44.72        100.00        2.0266    1   1   0        12
+                65.09         13.45        1.4330    2   0   0         6
+                82.43         23.65        1.1700    2   1   1        24
+================================================================================
+       XPOW Copyright 1993 Bob Downs, Ranjini Swaminathan and Kurt Bartelmehs
+  For reference, see Downs et al. (1993) American Mineralogist 78, 1104-1107.

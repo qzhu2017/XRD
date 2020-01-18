@@ -1,0 +1,41 @@
+      Sphaerobismoite
+      Blower S K, Greaves C
+      Acta Crystallographica C44 (1988) 587-589
+      The structure of beta-Bi2O3 from powder neutron diffraction data
+      Locality: synthetic
+      _database_code_amcsd 0010069
+
+      CELL PARAMETERS:   7.7390  7.7390  5.6360   90.000   90.000   90.000
+      SPACE GROUP: P-42_1c   
+      X-RAY WAVELENGTH:     1.541838
+      Cell Volume:    337.552
+      Density (g/cm3):      9.168
+      MAX. ABS. INTENSITY / VOLUME**2:      703.6881513    
+      RIR:     24.993
+      RIR based on corundum from Acta Crystallographica A38 (1982) 733-739
+               2-THETA      INTENSITY    D-SPACING   H   K   L   Multiplicity
+                25.74          1.89        3.4610    2   1   0         8
+                27.97        100.00        3.1900    2   0   1         8
+                30.31          1.61        2.9493    2   1   1         8
+                31.75         15.08        2.8180    0   0   2         2
+                32.73         26.59        2.7361    2   2   0         4
+                41.32          1.56        2.1852    2   1   2         8
+                46.25         25.62        1.9630    2   2   2         4
+                46.96         11.98        1.9347    4   0   0         4
+                51.30          1.89        1.7808    4   1   1         8
+                54.28         14.02        1.6900    2   0   3         8
+                55.55         24.39        1.6543    4   2   1         8
+                57.81         10.26        1.5950    4   0   2         8
+                59.14          1.03        1.5622    4   1   2         8
+                66.34          1.82        1.4090    0   0   4         2
+                68.60          2.96        1.3681    4   4   0         4
+                74.56          8.66        1.2728    4   2   3         8
+                75.63          3.89        1.2573    6   0   1         8
+                75.97          4.30        1.2527    2   2   4         4
+                77.57          3.61        1.2307    4   4   2         4
+                78.10          3.38        1.2236    6   2   0         8
+                85.20          2.83        1.1390    4   0   4         8
+                86.76          4.96        1.1224    6   2   2         8
+================================================================================
+       XPOW Copyright 1993 Bob Downs, Ranjini Swaminathan and Kurt Bartelmehs
+  For reference, see Downs et al. (1993) American Mineralogist 78, 1104-1107.

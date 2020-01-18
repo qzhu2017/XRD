@@ -1,0 +1,54 @@
+      Pb2OFCl
+      Aurivillius B
+      Chemica Scripta 11 (1977) 208-211
+      A case of mimetic twinning. The crystal structures of Pb2OFX (X=Cl, Br, and I)
+      Locality: synthetic
+      Sample: Pb2OFCl(L), isostructural with blixite
+      _database_code_amcsd 0012187
+
+      CELL PARAMETERS:   5.7221  5.7269 12.5410   90.000   90.000   90.000
+      SPACE GROUP: Acmm      
+      X-RAY WAVELENGTH:     1.541838
+      Cell Volume:    410.967
+      Density (g/cm3):      7.835
+      MAX. ABS. INTENSITY / VOLUME**2:      11.56329037    
+      RIR:      0.481
+      RIR based on corundum from Acta Crystallographica A38 (1982) 733-739
+               2-THETA      INTENSITY    D-SPACING   H   K   L   Multiplicity
+                14.12        100.00        6.2705    0   0   2         2
+                15.49         36.90        5.7221    1   0   0         2
+                28.47         15.45        3.1353    0   0   4         2
+                30.75         52.44        2.9080    1   1   3         8
+                31.24          1.01        2.8635    0   2   0         2
+                34.43         34.03        2.6047    0   2   2         4
+                34.46         32.14        2.6029    2   0   2         4
+                35.81          1.34        2.5077    2   1   1         8
+                41.36          1.14        2.1828    2   1   3         8
+                42.39          8.15        2.1321    1   1   5         8
+                44.78         13.49        2.0239    2   2   0         4
+                50.95          4.02        1.7923    1   3   1         8
+                50.99          3.13        1.7911    3   1   1         8
+                53.92         12.54        1.7004    2   2   4         8
+                54.34          6.46        1.6882    0   2   6         4
+                54.36          6.08        1.6878    2   0   6         4
+                55.28          2.95        1.6616    1   3   3         8
+                55.32          2.29        1.6607    3   1   3         8
+                56.14          2.77        1.6383    1   1   7         8
+                58.91          2.30        1.5676    0   0   8         2
+                63.35          1.72        1.4682    1   3   5         8
+                63.38          1.34        1.4675    3   1   5         8
+                65.16          1.50        1.4317    0   4   0         2
+                65.22          1.17        1.4305    4   0   0         2
+                71.62          1.08        1.3176    1   1   9         8
+                72.59          1.91        1.3024    0   4   4         4
+                72.65          1.48        1.3015    4   0   4         4
+                75.84          3.00        1.2545    2   4   2         8
+                75.88          2.47        1.2539    4   2   2         8
+                76.93          2.84        1.2393    2   2   8         8
+                84.30          1.07        1.1488    0   2  10         4
+                84.32          1.00        1.1486    2   0  10         4
+                89.84          1.63        1.0918    2   4   6         8
+                89.88          1.33        1.0914    4   2   6         8
+================================================================================
+       XPOW Copyright 1993 Bob Downs, Ranjini Swaminathan and Kurt Bartelmehs
+  For reference, see Downs et al. (1993) American Mineralogist 78, 1104-1107.
