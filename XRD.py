@@ -269,6 +269,7 @@ class crystal(object):
         for atom in range(tot_natoms):
             ac = f.readline().split()
             coordinate[atom] = (float(ac[0]), float(ac[1]), float(ac[2]))
+
         # Done with all reading
         f.close()
         if cartesian:
@@ -642,15 +643,16 @@ class XRD(object):
         # obtiain scattering parameters, atomic numbers, and occus (need to look into occus)
         coeffs = []
         zs = []
-        occus = []
+
         
         for elem,N_elem in zip(crystal.atom_type,crystal.composition):
             for N in range(N_elem):
+                if elem == 'D':
+                    elem = 'H'
                 c = ATOMIC_SCATTERING_PARAMS[elem]
                 z = Element(elem).z
                 coeffs.append(c)
-                zs.append(z)
-                occus.append(1) # HOW TO GENERALIZE OCCUPANCIES TERM
+                zs.append(z) 
 
         coeffs = np.array(coeffs)
         self.peaks = {}
@@ -667,12 +669,13 @@ class XRD(object):
         count = 0
         for hkl, s2, theta, d_hkl in zip(self.hkl_list, d0, self.theta, self.d_hkl):
             count+=1
+            
             # calculate the scattering factor sf
             g_dot_r = np.dot(crystal.coordinate, np.transpose([hkl])).T[0]
             sf = zs - 41.78214 * s2 * np.sum(coeffs[:, :, 0] * np.exp(-coeffs[:, :, 1] * s2), axis=1)
             
             # calculate the structure factor f
-            f = np.sum(sf * occus * np.exp(2j * pi * g_dot_r))
+            f = np.sum(sf * np.exp(2j * pi * g_dot_r))
             
             # calculate the lorentz polarization factor lf
             lf = (1 + cos(2 * theta) ** 2) / (sin(theta) ** 2 * cos(theta))
