@@ -5,6 +5,9 @@ import sys
 import os
 from similarity import Similarity
 import csv
+import scipy.integrate as integrate
+from scipy import interpolate
+
 
 def getListOfFiles(dirName):
     # create a list of file and sub directories 
@@ -35,7 +38,6 @@ def getSpaceGroup(file):
             tmp = tmp.replace(',','')
             tmp =tmp.replace(' ','')  
             return tmp
-        
 
 def classifyStructure(file):
     with open(file, 'r') as f:
@@ -77,13 +79,12 @@ def classifyStructure(file):
         return 'triclinic'
     
 
-path = '/Users/sayred1/Research/dXRD/XRD/data'
+path = './data'
 allFiles = getListOfFiles(path)
 allFiles.sort()
 poscarFiles = []
 cifFiles = []
 diffFiles = []
-
 
 for file in allFiles:
     if 'POSCAR' in file:
@@ -93,7 +94,6 @@ for file in allFiles:
     elif 'diff' in file:
         diffFiles.append(file)
 
-
 """
 - Take the POSCAR file, load it into pxrd
 - plot pxrd diffraction dataset against DIFF file
@@ -101,22 +101,24 @@ for file in allFiles:
 
 wavelength = 1.54056
 max2theta = 90
-fwhm = 0.5
-N = 10000
+fwhm = 0.9
+N = 1000
 profile = 'gaussian'
 dataDict = {}
 Sims = []
 Sgs = []
 clss = []
 for poscardata, diffdata, cifFile in zip(poscarFiles,diffFiles,cifFiles):
+    
     """
-    Run .cif files through XRD, get profile
+    Run POSCAR files through XRD, get profile
     """
     struct = crystal('POSCAR',filename=poscardata)
     xrd1 = XRD(struct, wavelength, max2theta)   
     xrd1.get_profile(xrd1.theta2, xrd1.xrd_intensity,N, profile, fwhm)
     f2thetas = xrd1.g2thetas
     fpeaks = xrd1.gpeaks
+    
     
     """
     Load the diffraction data 
@@ -147,14 +149,100 @@ for poscardata, diffdata, cifFile in zip(poscarFiles,diffFiles,cifFiles):
     g2thetas = xrd2.g2thetas
     gpeaks = xrd2.gpeaks
     
-    S = Similarity(fpeaks, gpeaks, 0.6).calculate()
+    """
+    interpolate f2thetas between the range(min(g2thetas),max(g2thetas))
+    """
+    inter = interpolate.interp1d(f2thetas,fpeaks,'cubic',fill_value="extrapolate")
+    f2thetas = np.linspace(np.min(g2thetas),np.max(g2thetas),N)
+    fpeaks = inter(f2thetas)
+
+    S = Similarity(fpeaks, f2thetas,gpeaks, g2thetas,1e5).calculate()
     classification = classifyStructure(cifFile)
     groupName = getSpaceGroup(cifFile)
+    
     Sgs.append(groupName)
-    Sims.append(S)
     clss.append(classification)
-
-# output space group, classification, and similarity
-with open('valData0.csv', 'w') as f:
+    Sims.append(S)
+    print(S)    
+    """
+    plt.figure(figsize=(15,7))
+    plt.plot(f2thetas,fpeaks, label=poscardata)
+    plt.plot(g2thetas,gpeaks, label=diffdata)
+    plt.plot(f2thetas, gpeaks-fpeaks,label = 'gpeaks-fpeaks')
+    plt.legend()
+    plt.show()
+    """
+    
+"""
+Write similarity, space group, and classificaition to file
+"""
+with open('valData02.csv', 'w') as f:
     writer = csv.writer(f, delimiter=',')
     writer.writerows(zip(Sgs,clss,Sims))
+
+"""
+Classify structure
+"""
+cubic = []
+trig_hex = []
+tetra = []
+ortho = []
+mono = []
+tri = []
+for s, classification in zip(Sims, clss):
+    if classification == 'cubic':
+        cubic.append(s)
+    elif classification == 'trigonal/hexagonal':
+        trig_hex.append(s)
+    elif classification == 'tetragonal':
+        tetra.append(s)
+    elif classification == 'orthorhombic':
+        ortho.append(s)
+    elif classification == 'monolinic':
+        mono.append(s)
+    else:
+        tri.append(s)
+    
+
+"""
+Plot histograms
+"""
+plt.figure(figsize=(15,10))
+plt.suptitle('Similarity Histogram')
+plt.hist(Sims)
+plt.xlabel('Similarity')
+plt.ylabel('Counts')
+plt.figure(figsize=(15,10))
+
+plt.subplot(2,3,1)
+plt.hist(cubic)
+plt.title('cubic')
+plt.xlabel('Similarity')
+plt.ylabel('Counts')
+
+plt.subplot(2,3,2)
+plt.hist(trig_hex)
+plt.title('trigonal or hexagonal')
+plt.xlabel('Similarity')
+plt.ylabel('Counts')
+
+plt.subplot(2,3,3)
+plt.hist(tetra)
+plt.title('tetragonal')
+plt.xlabel('Similarity')
+plt.ylabel('Counts')
+
+plt.subplot(2,3,4)
+plt.hist(ortho)
+plt.title('orthorhombic')
+plt.xlabel('Similarity')
+plt.ylabel('Counts')
+
+plt.subplot(2,3,6)
+plt.hist(tri)
+plt.title('triclinic')
+plt.xlabel('Similarity')
+plt.ylabel('Counts')
+plt.tight_layout()
+
+plt.show()
