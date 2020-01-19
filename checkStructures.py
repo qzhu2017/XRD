@@ -149,10 +149,6 @@ for poscardata, diffdata, cifFile in zip(poscarFiles,diffFiles,cifFiles):
     g2thetas = xrd2.g2thetas
     gpeaks = xrd2.gpeaks
     
-    """
-    interpolate f2thetas between the range(min(g2thetas),max(g2thetas))
-    """
-
     S = Similarity(fpeaks, f2thetas,gpeaks, g2thetas,1e5).calculate()
     classification = classifyStructure(cifFile)
     groupName = getSpaceGroup(cifFile)
