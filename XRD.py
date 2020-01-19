@@ -746,7 +746,7 @@ class XRD(object):
         """
 
         # profile parameters
-        tail = 2 
+        tail = 10 
 
         gpeaks = np.zeros((N))
         g2thetas = np.linspace(np.min(theta2) - tail, np.max(theta2) + tail, N)
