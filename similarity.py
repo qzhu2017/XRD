@@ -16,8 +16,7 @@ class Similarity(object):
         g: spectra2 (2D array)
         x_range: the range of x values used to compute similarity ([x_min, x_max])
         N: number of sampling points for the processed spectra
-        weight: weight function used to compute the similarity (dictionary)
-        """
+        weight: weight function used to compute the similarity (dictionary)        """
 
         self.fx, self.fy = f[0], f[1]
         self.gx, self.gy = g[0], g[1]
