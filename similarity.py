@@ -7,46 +7,55 @@ class Similarity(object):
     Class to compute the similarity between two diffraction patterns
     """
 
-    def __init__(self,  fpeaks,f2thetas,  gpeaks,g2thetas, scaling):
+    def __init__(self, f, g, N = None, x_range = None, r_range = None, weight = {'function': 'triangle', 'params': 0.6}):
         
         """
-        Needs explanation
+        Args:
+
+        f: spectra1 (2D array)
+        g: spectra2 (2D array)
+        x_range: the range of x values used to compute similarity ([x_min, x_max])
+        N: number of sampling points for the processed spectra
+        weight: weight function used to compute the similarity (dictionary)
         """
 
-        self.fpeaks = fpeaks
-        self.f2thetas = f2thetas
-        self.gpeaks = gpeaks
-        self.g2thetas = g2thetas
-        self.scaling = scaling
-       
-        try:
-            self.fpeaks.shape[0] == self.gpeaks.shape[0]
-        except:
-            print("Patterns are not the same shape")
+        self.fx, self.fy = f[0], f[1]
+        self.gx, self.gy = g[0], g[1]
+        self.N = N
+        self.x_range = x_range
+        if r_range == None:
+            self.r_range = [-1,1]
+        else:
+            self.r_range = r_range
+        self.weight = weight
         
-        self.N = fpeaks.shape[0]
-        self.r = np.linspace(-1, 1, self.N) 
-
+        self.r = np.linspace(self.r_range[0], self.r_range[1], self.N)
         self.preprocess()
-        self.triangleFunction()
-        
+        function = self.weight['function']
+        if function == 'triangle':
+            self.triangleFunction()
+        else:
+            msg = function + 'is not supported'
+            raise NotImplementedError(msg)
+
     def calculate(self):
         
-        fpeaks_r = self.fpeaks
-        f2thetas_r = self.f2thetas + self.r
-        gpeaks_r = self.gpeaks
-        g2thetas_r = self.g2thetas + self.r
+        """
+        Compute the similarity between the pair of spectra f, g
+        """
 
-        x_fg = np.concatenate((self.f2thetas, g2thetas_r))
-        x_fg = np.linspace(x_fg[0],x_fg[-1],self.N)
-        x_ff = np.concatenate((self.f2thetas, f2thetas_r))
-        x_ff = np.linspace(x_ff[0],x_ff[-1],self.N)
-        x_gg = np.concatenate((self.g2thetas, g2thetas_r))
-        x_gg = np.linspace(x_gg[0],x_gg[-1],self.N)
+        fx_r = self.fx + self.r
+        fy_r = self.fy
+        gx_r = self.gx + self.r
+        gy_r = self.gy
 
-        xCorrfg = integrate.trapz(self.fpeaks*gpeaks_r,x_fg)
-        aCorrff = integrate.trapz(self.fpeaks*fpeaks_r,x_ff)
-        aCorrgg = integrate.trapz(self.gpeaks*gpeaks_r,x_gg)
+        fg_dx = np.linspace(self.fx[0], gx_r[-1], self.N)
+        ff_dx = np.linspace(self.fx[0], fx_r[-1], self.N)
+        gg_dx = np.linspace(self.gx[0], gx_r[-1], self.N)
+
+        xCorrfg = integrate.trapz(self.fy*gy_r, fg_dx)
+        aCorrff = integrate.trapz(self.fy*fy_r, ff_dx)
+        aCorrgg = integrate.trapz(self.gy*gy_r, gg_dx)
 
         xCorrfg_w = integrate.trapz(self.w*xCorrfg, self.r)
         aCorrff_w = integrate.trapz(self.w*aCorrff, self.r)
@@ -55,13 +64,33 @@ class Similarity(object):
         return xCorrfg_w / np.sqrt(aCorrff_w * aCorrgg_w)
 
     def preprocess(self):
-        inter = interpolate.interp1d(self.f2thetas,self.fpeaks,'cubic',fill_value="extrapolate")
-        self.f2thetas = np.linspace(np.min(self.g2thetas),np.max(self.g2thetas),self.N)
-        self.fpeaks = inter(self.f2thetas)
+
+        """
+        Preprocess the input spectra f and g
+        """
+
+        if self.x_range == None:
+            x_min = min(np.min(self.fx), np.min(self.gx))
+            x_max = max(np.max(self.fx), np.max(self.gx))
+            self.x_range = [x_min,x_max]
+
+        f_inter = interpolate.interp1d(self.fx, self.fy, 'cubic', fill_value = 'extrapolate')
+        g_inter = interpolate.interp1d(self.gx, self.gy, 'cubic', fill_value = 'extrapolate')
+        fgx_new = np.linspace(self.x_range[0], self.x_range[1], self.N)
+        fy_new = f_inter(fgx_new)
+        gy_new = g_inter(fgx_new)
+
+        self.fx, self.fy = fgx_new, fy_new
+        self.gx, self.gy = fgx_new, gy_new
 
     def triangleFunction(self):
+        
+        """
+        Function to weight correlations
+        """
+        
         w = np.zeros((self.N))
-        l = self.scaling
+        l = self.weight['params']
         for i in range(self.r.shape[0]):
             r = np.abs(self.r[i])
             if r < 1:
