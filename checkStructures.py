@@ -116,9 +116,7 @@ for poscardata, diffdata, cifFile in zip(poscarFiles,diffFiles,cifFiles):
     struct = crystal('POSCAR',filename=poscardata)
     xrd1 = XRD(struct, wavelength, max2theta)   
     xrd1.get_profile(xrd1.theta2, xrd1.xrd_intensity,N, profile, fwhm)
-    f2thetas = xrd1.g2thetas
-    fpeaks = xrd1.gpeaks
-    
+    f = xrd1.spectra 
     
     """
     Load the diffraction data 
@@ -146,13 +144,11 @@ for poscardata, diffdata, cifFile in zip(poscarFiles,diffFiles,cifFiles):
     yval/= np.max(yval)
     xrd2 = XRD(struct, wavelength, max2theta)
     xrd2.get_profile(xval, yval,N,profile,fwhm)
-    g2thetas = xrd2.g2thetas
-    gpeaks = xrd2.gpeaks
-    
-    S = Similarity(fpeaks, f2thetas,gpeaks, g2thetas,1e5).calculate()
+    g = xrd2.spectra 
+
+    S = Similarity(f, g, 10000,None,None).calculate()
     classification = classifyStructure(cifFile)
     groupName = getSpaceGroup(cifFile)
-    
     Sgs.append(groupName)
     clss.append(classification)
     Sims.append(S)
