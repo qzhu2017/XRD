@@ -1,6 +1,6 @@
 import numpy as np
 import scipy.integrate as integrate
-
+from scipy import interpolate
 
 class Similarity(object):
     """
@@ -18,7 +18,7 @@ class Similarity(object):
         self.gpeaks = gpeaks
         self.g2thetas = g2thetas
         self.scaling = scaling
-        
+       
         try:
             self.fpeaks.shape[0] == self.gpeaks.shape[0]
         except:
@@ -27,9 +27,11 @@ class Similarity(object):
         self.N = fpeaks.shape[0]
         self.r = np.linspace(-1, 1, self.N) 
 
+        self.preprocess()
         self.triangleFunction()
         
     def calculate(self):
+        
         fpeaks_r = self.fpeaks
         f2thetas_r = self.f2thetas + self.r
         gpeaks_r = self.gpeaks
@@ -51,6 +53,11 @@ class Similarity(object):
         aCorrgg_w = integrate.trapz(self.w*aCorrgg, self.r)
     
         return xCorrfg_w / np.sqrt(aCorrff_w * aCorrgg_w)
+
+    def preprocess(self):
+        inter = interpolate.interp1d(self.f2thetas,self.fpeaks,'cubic',fill_value="extrapolate")
+        self.f2thetas = np.linspace(np.min(self.g2thetas),np.max(self.g2thetas),self.N)
+        self.fpeaks = inter(self.f2thetas)
 
     def triangleFunction(self):
         w = np.zeros((self.N))
