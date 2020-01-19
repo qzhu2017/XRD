@@ -152,9 +152,6 @@ for poscardata, diffdata, cifFile in zip(poscarFiles,diffFiles,cifFiles):
     """
     interpolate f2thetas between the range(min(g2thetas),max(g2thetas))
     """
-    inter = interpolate.interp1d(f2thetas,fpeaks,'cubic',fill_value="extrapolate")
-    f2thetas = np.linspace(np.min(g2thetas),np.max(g2thetas),N)
-    fpeaks = inter(f2thetas)
 
     S = Similarity(fpeaks, f2thetas,gpeaks, g2thetas,1e5).calculate()
     classification = classifyStructure(cifFile)
