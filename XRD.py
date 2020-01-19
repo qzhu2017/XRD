@@ -732,17 +732,18 @@ class XRD(object):
         # if self.profiling != None:
         #     self.get_profile(max_intensity)
  
-    def get_profile(self, theta2, xrd_intensity, N, profiling, fwhm):
+    def get_profile(self, theta2, xrd_intensity, N, profiling = {'function': 'gaussian', 'params': 0.2}):
     
         """
-        Here gaussian and lorentzian profiling functions are smeared over the obtained
-        intensities (self.xrd_intensity) from previous calculations.
-          
-        Individual profiles of each intensity are superimposed, giving a net profiling function
-        for the structure.
-  
-        The profile will be plotted with the original plot and stored as a class variable as 
-        self.gpeaks.
+        args:
+            theta2: simulated theta values (1D array)
+            xrd_intensity: simulated peaks (1D array)
+            N: Resolution for profiling arrays (int)
+            profiling: profile function that represents data (dictionary)
+
+        returns:
+            self.spectra: x and y values of profiling function (2D array)
+
         """
 
         # profile parameters
@@ -757,11 +758,11 @@ class XRD(object):
             if profiling == 'gaussian':
                 profile = self.gaussian_profile(peak,theta,g2thetas,fwhm)
             elif profiling == 'lorentzian':
-                profile = self.lorentzian_profile(peak,theta,tmp)
+                profile = self.lorentzian_profile(peak,theta,g2thetas,fwhm)
             elif profiling == 'psuedo_voigt':
                 eta = 0.5 
-                profile = eta * self.lorentzian_profile(peak,theta,tmp) + \
-                        (1-eta) * self.gaussian_profile(peak,theta,tmp)
+                profile = eta * self.lorentzian_profile(peak, theta ,g2thetas,fwhm) + \
+                        (1-eta) * self.gaussian_profile(peak,theta,g2thetas,fwhm)
             else:
                 raise NotImplementedError
             
@@ -769,16 +770,15 @@ class XRD(object):
             gpeaks += profile
 
         gpeaks /= np.max(gpeaks)
-        self.gpeaks = gpeaks
-        self.g2thetas = g2thetas
+        self.spectra = np.vstack((g2thetas, gpeaks))
 
     def gaussian_profile(self, I0, theta2, alpha, fwhm):
         tmp = ((alpha - theta2)/fwhm)**2
         return I0 * np.exp(-4*np.log(2)*tmp)
     
-    def lorentzian_profile(self, maxI, max_theta, alpha):
-        tmp = 1 + 4*((alpha - max_theta)/self.fwhm)**2
-        return maxI * 1/tmp
+    def lorentzian_profile(self, I0, theta2, alpha,fwhm):
+        tmp = 1 + 4*((alpha - theta2)/fwhm)**2
+        return I0 * 1/tmp
 
     def pxrdf(self):
         """
