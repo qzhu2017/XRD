@@ -101,10 +101,7 @@ for file in allFiles:
 
 wavelength = 1.54056
 max2theta = 90
-fwhm = 0.9
-N = 1000
-profile = 'psuedo_voigt'
-dataDict = {}
+N = 10000
 Sims = []
 Sgs = []
 clss = []
@@ -115,7 +112,7 @@ for poscardata, diffdata, cifFile in zip(poscarFiles,diffFiles,cifFiles):
     """
     struct = crystal('POSCAR',filename=poscardata)
     xrd1 = XRD(struct, wavelength, max2theta)   
-    xrd1.get_profile(xrd1.theta2, xrd1.xrd_intensity,N, profile, fwhm)
+    xrd1.get_profile(xrd1.theta2, xrd1.xrd_intensity,N)
     f = xrd1.spectra 
     
     """
@@ -143,10 +140,10 @@ for poscardata, diffdata, cifFile in zip(poscarFiles,diffFiles,cifFiles):
     yval = np.array(yval)
     yval/= np.max(yval)
     xrd2 = XRD(struct, wavelength, max2theta)
-    xrd2.get_profile(xval, yval,N,profile,fwhm)
+    xrd2.get_profile(xval, yval,N)
     g = xrd2.spectra 
 
-    S = Similarity(f, g, 10000,None,None).calculate()
+    S = Similarity(f, g, N,None,None).calculate()
     classification = classifyStructure(cifFile)
     groupName = getSpaceGroup(cifFile)
     Sgs.append(groupName)
