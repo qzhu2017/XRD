@@ -7,7 +7,7 @@ class Similarity(object):
     Class to compute the similarity between two diffraction patterns
     """
 
-    def __init__(self, f, g, N = None, x_range = None, r_range = None, weight = {'function': 'triangle', 'params': 0.6}):
+    def __init__(self, f, g, N = None, x_range = None, l = 1, weight = 'cosine'):
         
         """
         Args:
@@ -16,24 +16,22 @@ class Similarity(object):
         g: spectra2 (2D array)
         N: number of sampling points for the processed spectra
         x_range: the range of x values used to compute similarity ([x_min, x_max])
-        r_range: the range of r values that shift x values ([r_min, r_max])
-        weight: weight function used to compute the similarity (dictionary)        """
+        l: cutoff value for shift (real)
+        weight: weight function 'triangle' or 'cosine' (str)
+        """
 
         self.fx, self.fy = f[0], f[1]
         self.gx, self.gy = g[0], g[1]
         self.N = N
         self.x_range = x_range
-        if r_range == None:
-            self.r_range = [-1,1]
-        else:
-            self.r_range = r_range
+        self.l = abs(l)
         self.weight = weight
-        
-        self.r = np.linspace(self.r_range[0], self.r_range[1], self.N)
+        self.r = np.linspace(-self.l, self.l, self.N)
         self.preprocess()
-        function = self.weight['function']
-        if function == 'triangle':
+        if self.weight == 'triangle':
             self.triangleFunction()
+        elif self.weight == 'cosine':
+            self.cosineFunction()
         else:
             msg = function + 'is not supported'
             raise NotImplementedError(msg)
@@ -90,12 +88,31 @@ class Similarity(object):
         """
         
         w = np.zeros((self.N))
-        l = self.weight['params']
+        l = self.l
         for i in range(self.r.shape[0]):
             r = np.abs(self.r[i])
-            if r < l:
+            if r <= l:
                 tf = lambda r,l : 1 - r/l
                 w[i] = tf(r,l)
             else:
                 w[i] = 0
         self.w = w
+
+    def cosineFunction(self):
+
+        """
+        cosine function to weight correlations
+        """
+        
+        w = np.zeros((self.N))
+        l = self.l
+        for i in range(self.r.shape[0]):
+            r = np.abs(self.r[i])
+            if r <= l:
+                tf = lambda r,l : 0.5 * (np.cos(np.pi * r/l) + 1)
+                w[i] = tf(r,l)
+            else:
+                w[i] = 0
+        self.w = w
+
+

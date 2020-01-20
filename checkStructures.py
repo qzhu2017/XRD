@@ -143,7 +143,7 @@ for poscardata, diffdata, cifFile in zip(poscarFiles,diffFiles,cifFiles):
     xrd2.get_profile(xval, yval,N)
     g = xrd2.spectra 
 
-    S = Similarity(f, g, N,None,None).calculate()
+    S = Similarity(f, g, N).calculate()
     classification = classifyStructure(cifFile)
     groupName = getSpaceGroup(cifFile)
     Sgs.append(groupName)
