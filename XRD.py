@@ -732,7 +732,7 @@ class XRD(object):
         # if self.profiling != None:
         #     self.get_profile(max_intensity)
  
-    def get_profile(self, theta2, xrd_intensity, N, profiling = {'function': 'gaussian', 'params': 0.2}):
+    def get_profile(self, theta2, xrd_intensity, N, profiling = {'function': 'gaussian', 'params': 0.9}):
     
         """
         args:
@@ -743,31 +743,32 @@ class XRD(object):
 
         returns:
             self.spectra: x and y values of profiling function (2D array)
-
         """
 
         # profile parameters
-        tail = 10 
-
+        tail = 10
+        profile = profiling['function']
+        fwhm = profiling['params']
         gpeaks = np.zeros((N))
         g2thetas = np.linspace(np.min(theta2) - tail, np.max(theta2) + tail, N)
 
         for i,j in zip(range(len(theta2)),range(len(xrd_intensity))):
             theta, peak =  theta2[i], xrd_intensity[j]
 
-            if profiling == 'gaussian':
-                profile = self.gaussian_profile(peak,theta,g2thetas,fwhm)
-            elif profiling == 'lorentzian':
-                profile = self.lorentzian_profile(peak,theta,g2thetas,fwhm)
-            elif profiling == 'psuedo_voigt':
+            if profile == 'gaussian':
+                tmp = self.gaussian_profile(peak,theta,g2thetas,fwhm)
+            elif profile == 'lorentzian':
+                tmp = self.lorentzian_profile(peak,theta,g2thetas,fwhm)
+            elif profile == 'psuedo_voigt':
                 eta = 0.5 
-                profile = eta * self.lorentzian_profile(peak, theta ,g2thetas,fwhm) + \
+                tmp = eta * self.lorentzian_profile(peak, theta ,g2thetas,fwhm) + \
                         (1-eta) * self.gaussian_profile(peak,theta,g2thetas,fwhm)
             else:
-                raise NotImplementedError
+                msg = profile + 'is not supported'
+                raise NotImplementedError(msg)
             
             # profile *= np.cos(g2thetas/180*np.pi) # this may or may not stay here
-            gpeaks += profile
+            gpeaks += tmp
 
         gpeaks /= np.max(gpeaks)
         self.spectra = np.vstack((g2thetas, gpeaks))
