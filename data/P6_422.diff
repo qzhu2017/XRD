@@ -1,0 +1,37 @@
+      Eucryptite
+      Pillars W W, Peacor D R
+      American Mineralogist 58 (1973) 681-690
+      The crystal structure of beta eucryptite as a function of temperature
+      T = 484 C
+      _database_code_amcsd 0000380
+
+      CELL PARAMETERS:   5.2510  5.2510 11.1920   90.000   90.000  120.000
+      SPACE GROUP: P6_422    
+      X-RAY WAVELENGTH:     1.541838
+      Cell Volume:    267.253
+      Density (g/cm3):      2.348
+      MAX. ABS. INTENSITY / VOLUME**2:      32.06320488    
+      RIR:      4.446
+      RIR based on corundum from Acta Crystallographica A38 (1982) 733-739
+               2-THETA      INTENSITY    D-SPACING   H   K   L   Multiplicity
+                19.52          9.40        4.5475    1   0   0         6
+                25.24        100.00        3.5291    1   0   2        12
+                34.15          3.76        2.6255    1   1   0         6
+                37.75          1.64        2.3830    1   0   4        12
+                39.64          3.85        2.2737    2   0   0         6
+                42.93          2.74        2.1065    2   0   2        12
+                47.49         18.40        1.9146    1   1   4        12
+                51.81          1.21        1.7646    2   0   4        12
+                55.97          8.07        1.6430    2   1   2        12
+                61.14          1.06        1.5158    3   0   0         6
+                63.52          3.29        1.4645    2   1   4        12
+                64.63          7.88        1.4421    2   0   6        12
+                70.68          2.50        1.3328    3   0   4        12
+                71.92          2.75        1.3127    2   2   0         6
+                75.16          2.26        1.2640    2   1   6        12
+                77.28          2.53        1.2347    1   1   8        12
+                77.59          3.91        1.2304    3   1   2        12
+                84.21          1.20        1.1498    3   1   4        12
+================================================================================
+       XPOW Copyright 1993 Bob Downs, Ranjini Swaminathan and Kurt Bartelmehs
+  For reference, see Downs et al. (1993) American Mineralogist 78, 1104-1107.

@@ -1,0 +1,47 @@
+      Rosiaite
+      Basso R, Lucchetti G, Zefiro L, Palenzona A
+      European Journal of Mineralogy 8 (1996) 487-492
+      Rosiaite, PbSb2O6, a new mineral from the Cetine mine, Siena, Italy
+      Locality: Cetine mine, Siena, Italy
+      _database_code_amcsd 0006628
+
+      CELL PARAMETERS:   5.2950  5.2950  5.3720   90.000   90.000  120.000
+      SPACE GROUP: P-31m     
+      X-RAY WAVELENGTH:     1.541838
+      Cell Volume:    130.436
+      Density (g/cm3):      6.959
+      MAX. ABS. INTENSITY / VOLUME**2:      370.1242272    
+      RIR:     17.318
+      RIR based on corundum from Acta Crystallographica A38 (1982) 733-739
+               2-THETA      INTENSITY    D-SPACING   H   K   L   Multiplicity
+                16.50          2.66        5.3720    0   0   1         2
+                19.36          3.59        4.5856    1   0   0         6
+                25.54        100.00        3.4877    1   0   1        12
+                33.36          9.90        2.6860    0   0   2         2
+                33.86         34.60        2.6475    1   1   0         6
+                37.89          1.59        2.3748    1   1   1         6
+                38.86          2.54        2.3177    1   0   2        12
+                39.30          1.87        2.2928    2   0   0         6
+                42.89         21.57        2.1088    2   0   1        12
+                48.27         14.56        1.8855    2  -1   2         6
+                48.27         20.04        1.8855    1   1   2         6
+                55.06          9.65        1.6680    1   0   3        12
+                55.73          8.26        1.6495    3  -1   1        12
+                55.73         11.46        1.6495    2   1   1        12
+                60.58          8.93        1.5285    3   0   0         6
+                66.22          6.08        1.4113    2   0   3        12
+                70.06          1.58        1.3430    0   0   4         2
+                70.94          6.48        1.3285    3   0   2        12
+                71.24          3.59        1.3238    2   2   0         6
+                76.49          3.62        1.2454    3  -1   3        12
+                76.49          3.02        1.2454    2   1   3        12
+                77.06          4.04        1.2376    4  -1   1        12
+                77.06          2.77        1.2376    3   1   1        12
+                80.13          3.15        1.1977    2  -1   4         6
+                80.13          2.03        1.1977    1   1   4         6
+                80.97          3.11        1.1874    4  -2   2         6
+                80.97          2.55        1.1874    2   2   2         6
+                86.88          2.35        1.1212    4   0   1        12
+================================================================================
+       XPOW Copyright 1993 Bob Downs, Ranjini Swaminathan and Kurt Bartelmehs
+  For reference, see Downs et al. (1993) American Mineralogist 78, 1104-1107.

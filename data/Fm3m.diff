@@ -1,0 +1,30 @@
+      Galena
+      Ramsdell L S
+      American Mineralogist 10 (1925) 281-304
+      The crystal structures of some metallic sulfides
+      Locality: Colorado, USA
+      _database_code_amcsd 0000003
+
+      CELL PARAMETERS:   5.9300  5.9300  5.9300   90.000   90.000   90.000
+      SPACE GROUP: Fm3m      
+      X-RAY WAVELENGTH:     1.541838
+      Cell Volume:    208.528
+      Density (g/cm3):      7.620
+      MAX. ABS. INTENSITY / VOLUME**2:      385.3119549    
+      RIR:     16.465
+      RIR based on corundum from Acta Crystallographica A38 (1982) 733-739
+               2-THETA      INTENSITY    D-SPACING   H   K   L   Multiplicity
+                26.03         97.96        3.4237    1   1   1         8
+                30.14        100.00        2.9650    2   0   0         6
+                43.15         69.58        2.0966    2   2   0        12
+                51.08         43.15        1.7880    3   1   1        24
+                53.53         22.84        1.7118    2   2   2         8
+                62.67          9.90        1.4825    4   0   0         6
+                69.04         15.15        1.3604    3   3   1        24
+                71.10         25.40        1.3260    4   2   0        24
+                79.12         17.73        1.2105    4   2   2        24
+                84.99          7.53        1.1412    5   1   1        24
+                84.99          2.51        1.1412    3   3   3         8
+================================================================================
+       XPOW Copyright 1993 Bob Downs, Ranjini Swaminathan and Kurt Bartelmehs
+  For reference, see Downs et al. (1993) American Mineralogist 78, 1104-1107.

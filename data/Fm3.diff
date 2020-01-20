@@ -1,0 +1,38 @@
+      Buckminsterfullerene
+      Dorset D L, McCourt M P
+      Acta Crystallographica A50 (1994) 344-351
+      Disorder and the molecular packing of C60 buckminsterfullerene:
+      a direct electron-crystallographic analysis
+      Locality: synthetic
+      Sample: room T
+      _database_code_amcsd 0009329
+
+      CELL PARAMETERS:  14.2600 14.2600 14.2600   90.000   90.000   90.000
+      SPACE GROUP: Fm3       
+      X-RAY WAVELENGTH:     1.541838
+      Cell Volume:   2899.737
+      Density (g/cm3):      1.650
+      MAX. ABS. INTENSITY / VOLUME**2:      7.708078870    
+      RIR:      1.521
+      RIR based on corundum from Acta Crystallographica A38 (1982) 733-739
+               2-THETA      INTENSITY    D-SPACING   H   K   L   Multiplicity
+                10.75         80.67        8.2330    1   1   1         8
+                12.41          1.40        7.1300    2   0   0         6
+                17.59        100.00        5.0417    2   2   0        12
+                20.66         60.00        4.2996    3   1   1        24
+                21.59          7.13        4.1165    2   2   2         8
+                27.26          6.00        3.2715    3   3   1        24
+                27.98         11.74        3.1886    4   0   2        12
+                27.98          1.77        3.1886    4   2   0        12
+                30.72          8.25        2.9108    4   2   2        24
+                32.63          6.24        2.7443    5   1   1        24
+                32.63          6.57        2.7443    3   3   3         8
+                39.99          1.47        2.2547    6   0   2        12
+                41.53          2.61        2.1746    5   3   3        24
+                42.03          2.95        2.1498    6   2   2        24
+                43.99          1.39        2.0583    4   4   4         8
+                45.42          1.28        1.9968    7   1   1        24
+                47.73          6.39        1.9056    6   2   4        24
+================================================================================
+       XPOW Copyright 1993 Bob Downs, Ranjini Swaminathan and Kurt Bartelmehs
+  For reference, see Downs et al. (1993) American Mineralogist 78, 1104-1107.

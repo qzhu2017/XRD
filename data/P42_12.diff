@@ -1,0 +1,44 @@
+      Neptunium-beta
+      Wyckoff R W G
+      Crystal Structures 1 (1963) 7-83
+      Second edition. Interscience Publishers, New York, New York
+      Sample is stable between 551 K and 843 K
+      Note: T = 586 K
+      _database_code_amcsd 0011264
+
+      CELL PARAMETERS:   4.8970  4.8970  3.3880   90.000   90.000   90.000
+      SPACE GROUP: P42_12    
+      X-RAY WAVELENGTH:     1.541838
+      Cell Volume:     81.246
+      Density (g/cm3):     19.373
+      MAX. ABS. INTENSITY / VOLUME**2:      1271.096411    
+      RIR:     21.364
+      RIR based on corundum from Acta Crystallographica A38 (1982) 733-739
+               2-THETA      INTENSITY    D-SPACING   H   K   L   Multiplicity
+                26.31          1.88        3.3880    0   0   1         2
+                32.13         25.81        2.7862    1   0   1         8
+                36.70         70.94        2.4485    2   0   0         4
+                37.13        100.00        2.4217    1   1   1         8
+                45.72          1.56        1.9845    2   0   1         8
+                49.56         14.02        1.8392    2   1   1         8
+                52.88         22.60        1.7314    2   2   0         4
+                54.14          2.61        1.6940    0   0   2         2
+                57.57          8.45        1.6009    1   0   2         8
+                60.88          6.96        1.5217    1   1   2         8
+                63.23          3.05        1.4706    3   0   1         8
+                66.37         29.97        1.4084    3   1   1         8
+                67.20          4.92        1.3931    2   0   2         8
+                70.25          8.44        1.3399    2   1   2         8
+                75.40          3.32        1.2607    3   2   1         8
+                78.06          5.92        1.2242    4   0   0         4
+                79.09          2.84        1.2108    2   2   2         8
+                81.97          2.54        1.1754    3   0   2         8
+                84.83          4.59        1.1430    3   1   2         8
+                86.10          1.60        1.1293    0   0   3         2
+                86.91          2.14        1.1208    4   1   1         8
+                88.94          1.01        1.1004    1   0   3         8
+                89.50          7.93        1.0950    4   2   0         8
+                89.76          5.74        1.0926    3   3   1         8
+================================================================================
+       XPOW Copyright 1993 Bob Downs, Ranjini Swaminathan and Kurt Bartelmehs
+  For reference, see Downs et al. (1993) American Mineralogist 78, 1104-1107.

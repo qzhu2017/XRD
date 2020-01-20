@@ -1,0 +1,27 @@
+      Cristobalite high
+      Wyckoff R
+      American Journal of Science 9 (1925) 448-459
+      The crystal structure of the high temperature form of Cristobalite (SiO2)
+      _cod_database_code 1010954
+      _database_code_amcsd 0017674
+
+      CELL PARAMETERS:   7.1200  7.1200  7.1200   90.000   90.000   90.000
+      SPACE GROUP: F4_132    
+      X-RAY WAVELENGTH:     1.541838
+      Cell Volume:    360.944
+      Density (g/cm3):      2.211
+      MAX. ABS. INTENSITY / VOLUME**2:      47.16670788    
+      RIR:      6.946
+      RIR based on corundum from Acta Crystallographica A38 (1982) 733-739
+               2-THETA      INTENSITY    D-SPACING   H   K   L   Multiplicity
+                21.62        100.00        4.1107    1   1   1         8
+                35.67         21.02        2.5173    2   2   0        12
+                44.06          8.31        2.0554    2   2   2         8
+                56.32         13.96        1.6334    3   3   1        24
+                64.07          6.67        1.4534    4   2   2        24
+                75.54          6.29        1.2587    4   4   0        12
+                79.67          8.02        1.2035    5   3   1        24
+                86.44          2.77        1.1258    6   2   0        24
+================================================================================
+       XPOW Copyright 1993 Bob Downs, Ranjini Swaminathan and Kurt Bartelmehs
+  For reference, see Downs et al. (1993) American Mineralogist 78, 1104-1107.

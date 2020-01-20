@@ -1,0 +1,34 @@
+      Romarchite
+      Pannetier J, Denes G
+      Acta Crystallographica B36 (1980) 2763-2765
+      Tin(II) oxide: structure refinement and thermal expansion
+      _database_code_amcsd 0009724
+
+      CELL PARAMETERS:   3.8029  3.8029  4.8382   90.000   90.000   90.000
+      SPACE GROUP: P4/nmm    
+      X-RAY WAVELENGTH:     1.541838
+      Cell Volume:     69.970
+      Density (g/cm3):      6.393
+      MAX. ABS. INTENSITY / VOLUME**2:      306.6022197    
+      RIR:     15.616
+      RIR based on corundum from Acta Crystallographica A38 (1982) 733-739
+               2-THETA      INTENSITY    D-SPACING   H   K   L   Multiplicity
+                18.34          4.45        4.8382    0   0   1         2
+                29.88        100.00        2.9899    1   0   1         8
+                33.32         27.63        2.6891    1   1   0         4
+                37.17         10.01        2.4191    0   0   2         2
+                47.84         16.17        1.9015    2   0   0         4
+                50.76         26.09        1.7985    1   1   2         8
+                57.43         28.27        1.6045    2   1   1        16
+                62.09          8.56        1.4949    2   0   2         8
+                62.56         10.18        1.4847    1   0   3         8
+                69.97          4.46        1.3445    2   2   0         4
+                77.91          5.25        1.2262    3   0   1         8
+                79.19          1.38        1.2096    0   0   4         2
+                79.74          4.07        1.2026    3   1   0         8
+                81.99          3.69        1.1752    2   2   2         8
+                82.41          8.56        1.1702    2   1   3        16
+                88.67          2.84        1.1031    1   1   4         8
+================================================================================
+       XPOW Copyright 1993 Bob Downs, Ranjini Swaminathan and Kurt Bartelmehs
+  For reference, see Downs et al. (1993) American Mineralogist 78, 1104-1107.

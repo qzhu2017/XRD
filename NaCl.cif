@@ -39,9 +39,9 @@ _cell_angle_alpha                90
 _cell_angle_beta                 90
 _cell_angle_gamma                90
 _cell_formula_units_Z            4
-_cell_length_a                   5.62
-_cell_length_b                   5.62
-_cell_length_c                   5.62
+_cell_length_a                   5.64167
+_cell_length_b                   5.64167
+_cell_length_c                   5.64167
 _cell_volume                     177.5
 _refine_ls_R_factor_all          0.022
 _cod_database_code               1000041

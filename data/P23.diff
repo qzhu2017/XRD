@@ -1,0 +1,43 @@
+      I4 Sn
+      Ott H
+      Zeitschrift fur Kristallographie 63 (1926) 222-230
+      Die Strukturen von Mn O, Mn S, Ag F, Ni S, Sn I4, Sr Cl2, Ba F2,
+      Praezisionsmessungen einiger Alkalihalogenide.
+      _cod_database_code 1010043
+      _database_code_amcsd 0016979
+
+      CELL PARAMETERS:   6.1200  6.1200  6.1200   90.000   90.000   90.000
+      SPACE GROUP: P23       
+      X-RAY WAVELENGTH:     1.541838
+      Cell Volume:    229.221
+      Density (g/cm3):      4.537
+      MAX. ABS. INTENSITY / VOLUME**2:      207.3653259    
+      RIR:     14.883
+      RIR based on corundum from Acta Crystallographica A38 (1982) 733-739
+               2-THETA      INTENSITY    D-SPACING   H   K   L   Multiplicity
+                14.47         15.03        6.1200    1   0   0         6
+                20.52         13.30        4.3275    1   1   0        12
+                25.20        100.00        3.5334    1   1   1         4
+                29.18         27.95        3.0600    2   0   0         6
+                32.72          3.95        2.7369    2   0   1        12
+                32.72          3.95        2.7369    2   1   0        12
+                35.94          6.04        2.4985    2   1   1        12
+                41.74         52.08        2.1637    2   2   0        12
+                44.41          3.18        2.0400    2   2   1        12
+                46.95          1.33        1.9353    3   1   0        12
+                46.95          1.33        1.9353    3   0   1        12
+                49.39         42.07        1.8452    3   1   1        12
+                51.74          6.62        1.7667    2   2   2         4
+                56.24          1.45        1.6356    3   2   1        12
+                56.24          1.45        1.6356    3   1   2        12
+                60.51          7.71        1.5300    4   0   0         6
+                62.58          1.00        1.4843    3   2   2        12
+                66.61         15.33        1.4040    3   3   1        12
+                68.57          3.85        1.3685    4   0   2        12
+                68.57          3.85        1.3685    4   2   0        12
+                76.21         14.13        1.2492    4   2   2        12
+                81.77          2.63        1.1778    3   3   3         4
+                81.77          7.88        1.1778    5   1   1        12
+================================================================================
+       XPOW Copyright 1993 Bob Downs, Ranjini Swaminathan and Kurt Bartelmehs
+  For reference, see Downs et al. (1993) American Mineralogist 78, 1104-1107.

@@ -1,0 +1,64 @@
+data_global
+_amcsd_formula_title 'Ca2 O7 P2'
+loop_
+_publ_author_name
+'Boudin S'
+'Grandin A'
+'Borel M'
+'Leclaire A'
+'Raveau B'
+_journal_name_full 'Acta Crystallographica, Section C'
+_journal_volume 49 
+_journal_year 1993
+_journal_page_first 2062
+_journal_page_last 2064
+_publ_section_title
+;
+ Redetermination of the beta-Ca2P2O7 structure
+ _cod_database_code 1001556
+;
+_database_code_amcsd 0010288
+_chemical_formula_sum 'Ca2 P2 O7'
+_chemical_formula_sum ''
+_cell_length_a 6.6858
+_cell_length_b 6.6858
+_cell_length_c 24.147
+_cell_angle_alpha 90
+_cell_angle_beta 90
+_cell_angle_gamma 90
+_cell_volume 1079.369
+_exptl_crystal_density_diffrn      3.127
+_symmetry_space_group_name_H-M 'P 41'
+loop_
+_space_group_symop_operation_xyz
+  'x,y,z'
+  '-y,x,1/4+z'
+  '-x,-y,1/2+z'
+  'y,-x,3/4+z'
+loop_
+_atom_site_label
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+Ca1   0.13740   0.23130   0.00000
+Ca2   0.15910   0.54470   0.24262
+Ca3   0.78950   0.73370   0.13802
+Ca4   0.36270   0.10540   0.13548
+P1   0.62130   0.30780   0.02345
+P2   0.86730   0.25340   0.12431
+P3   0.04630   0.71480   0.01863
+P4   0.28730   0.64620   0.12074
+O1   0.46070   0.15840   0.04260
+O2   0.77270   0.19840  -0.01330
+O3   0.53030   0.49210  -0.00010
+O4   0.73950   0.37760   0.07890
+O5   0.73640   0.08730   0.14690
+O6   0.05190   0.17690   0.09530
+O7   0.89940   0.40880   0.16950
+O8   0.85370   0.79070   0.04330
+O9   0.18550   0.87950  -0.00110
+O10   0.02290   0.55420  -0.02490
+O11   0.15820   0.58730   0.06660
+O12   0.34500   0.45260   0.14740
+O13   0.46220   0.77560   0.10150
+O14   0.14740   0.77220   0.15720

@@ -1,0 +1,56 @@
+data_global
+_amcsd_formula_title 'Mg(ClO2)2.6H2O'
+loop_
+_publ_author_name
+'Okuda M'
+'Ishihara M'
+'Yamanaka M'
+'Ohba S'
+'Saito Y'
+_journal_name_full 'Acta Crystallographica, Section C'
+_journal_volume 46 
+_journal_year 1990
+_journal_page_first 1755
+_journal_page_last 1759
+_publ_section_title
+;
+ Structures of lead chlorite, magnesium chlorite hexahydrate
+ and silver chlorite
+ Sample: Compound (II)
+;
+_database_code_amcsd 0010180
+_chemical_formula_sum 'Cl2 Mg O10'
+_chemical_formula_sum ''
+_cell_length_a 7.471
+_cell_length_b 7.471
+_cell_length_c 9.980
+_cell_angle_alpha 90
+_cell_angle_beta 90
+_cell_angle_gamma 90
+_cell_volume 557.042
+_exptl_crystal_density_diffrn      1.522
+_symmetry_space_group_name_H-M 'P 42 m c'
+loop_
+_space_group_symop_operation_xyz
+  'x,y,z'
+  '-y,-x,1/2+z'
+  '-y,x,1/2+z'
+  'x,-y,z'
+  '-x,-y,z'
+  'y,x,1/2+z'
+  'y,-x,1/2+z'
+  '-x,y,z'
+loop_
+_atom_site_label
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_U_iso_or_equiv
+Cl1   0.00000   0.00000   0.00440   0.05066
+Cl2   0.50000   0.50000  -0.00330   0.04179
+Mg   0.00000   0.50000   0.25380   0.03546
+O1   0.17150   0.00000   0.09110   0.03673
+O2   0.32600   0.50000  -0.09960   0.04559
+O3   0.00000   0.50000   0.04130   0.05699
+O4   0.00000   0.50000   0.45030   0.06459
+O5   0.19300   0.29780   0.24540   0.06586

@@ -1,0 +1,132 @@
+data_global
+_chemical_name_mineral 'Cristobalite high'
+loop_
+_publ_author_name
+'Wyckoff R'
+_journal_name_full 'American Journal of Science'
+_journal_volume 9 
+_journal_year 1925
+_journal_page_first 448
+_journal_page_last 459
+_publ_section_title
+;
+ The crystal structure of the high temperature form of Cristobalite (SiO2)
+ _cod_database_code 1010954
+;
+_database_code_amcsd 0017674
+_chemical_formula_sum 'Si O2'
+_chemical_formula_sum ''
+_cell_length_a 7.12
+_cell_length_b 7.12
+_cell_length_c 7.12
+_cell_angle_alpha 90
+_cell_angle_beta 90
+_cell_angle_gamma 90
+_cell_volume 360.944
+_exptl_crystal_density_diffrn      2.211
+_symmetry_space_group_name_H-M 'F 41 3 2'
+loop_
+_space_group_symop_operation_xyz
+  'x,y,z'
+  'x,1/2+y,1/2+z'
+  '1/2+x,y,1/2+z'
+  '1/2+x,1/2+y,z'
+  '-z,1/2+x,1/2-y'
+  '-z,+x,-y'
+  '1/2-z,1/2+x,-y'
+  '1/2-z,+x,1/2-y'
+  '-y,1/2+z,1/2-x'
+  '-y,+z,-x'
+  '1/2-y,1/2+z,-x'
+  '1/2-y,+z,1/2-x'
+  '-x,1/2+y,1/2-z'
+  '-x,+y,-z'
+  '1/2-x,1/2+y,-z'
+  '1/2-x,+y,1/2-z'
+  '3/4-x,3/4+z,1/4+y'
+  '3/4-x,1/4+z,3/4+y'
+  '1/4-x,3/4+z,3/4+y'
+  '1/4-x,1/4+z,1/4+y'
+  '3/4-z,3/4+y,1/4+x'
+  '3/4-z,1/4+y,3/4+x'
+  '1/4-z,3/4+y,3/4+x'
+  '1/4-z,1/4+y,1/4+x'
+  '3/4-y,3/4+x,1/4+z'
+  '3/4-y,1/4+x,3/4+z'
+  '1/4-y,3/4+x,3/4+z'
+  '1/4-y,1/4+x,1/4+z'
+  '1/4-x,3/4-z,3/4-y'
+  '1/4-x,1/4-z,1/4-y'
+  '3/4-x,3/4-z,1/4-y'
+  '3/4-x,1/4-z,3/4-y'
+  '1/4-z,3/4-y,3/4-x'
+  '1/4-z,1/4-y,1/4-x'
+  '3/4-z,3/4-y,1/4-x'
+  '3/4-z,1/4-y,3/4-x'
+  '1/4-y,3/4-x,3/4-z'
+  '1/4-y,1/4-x,1/4-z'
+  '3/4-y,3/4-x,1/4-z'
+  '3/4-y,1/4-x,3/4-z'
+  '-z,1/2-x,1/2+y'
+  '-z,-x,+y'
+  '1/2-z,1/2-x,+y'
+  '1/2-z,-x,1/2+y'
+  '-y,1/2-z,1/2+x'
+  '-y,-z,+x'
+  '1/2-y,1/2-z,+x'
+  '1/2-y,-z,1/2+x'
+  '-x,1/2-y,1/2+z'
+  '-x,-y,+z'
+  '1/2-x,1/2-y,+z'
+  '1/2-x,-y,1/2+z'
+  'z,-x,-y'
+  'z,1/2-x,1/2-y'
+  '1/2+z,-x,1/2-y'
+  '1/2+z,1/2-x,-y'
+  'y,-z,-x'
+  'y,1/2-z,1/2-x'
+  '1/2+y,-z,1/2-x'
+  '1/2+y,1/2-z,-x'
+  'x,-y,-z'
+  'x,1/2-y,1/2-z'
+  '1/2+x,-y,1/2-z'
+  '1/2+x,1/2-y,-z'
+  '1/4+x,3/4-z,3/4+y'
+  '1/4+x,1/4-z,1/4+y'
+  '3/4+x,3/4-z,1/4+y'
+  '3/4+x,1/4-z,3/4+y'
+  '1/4+z,3/4-y,3/4+x'
+  '1/4+z,1/4-y,1/4+x'
+  '3/4+z,3/4-y,1/4+x'
+  '3/4+z,1/4-y,3/4+x'
+  '1/4+y,3/4-x,3/4+z'
+  '1/4+y,1/4-x,1/4+z'
+  '3/4+y,3/4-x,1/4+z'
+  '3/4+y,1/4-x,3/4+z'
+  '3/4+x,3/4+z,1/4-y'
+  '3/4+x,1/4+z,3/4-y'
+  '1/4+x,3/4+z,3/4-y'
+  '1/4+x,1/4+z,1/4-y'
+  '3/4+z,3/4+y,1/4-x'
+  '3/4+z,1/4+y,3/4-x'
+  '1/4+z,3/4+y,3/4-x'
+  '1/4+z,1/4+y,1/4-x'
+  '3/4+y,3/4+x,1/4-z'
+  '3/4+y,1/4+x,3/4-z'
+  '1/4+y,3/4+x,3/4-z'
+  '1/4+y,1/4+x,1/4-z'
+  'z,x,y'
+  'z,1/2+x,1/2+y'
+  '1/2+z,x,1/2+y'
+  '1/2+z,1/2+x,y'
+  'y,z,x'
+  'y,1/2+z,1/2+x'
+  '1/2+y,z,1/2+x'
+  '1/2+y,1/2+z,x'
+loop_
+_atom_site_label
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+Si1   0.00000   0.00000   0.00000
+O1   0.12500   0.12500   0.12500

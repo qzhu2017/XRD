@@ -1,0 +1,30 @@
+      Palladinite
+      Waser J, Levy H A, Peterson S W
+      Acta Crystallographica 6 (1953) 661-663
+      The structure of PdO
+      Locality: synthetic
+      _database_code_amcsd 0009157
+
+      CELL PARAMETERS:   3.0300  3.0300  5.3300   90.000   90.000   90.000
+      SPACE GROUP: P4_2/mmc  
+      X-RAY WAVELENGTH:     1.541838
+      Cell Volume:     48.934
+      Density (g/cm3):      8.307
+      MAX. ABS. INTENSITY / VOLUME**2:      368.1215042    
+      RIR:     14.429
+      RIR based on corundum from Acta Crystallographica A38 (1982) 733-739
+               2-THETA      INTENSITY    D-SPACING   H   K   L   Multiplicity
+                29.48          1.87        3.0300    1   0   0         4
+                33.63         18.56        2.6650    0   0   2         2
+                34.04        100.00        2.6341    1   0   1         8
+                42.18         19.03        2.1425    1   1   0         4
+                54.99         27.10        1.6698    1   1   2         8
+                60.40         15.22        1.5326    1   0   3         8
+                61.18          9.18        1.5150    2   0   0         4
+                70.70          2.71        1.3325    0   0   4         2
+                71.65          6.51        1.3171    2   0   2         8
+                71.89         16.44        1.3133    2   1   1        16
+                85.89          3.76        1.1315    1   1   4         8
+================================================================================
+       XPOW Copyright 1993 Bob Downs, Ranjini Swaminathan and Kurt Bartelmehs
+  For reference, see Downs et al. (1993) American Mineralogist 78, 1104-1107.

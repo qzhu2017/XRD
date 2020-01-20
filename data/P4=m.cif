@@ -1,0 +1,45 @@
+data_global
+_amcsd_formula_title 'O Pd'
+loop_
+_publ_author_name
+'Levi G'
+'Fontana C'
+_journal_name_full 'Gazzetta Chimica Italiana'
+_journal_volume 56 
+_journal_year 1926
+_journal_page_first 388
+_journal_page_last 396
+_publ_section_title
+;
+ Ossidi di palladio
+ _cod_database_code 1011329
+;
+_database_code_amcsd 0018171
+_chemical_formula_sum 'Pd O'
+_chemical_formula_sum ''
+_cell_length_a 3.
+_cell_length_b 3.
+_cell_length_c 5.2
+_cell_angle_alpha 90
+_cell_angle_beta 90
+_cell_angle_gamma 90
+_cell_volume 46.800
+_exptl_crystal_density_diffrn      4.344
+_symmetry_space_group_name_H-M 'P 4/m'
+loop_
+_space_group_symop_operation_xyz
+  'x,y,z'
+  'y,-x,-z'
+  '-y,x,z'
+  'x,y,-z'
+  '-x,-y,z'
+  '-y,x,-z'
+  'y,-x,z'
+  '-x,-y,-z'
+loop_
+_atom_site_label
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+Pd1   0.00000   0.00000   0.00000
+O1   0.50000   0.50000   0.50000

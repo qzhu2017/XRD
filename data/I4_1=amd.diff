@@ -1,0 +1,32 @@
+      Tin
+      Wyckoff R W G
+      Crystal Structures 1 (1963) 7-83
+      Second edition. Interscience Publishers, New York, New York
+      Sample known as white tin
+      _database_code_amcsd 0011248
+
+      CELL PARAMETERS:   5.8197  5.8197  3.1749   90.000   90.000   90.000
+      SPACE GROUP: I4_1/amd  
+      X-RAY WAVELENGTH:     1.541838
+      Cell Volume:    107.530
+      Density (g/cm3):      7.332
+      MAX. ABS. INTENSITY / VOLUME**2:      236.2238836    
+      RIR:     10.491
+      RIR based on corundum from Acta Crystallographica A38 (1982) 733-739
+               2-THETA      INTENSITY    D-SPACING   H   K   L   Multiplicity
+                30.73        100.00        2.9098    2   0   0         4
+                32.11         88.49        2.7871    1   0   1         8
+                44.01         34.78        2.0576    2   2   0         4
+                45.04         64.62        2.0128    2   1   1        16
+                55.51         16.16        1.6554    3   0   1         8
+                62.73         21.12        1.4811    1   1   2         8
+                63.99          9.85        1.4549    4   0   0         4
+                64.80         18.86        1.4388    3   2   1        16
+                72.66         12.67        1.3013    4   2   0         8
+                73.41         12.23        1.2898    4   1   1        16
+                79.78         18.64        1.2020    3   1   2        16
+                89.73          6.68        1.0928    4   3   1        16
+                89.73          3.34        1.0928    5   0   1         8
+================================================================================
+       XPOW Copyright 1993 Bob Downs, Ranjini Swaminathan and Kurt Bartelmehs
+  For reference, see Downs et al. (1993) American Mineralogist 78, 1104-1107.

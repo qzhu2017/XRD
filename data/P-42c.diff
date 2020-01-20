@@ -1,0 +1,44 @@
+      Eskebornite
+      Delgado J M, Diaz de Delgado G, Quintero M, Woolley J C
+      Materials Research Bulletin 27 (1992) 367-373
+      The crystal structure of copper iron selenide, CuFeSe2
+      Locality: synthetic
+      _database_code_amcsd 0014365
+
+      CELL PARAMETERS:   5.5300  5.5300 11.0490   90.000   90.000   90.000
+      SPACE GROUP: P-42c     
+      X-RAY WAVELENGTH:     1.541838
+      Cell Volume:    337.888
+      Density (g/cm3):      5.451
+      MAX. ABS. INTENSITY / VOLUME**2:      129.4697923    
+      RIR:      7.734
+      RIR based on corundum from Acta Crystallographica A38 (1982) 733-739
+               2-THETA      INTENSITY    D-SPACING   H   K   L   Multiplicity
+                16.03         28.18        5.5300    1   0   0         4
+                16.04         12.12        5.5245    0   0   2         2
+                27.95        100.00        3.1917    1   1   2         4
+                32.38          1.16        2.7650    2   0   0         4
+                36.33          8.88        2.4731    2   1   0         8
+                36.33          6.28        2.4726    2   0   2         8
+                36.36          8.86        2.4711    1   0   4         8
+                46.44         32.37        1.9552    2   2   0         4
+                46.47         64.91        1.9542    2   0   4         8
+                49.44          2.09        1.8433    3   0   0         4
+                49.45          2.32        1.8431    2   2   2         4
+                49.47          5.19        1.8425    2   1   4         8
+                55.08         26.22        1.6672    3   1   2         8
+                55.13         13.25        1.6660    1   1   6         4
+                60.40          1.13        1.5327    2   0   6         8
+                67.78          9.05        1.3825    4   0   0         4
+                67.86          4.58        1.3811    0   0   8         2
+                70.19          2.42        1.3409    3   2   4         8
+                74.85          4.77        1.2686    3   3   2         4
+                74.88          9.66        1.2681    3   1   6         8
+                79.42          1.02        1.2067    4   2   2         8
+                79.43          1.23        1.2065    4   1   4         8
+                79.48          1.23        1.2058    2   1   8         8
+                86.17         17.03        1.1286    4   2   4         8
+                86.22          8.61        1.1281    2   2   8         4
+================================================================================
+       XPOW Copyright 1993 Bob Downs, Ranjini Swaminathan and Kurt Bartelmehs
+  For reference, see Downs et al. (1993) American Mineralogist 78, 1104-1107.

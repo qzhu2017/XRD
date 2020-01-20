@@ -1,0 +1,54 @@
+data_global
+_amcsd_formula_title 'K0.6FeF3'
+loop_
+_publ_author_name
+'Hardy A'
+'Hardy A'
+'Ferey G'
+_journal_name_full 'Acta Crystallographica, Section B'
+_journal_volume 29 
+_journal_year 1973
+_journal_page_first 1654
+_journal_page_last 1658
+_publ_section_title
+;
+ Structure cristalline du bronze pseudo-quadratique K0.6FeF~3:
+ Transition pyrochlore-quadratique pour les composes KMM'6
+ _cod_database_code 1000162
+;
+_database_code_amcsd 0009482
+_chemical_formula_sum 'Fe5 K3 F15'
+_chemical_formula_sum ''
+_cell_length_a 12.750
+_cell_length_b 12.637
+_cell_length_c 3.986
+_cell_angle_alpha 90
+_cell_angle_beta 90
+_cell_angle_gamma 90
+_cell_volume 642.231
+_exptl_crystal_density_diffrn      3.524
+_symmetry_space_group_name_H-M 'P b a 2'
+loop_
+_space_group_symop_operation_xyz
+  'x,y,z'
+  '1/2+x,1/2-y,z'
+  '1/2-x,1/2+y,z'
+  '-x,-y,z'
+loop_
+_atom_site_label
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+Fe1   0.00000   0.50000   0.50100
+Fe2   0.07630   0.21350   0.54100
+Fe3   0.78640   0.07630   0.54100
+K1   0.00000   0.00000   0.00000
+K2   0.17290   0.67290   0.00800
+F1   0.00000   0.50000   0.03000
+F2   0.07340   0.20670   0.04100
+F3   0.27850   0.77830   0.54900
+F4   0.79350   0.07340   0.04300
+F5   0.35020   0.00650   0.58000
+F6   0.99340   0.34970   0.58000
+F7   0.13720   0.07280   0.52700
+F8   0.92810   0.13740   0.52900

@@ -1,0 +1,44 @@
+      Calderite
+      Ottonello G, Borketa M, Sciuto P F
+      American Mineralogist 81 (1996) 429-447
+      Parameterization of energy and interactions in garnets: End-member properties
+      Locality: Calculated structure
+      _database_code_amcsd 0018998
+
+      CELL PARAMETERS:  11.8288 11.8288 11.8288   90.000   90.000   90.000
+      SPACE GROUP: Ia3d      
+      X-RAY WAVELENGTH:     1.541838
+      Cell Volume:   1655.092
+      Density (g/cm3):      4.436
+      MAX. ABS. INTENSITY / VOLUME**2:      33.87442012    
+      RIR:      2.486
+      RIR based on corundum from Acta Crystallographica A38 (1982) 733-739
+               2-THETA      INTENSITY    D-SPACING   H   K   L   Multiplicity
+                18.37          4.86        4.8291    2   1   1        24
+                21.24          8.62        4.1821    2   2   0        12
+                28.23          3.61        3.1614    3   2   1        48
+                30.22         63.26        2.9572    4   0   0         6
+                33.89        100.00        2.6450    4   2   0        24
+                35.60          3.65        2.5219    3   3   2        24
+                37.24         68.68        2.4145    4   2   2        24
+                38.82         10.34        2.3198    4   3   1        48
+                41.83         15.80        2.1596    5   2   1        48
+                47.38         10.42        1.9189    6   1   1        24
+                47.38         11.60        1.9189    5   3   2        48
+                48.69          7.48        1.8703    6   2   0        24
+                53.68          7.40        1.7073    4   4   4         8
+                56.06         30.02        1.6404    6   4   0        24
+                57.23          1.18        1.6097    6   3   3        24
+                57.23          1.08        1.6097    5   5   2        24
+                58.38         69.09        1.5807    6   4   2        48
+                62.85         12.62        1.4786    8   0   0         6
+                63.94          1.06        1.4560    7   4   1        48
+                71.31         14.07        1.3225    8   4   0        24
+                73.36         16.76        1.2906    8   4   2        48
+                75.38         10.63        1.2610    6   6   4        24
+                80.36          1.03        1.1949    8   5   3        48
+                89.16          8.39        1.0983    8   6   4        48
+                89.16          5.39        1.0983   10   4   0        24
+================================================================================
+       XPOW Copyright 1993 Bob Downs, Ranjini Swaminathan and Kurt Bartelmehs
+  For reference, see Downs et al. (1993) American Mineralogist 78, 1104-1107.

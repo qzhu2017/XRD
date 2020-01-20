@@ -1,0 +1,22 @@
+      Steinhardtite
+      Vailionis A, Gamaly E G, Mizeikis V, Yang W, Rode A V, Juodkazis S
+      Nature Communications 2 (2011) 445-6
+      Evidence of superdense aluminium synthesized by ultrafast microexplosion
+      Locality: synthetic
+      _database_code_amcsd 0020218
+
+      CELL PARAMETERS:   2.8660  2.8660  2.8660   90.000   90.000   90.000
+      SPACE GROUP: Im-3m     
+      X-RAY WAVELENGTH:     1.541838
+      Cell Volume:     23.541
+      Density (g/cm3):      3.806
+      MAX. ABS. INTENSITY / VOLUME**2:      65.59651363    
+      RIR:      5.612
+      RIR based on corundum from Acta Crystallographica A38 (1982) 733-739
+               2-THETA      INTENSITY    D-SPACING   H   K   L   Multiplicity
+                44.72        100.00        2.0266    1   1   0        12
+                65.09         14.75        1.4330    2   0   0         6
+                82.43         27.62        1.1700    2   1   1        24
+================================================================================
+       XPOW Copyright 1993 Bob Downs, Ranjini Swaminathan and Kurt Bartelmehs
+  For reference, see Downs et al. (1993) American Mineralogist 78, 1104-1107.

@@ -1,0 +1,31 @@
+      Isoferroplatinum
+      Cabri L J, Feather C E
+      The Canadian Mineralogist 13 (1975) 117-126
+      Platinum-iron alloys: a nomenclature based on a
+      study of natural and synthetic alloys
+      Locality: Tulameen River, British Columbia, Canada
+      _database_code_amcsd 0005108
+
+      CELL PARAMETERS:   3.8640  3.8640  3.8640   90.000   90.000   90.000
+      SPACE GROUP: Pm3m      
+      X-RAY WAVELENGTH:     1.541838
+      Cell Volume:     57.691
+      Density (g/cm3):     18.450
+      MAX. ABS. INTENSITY / VOLUME**2:      1384.061966    
+      RIR:     24.427
+      RIR based on corundum from Acta Crystallographica A38 (1982) 733-739
+               2-THETA      INTENSITY    D-SPACING   H   K   L   Multiplicity
+                23.02         14.49        3.8640    1   0   0         6
+                32.78         11.93        2.7323    1   1   0        12
+                40.43        100.00        2.2309    1   1   1         8
+                47.03         47.27        1.9320    2   0   0         6
+                52.99          5.90        1.7280    2   1   0        24
+                58.51          4.31        1.5775    2   1   1        24
+                68.71         27.06        1.3661    2   2   0        12
+                73.53          2.08        1.2880    2   2   1        24
+                78.24          1.73        1.2219    3   1   0        24
+                82.86         30.11        1.1650    3   1   1        24
+                87.44          8.70        1.1154    2   2   2         8
+================================================================================
+       XPOW Copyright 1993 Bob Downs, Ranjini Swaminathan and Kurt Bartelmehs
+  For reference, see Downs et al. (1993) American Mineralogist 78, 1104-1107.

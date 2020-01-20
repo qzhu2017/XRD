@@ -1,0 +1,66 @@
+data_global
+_chemical_name_mineral 'Pyrite'
+loop_
+_publ_author_name
+'Bayliss P'
+_journal_name_full 'American Mineralogist'
+_journal_volume 62 
+_journal_year 1977
+_journal_page_first 1168
+_journal_page_last 1172
+_publ_section_title
+;
+ Crystal structure refinement of a weakly anisotropic pyrite
+;
+_database_code_amcsd 0000606
+_chemical_formula_sum 'Fe S2'
+_chemical_formula_sum ''
+_cell_length_a 5.4166
+_cell_length_b 5.4166
+_cell_length_c 5.4166
+_cell_angle_alpha 90
+_cell_angle_beta 90
+_cell_angle_gamma 90
+_cell_volume 158.921
+_exptl_crystal_density_diffrn      5.015
+_symmetry_space_group_name_H-M 'P 1'
+loop_
+_space_group_symop_operation_xyz
+  'x,y,z'
+loop_
+_atom_site_label
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+Fe1   0.00100   0.00200   0.00300
+Fe2   0.49660   0.00010   0.50360
+Fe3   0.50010   0.50200   0.00110
+Fe4  -0.00060   0.50130   0.50380
+S1   0.38570   0.38320   0.38400
+S2   0.11490   0.61140   0.88460
+S3   0.88540   0.11570   0.61430
+S4   0.61530   0.88650   0.11410
+S5   0.61510   0.61320   0.61370
+S6   0.88540   0.38180   0.11490
+S7   0.11470   0.88560   0.38410
+S8   0.38570   0.11610   0.88420
+loop_
+_atom_site_aniso_label
+_atom_site_aniso_U_11
+_atom_site_aniso_U_22
+_atom_site_aniso_U_33
+_atom_site_aniso_U_12
+_atom_site_aniso_U_13
+_atom_site_aniso_U_23
+Fe1 0.00342 0.00357 0.00253 0.00000 0.00000 0.00059
+Fe2 0.00386 0.00386 0.00282 0.00030 -0.00045 -0.00015
+Fe3 0.00386 0.00312 0.00327 0.00104 -0.00030 -0.00045
+Fe4 0.00386 0.00386 0.00238 0.00015 -0.00030 -0.00015
+S1 0.00297 0.00268 0.00059 -0.00104 -0.00045 -0.00059
+S2 0.00565 0.01026 0.00743 0.00030 -0.00015 -0.00104
+S3 0.00505 0.00015 -0.00030 -0.00015 -0.00059 -0.00059
+S4 0.00580 0.01115 0.00580 -0.00045 -0.00119 -0.00149
+S5 0.00520 0.00684 0.00728 0.00030 -0.00030 0.00000
+S6 0.00386 -0.00074 -0.00030 0.00000 -0.00045 0.00030
+S7 0.00520 0.00847 0.00803 0.00015 -0.00045 -0.00015
+S8 0.00208 -0.00059 0.00163 0.00059 0.00015 0.00059

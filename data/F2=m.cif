@@ -1,0 +1,58 @@
+data_global
+_amcsd_formula_title 'Cr7 Se8'
+loop_
+_publ_author_name
+'Chevreton M'
+'Bertaut F'
+_journal_name_full 'Comptes Rendus Hebdomadaires des Seances de l'Academie des Sciences'
+_journal_volume 253 
+_journal_year 1961
+_journal_page_first 145
+_journal_page_last 147
+_publ_section_title
+;
+ Etude de seleniures de chrome.
+ _cod_database_code 1008922
+;
+_database_code_amcsd 0016789
+_chemical_formula_sum 'Cr7 Se8'
+_chemical_formula_sum ''
+_cell_length_a 12.664
+_cell_length_b 7.374
+_cell_length_c 11.979
+_cell_angle_alpha 90
+_cell_angle_beta 91.25
+_cell_angle_gamma 90
+_cell_volume 1118.385
+_exptl_crystal_density_diffrn      5.913
+_symmetry_space_group_name_H-M 'F 1 2/m 1'
+loop_
+_space_group_symop_operation_xyz
+  'x,y,z'
+  'x,1/2+y,1/2+z'
+  '1/2+x,y,1/2+z'
+  '1/2+x,1/2+y,z'
+  'x,-y,z'
+  'x,1/2-y,1/2+z'
+  '1/2+x,-y,1/2+z'
+  '1/2+x,1/2-y,z'
+  '-x,y,-z'
+  '-x,1/2+y,1/2-z'
+  '1/2-x,y,1/2-z'
+  '1/2-x,1/2+y,-z'
+  '-x,-y,-z'
+  '-x,1/2-y,1/2-z'
+  '1/2-x,-y,1/2-z'
+  '1/2-x,1/2-y,-z'
+loop_
+_atom_site_label
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+Cr1   0.00000   0.50000   0.00000
+Cr2   0.25000   0.25000   0.00000
+Cr3   0.25000   0.24400   0.25000
+Cr4   0.49400   0.00000   0.26800
+Se1   0.17300   0.00000   0.12200
+Se2   0.66900   0.00000   0.12600
+Se3   0.42200   0.24000   0.13100

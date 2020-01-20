@@ -1,0 +1,25 @@
+      Cuprite
+      Hafner S S, Nagel S
+      Physics and Chemistry of Minerals 9 (1983) 19-22
+      The electric field gradient at the position of copper in
+      Cu2O and electronic charge density analysis by means of K-factors
+      _database_code_amcsd 0007351
+
+      CELL PARAMETERS:   4.2696  4.2696  4.2696   90.000   90.000   90.000
+      SPACE GROUP: Pn3       
+      X-RAY WAVELENGTH:     1.541838
+      Cell Volume:     77.833
+      Density (g/cm3):      6.105
+      MAX. ABS. INTENSITY / VOLUME**2:      194.0733730    
+      RIR:     10.351
+      RIR based on corundum from Acta Crystallographica A38 (1982) 733-739
+               2-THETA      INTENSITY    D-SPACING   H   K   L   Multiplicity
+                29.59          4.15        3.0191    1   1   0        12
+                36.45        100.00        2.4651    1   1   1         8
+                42.34         37.65        2.1348    2   0   0         6
+                61.42         32.48        1.5095    2   2   0        12
+                73.58         28.30        1.2873    3   1   1        24
+                77.43          6.61        1.2325    2   2   2         8
+================================================================================
+       XPOW Copyright 1993 Bob Downs, Ranjini Swaminathan and Kurt Bartelmehs
+  For reference, see Downs et al. (1993) American Mineralogist 78, 1104-1107.
