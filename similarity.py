@@ -86,14 +86,14 @@ class Similarity(object):
     def triangleFunction(self):
         
         """
-        Function to weight correlations
+        Triangle function to weight correlations
         """
         
         w = np.zeros((self.N))
         l = self.weight['params']
         for i in range(self.r.shape[0]):
             r = np.abs(self.r[i])
-            if r < 1:
+            if r < l:
                 tf = lambda r,l : 1 - r/l
                 w[i] = tf(r,l)
             else:
