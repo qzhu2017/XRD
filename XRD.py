@@ -732,42 +732,55 @@ class XRD(object):
         # if self.profiling != None:
         #     self.get_profile(max_intensity)
  
-    def get_profile(self, theta2, xrd_intensity, N, profiling = {'function': 'gaussian', 'params': 0.9}):
+    def get_profile(self, theta2, xrd_intensity, N, **kwargs):
     
         """
         args:
-            theta2: simulated theta values (1D array)
-            xrd_intensity: simulated peaks (1D array)
-            N: Resolution for profiling arrays (int)
-            profiling: profile function that represents data (dictionary)
+            theta2 (1D array): simulated theta values 
+            xrd_intensity (1D array): simulated peaks 
+            N (int): Resolution for profiling arrays 
+            Keyword Arguments (dict):
+                Key 1 (string): Function used to profile spectra (must be gaussian, lorentzian, or pseudo-voigt). 
+                Key 2 (float): Parameter used to calculate the angle dependent FWHM. Specified as V if profile is 
+                gaussian, X if lorentzian.
+                Key 3 (float): Specify key 3 if profile is pseudo-voigt, which is a function of gaussian and
+                               lorentzian profiles. If key 2 specifies V, key 3 must specify X, and vice versa
 
-        returns:
+        stores:
             self.spectra: x and y values of profiling function (2D array)
         """
 
         # profile parameters
-        tail = 10
-        profile = profiling['function']
-        fwhm = profiling['params']
+        tail = 5
+        profile = kwargs['function']
         gpeaks = np.zeros((N))
         g2thetas = np.linspace(np.min(theta2) - tail, np.max(theta2) + tail, N)
 
         for i,j in zip(range(len(theta2)),range(len(xrd_intensity))):
             theta, peak =  theta2[i], xrd_intensity[j]
-
             if profile == 'gaussian':
-                tmp = self.gaussian_profile(peak,theta,g2thetas,fwhm)
+                V = kwargs['V']
+                fwhm_g = V*np.tan(np.pi*theta/2/180)
+                tmp = self.gaussian_profile(peak,theta,g2thetas,fwhm_g)
             elif profile == 'lorentzian':
-                tmp = self.lorentzian_profile(peak,theta,g2thetas,fwhm)
-            elif profile == 'psuedo_voigt':
-                eta = 0.5 
-                tmp = eta * self.lorentzian_profile(peak, theta ,g2thetas,fwhm) + \
-                        (1-eta) * self.gaussian_profile(peak,theta,g2thetas,fwhm)
+                X = kwargs['X']
+                fwhm_l = X/np.cos(np.pi*theta/2/180)
+                tmp = self.lorentzian_profile(peak,theta,g2thetas,fwhm_l)
+            elif profile == 'pseudo-voigt':
+                V = kwargs['V']
+                X =  kwargs['X']
+                fwhm_g = V*np.tan(np.pi*theta/2/180)
+                fwhm_l = X/np.cos(np.pi*theta/2/180)
+                fwhm = (fwhm_g**5 + 2.69269 * fwhm_g**4 * fwhm_l + 2.42843 * fwhm_g**3
+                         * fwhm_l**2 + 4.47163 * fwhm_g**2 * fwhm_l**3 + 0.07842  
+                         * fwhm_g*fwhm_l**4 + fwhm_l**5)**(1/5)
+                eta = 1.36603*(fwhm_l/fwhm) - 0.47719*(fwhm_l/fwhm)**2 + 0.11116*(fwhm_l/fwhm)**3
+                tmp = self.lorentzian_profile(peak, theta ,g2thetas,fwhm) * (2*eta/np.pi/fwhm) +\
+                        (1-eta)*(2/fwhm)*np.sqrt((np.log(2))/np.pi)*self.gaussian_profile(peak,theta, g2thetas,fwhm)
             else:
-                msg = profile + 'is not supported'
+                msg = profile + ' is not supported'
                 raise NotImplementedError(msg)
             
-            # profile *= np.cos(g2thetas/180*np.pi) # this may or may not stay here
             gpeaks += tmp
 
         gpeaks /= np.max(gpeaks)
