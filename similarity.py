@@ -1,5 +1,6 @@
 import numpy as np
 import scipy.integrate as integrate
+import matplotlib.pyplot as plt
 from scipy import interpolate
 
 class Similarity(object):
@@ -36,6 +37,8 @@ class Similarity(object):
             msg = function + 'is not supported'
             raise NotImplementedError(msg)
 
+        # self.showPlot()
+    
     def calculate(self):
         
         """
@@ -46,7 +49,6 @@ class Similarity(object):
         fy_r = self.fy
         gx_r = self.gx + self.r
         gy_r = self.gy
-
         fg_dx = np.linspace(self.fx[0], gx_r[-1], self.N)
         ff_dx = np.linspace(self.fx[0], fx_r[-1], self.N)
         gg_dx = np.linspace(self.gx[0], gx_r[-1], self.N)
@@ -68,8 +70,8 @@ class Similarity(object):
         """
 
         if self.x_range == None:
-            x_min = min(np.min(self.fx), np.min(self.gx))
-            x_max = max(np.max(self.fx), np.max(self.gx))
+            x_min = max(np.min(self.fx), np.min(self.gx))
+            x_max = min(np.max(self.fx), np.max(self.gx))
             self.x_range = [x_min,x_max]
 
         f_inter = interpolate.interp1d(self.fx, self.fy, 'cubic', fill_value = 'extrapolate')
@@ -80,7 +82,7 @@ class Similarity(object):
 
         self.fx, self.fy = fgx_new, fy_new
         self.gx, self.gy = fgx_new, gy_new
-
+        
     def triangleFunction(self):
         
         """
@@ -115,4 +117,16 @@ class Similarity(object):
                 w[i] = 0
         self.w = w
 
+    def showPlot(self):
+        fig1 = plt.figure(1,figsize=(15,6))
+        frame1=fig1.add_axes((.1,.3,.8,.6))
+    
+        plt.plot(self.fx,self.fy,label='pxrd')
+        plt.plot(self.gx,-self.gy,label='vesta')
+        plt.legend()
+        #Residual plot
+        residuals = self.gy-self.fy
+        frame2=fig1.add_axes((.1,.1,.8,.2))        
+        plt.plot(self.gx,residuals,'.r', markersize = 0.5)
+        plt.show()
 
