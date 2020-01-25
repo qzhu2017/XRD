@@ -770,7 +770,7 @@ class XRD(object):
                     fwhm = V*np.tan(np.pi*theta/2/180)
                 except:
                     fwhm = kwargs['FWHM']
-                tmp = self.gaussian_profile(peak,theta,g2thetas,fwhm)
+                tmp = self.gaussian_profile(xrd_intensity[i],theta2[i],g2thetas,fwhm)
 
             elif profile == 'lorentzian':
                 try:
@@ -778,7 +778,7 @@ class XRD(object):
                     fwhm = X/np.cos(np.pi*theta/2/180)
                 except:
                     fwhm = kwargs['FWHM']
-                tmp = self.lorentzian_profile(peak,theta,g2thetas)
+                tmp = self.lorentzian_profile(xrd_intensity[i],theta2[i],g2thetas,fwhm)
             
             elif profile == 'split-type': 
                 try:
