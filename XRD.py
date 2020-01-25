@@ -740,12 +740,16 @@ class XRD(object):
             xrd_intensity (1D array): simulated peaks 
             N (int): Resolution for profiling arrays 
             Keyword Arguments (dict):
-                Key 1 (string): Function used to profile spectra (must be gaussian, lorentzian, or pseudo-voigt). 
-                Key 2 (float): Parameter used to calculate the angle dependent FWHM. Specified as V if profile is 
-                gaussian, X if lorentzian.
-                Key 3 (float): Specify key 3 if profile is pseudo-voigt, which is a function of gaussian and
-                               lorentzian profiles. If key 2 specifies V, key 3 must specify X, and vice versa
-
+                Key 1 (string): Function used to profile spectra (must be gaussian, lorentzian, or split-type). 
+                    If gaussian:
+                        Key 2 (float/int): adjustable parameter (V) for theta dep. fwhm
+                    If lorentzian:
+                        key 2 (float/int): adjustable parameter (X) for theta dep. fwhm
+                    If split-type:
+                        Key 2-4 (float/int): adjustable parameters (U, V, W) for theta dep. fwhm
+                        Key 5 (float/int): assymetry parameter (A)
+                        key 6 (float/int): mixing parameter (eta_l)
+                        key 7 (float/int): mixing parameter (eta_h)
         stores:
             self.spectra: x and y values of profiling function (2D array)
         """
@@ -755,33 +759,30 @@ class XRD(object):
         profile = kwargs['function']
         gpeaks = np.zeros((N))
         g2thetas = np.linspace(np.min(theta2) - tail, np.max(theta2) + tail, N)
-
+        
         for i,j in zip(range(len(theta2)),range(len(xrd_intensity))):
-            theta, peak =  theta2[i], xrd_intensity[j]
             if profile == 'gaussian':
                 V = kwargs['V']
-                fwhm_g = V*np.tan(np.pi*theta/2/180)
-                tmp = self.gaussian_profile(peak,theta,g2thetas,fwhm_g)
+                fwhm = V*np.tan(np.pi*theta/2/180)
+                tmp = self.gaussian_profile(peak,theta,g2thetas)
             elif profile == 'lorentzian':
                 X = kwargs['X']
-                fwhm_l = X/np.cos(np.pi*theta/2/180)
-                tmp = self.lorentzian_profile(peak,theta,g2thetas,fwhm_l)
-            elif profile == 'pseudo-voigt':
+                fwhm = X/np.cos(np.pi*theta/2/180)
+                tmp = self.lorentzian_profile(peak,theta,g2thetas)
+            elif profile == 'split-type': 
+                U = kwargs['U']
                 V = kwargs['V']
-                X =  kwargs['X']
-                fwhm_g = V*np.tan(np.pi*theta/2/180)
-                fwhm_l = X/np.cos(np.pi*theta/2/180)
-                fwhm = (fwhm_g**5 + 2.69269 * fwhm_g**4 * fwhm_l + 2.42843 * fwhm_g**3
-                         * fwhm_l**2 + 4.47163 * fwhm_g**2 * fwhm_l**3 + 0.07842  
-                         * fwhm_g*fwhm_l**4 + fwhm_l**5)**(1/5)
-                eta = 1.36603*(fwhm_l/fwhm) - 0.47719*(fwhm_l/fwhm)**2 + 0.11116*(fwhm_l/fwhm)**3
-                tmp = self.lorentzian_profile(peak, theta ,g2thetas,fwhm) * (2*eta/np.pi/fwhm) +\
-                        (1-eta)*(2/fwhm)*np.sqrt((np.log(2))/np.pi)*self.gaussian_profile(peak,theta, g2thetas,fwhm)
+                W = kwargs['W']
+
+                fwhm = np.sqrt(U*np.tan(np.pi*theta2[i]/2/180)**2 + V*np.tan(np.pi*theta2[i]/2/180) + W)
+                x = g2thetas - theta2[i]
+
+                tmp = self.split_type(x, xrd_intensity[i], fwhm, N, **kwargs) 
+
             else:
                 msg = profile + ' is not supported'
                 raise NotImplementedError(msg)
-            
-            gpeaks += tmp
+            gpeaks += tmp 
 
         gpeaks /= np.max(gpeaks)
         self.spectra = np.vstack((g2thetas, gpeaks))
@@ -793,6 +794,28 @@ class XRD(object):
     def lorentzian_profile(self, I0, theta2, alpha,fwhm):
         tmp = 1 + 4*((alpha - theta2)/fwhm)**2
         return I0 * 1/tmp
+
+    def split_type(self, x, I0, fwhm, N, **kwargs):
+        tmp = np.zeros((N))
+        for k, dx in enumerate(x):
+            if dx < 0:
+                A = kwargs['A']
+                eta_l = kwargs['eta_l']
+                eta_h = kwargs['eta_h']
+            
+            else:
+                A = 1/kwargs['A'] 
+                eta_l = kwargs['eta_h']
+                eta_h = kwargs['eta_l']
+
+    
+            tmp[k] = ((1+A)*(eta_h + np.sqrt(np.pi*np.log(2))*(1-eta_h))) /\
+                     (eta_l + np.sqrt(np.pi*np.log(2)) * (1-eta_l) + A*(eta_h + \
+                     np.sqrt(np.pi*np.log(2))*(1-eta_h))) * (eta_l*2/(np.pi*fwhm) * \
+                     (1+((1+A)/A)**2 * (dx/fwhm)**2)**(-1) + (1-eta_l)*np.sqrt(np.log(2)/np.pi)* \
+                     2/fwhm *np.exp(-np.log(2) * ((1+A)/A)**2 * (dx/fwhm)**2))
+        
+        return I0 * tmp
 
     def pxrdf(self):
         """
