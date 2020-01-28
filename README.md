@@ -16,8 +16,8 @@ One could load the crystal from
 
 To perform XRD calculation, one needs to provide the following info
 - crystal structure
-- wavelength (default is Cu-Ka: 1.54184 \AA)
-- maximum 2\theta value (defult: 180 degree)
+- wavelength (default is Cu-Ka: 1.54184 &#8491;)
+- maximum 2&theta; value (defult: 180&deg;)
 
 The atomic scattering factor is calculated from 9-parameter equation by Don Cromer and J. Mann.
 
