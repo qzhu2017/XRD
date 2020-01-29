@@ -81,7 +81,9 @@ $ cd XRD
 $ pip install -r requirements.txt
 $ flask run
 ```
-You should see the following output:
+It's **important** to rerun `pip install -r requirements.txt` if this repository has been updated in case there are new dependencies.
+
+If everything is setup correctly, you should see the following output:
 ```bash
  * Serving Flask app "vxrd.py"
  * Environment: production
