@@ -74,14 +74,16 @@ $ python XRD.py -c NaCl.cif
 It will also generate a png file with PXRD plot as follows
 ![NaCl](https://github.com/qzhu2017/XRD/blob/master/images/NaCl.cif.png)
 
-## VXRD: Web-based Calculator & Visualizer
+## VXRD: Interactive Web Calculator
 In order to run and view VXRD locally, run the following shell commands:
 ```bash
 $ cd XRD
 $ pip install -r requirements.txt
 $ flask run
 ```
-You should see the following output:
+It's **important** to rerun `pip install -r requirements.txt` if this repository has been updated in case there are new dependencies.
+
+If everything is setup correctly, you should see the following output:
 ```bash
  * Serving Flask app "vxrd.py"
  * Environment: production
