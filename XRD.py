@@ -762,12 +762,11 @@ class XRD(object):
         profile = kwargs['function']
         gpeaks = np.zeros((N))
         g2thetas = np.linspace(np.min(theta2) - tail, np.max(theta2) + tail, N)
-        
         for i,j in zip(range(len(theta2)),range(len(xrd_intensity))):
             if profile == 'gaussian':
                 try:
                     V = kwargs['V']
-                    fwhm = V*np.tan(np.pi*theta/2/180)
+                    fwhm = V*np.tan(np.pi*theta2[i]/2/180)
                 except:
                     fwhm = kwargs['FWHM']
                 tmp = self.gaussian_profile(xrd_intensity[i],theta2[i],g2thetas,fwhm)
@@ -775,7 +774,7 @@ class XRD(object):
             elif profile == 'lorentzian':
                 try:
                     X = kwargs['X']
-                    fwhm = X/np.cos(np.pi*theta/2/180)
+                    fwhm = X/np.cos(np.pi*theta2[i]/2/180)
                 except:
                     fwhm = kwargs['FWHM']
                 tmp = self.lorentzian_profile(xrd_intensity[i],theta2[i],g2thetas,fwhm)
