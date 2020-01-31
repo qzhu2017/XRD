@@ -7,5 +7,18 @@
         <div class="col-md-4">
             {{ wtf.quick_form(form) }}
         </div>
+        <div class="col-md-6">
+            {% if jsmol %}
+                <h2>[JSmol Visualizer Here]</h2>
+            {% endif %}
+            
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            {% if plot %}
+                {{ plot|safe }}
+            {% endif %}
+        </div>
     </div>
 {% endblock %}
