@@ -22,11 +22,12 @@ class CalcForm(FlaskForm):
     theta = FloatField(
         label='2&theta;<sub>max</sub> (&deg;)',
         validators=[DataRequired(), NumberRange(
-            min=28,
-            max=180,
+            min=5,
+            max=120,
             message='Must be between %(min)s° and %(max)s°'
         )],
-        description='Maximum diffraction angle in degrees',default=90)
+        description='Maximum diffraction angle in degrees',
+        default=90)
     submit = SubmitField('Calculate')
     
 # Create separate classes for each profiling branch w/ member parameters (see "Field Enclosures")
