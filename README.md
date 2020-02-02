@@ -16,8 +16,8 @@ One could load the crystal from
 
 To perform XRD calculation, one needs to provide the following info
 - crystal structure
-- wavelength (default is Cu-Ka: 1.54184 \AA)
-- maximum 2\theta value (defult: 180 degree)
+- wavelength (default is Cu-Ka: 1.54184 &#8491;)
+- maximum 2&theta; value (defult: 180&deg;)
 
 The atomic scattering factor is calculated from 9-parameter equation by Don Cromer and J. Mann.
 
@@ -45,8 +45,8 @@ Options:
   -i intensity, --intensity=intensity
                         the minimum intensity to show, default 0.01
  ```
- ## execute 
- one just needs to run the followings,
+## execute 
+one just needs to run the followings,
 ```
 $ python XRD.py -c NaCl.cif
       2theta    Intensity     d_hkl    h    k    l
@@ -74,3 +74,25 @@ $ python XRD.py -c NaCl.cif
 It will also generate a png file with PXRD plot as follows
 ![NaCl](https://github.com/qzhu2017/XRD/blob/master/images/NaCl.cif.png)
 
+## VXRD: Interactive Web Calculator
+In order to run and view VXRD locally, run the following shell commands:
+```bash
+$ cd XRD
+$ pip install -r requirements.txt
+$ flask run
+```
+It's **important** to rerun `pip install -r requirements.txt` if this repository has been updated in case there are new dependencies.
+
+If everything is setup correctly, you should see the following output:
+```bash
+ * Serving Flask app "vxrd.py"
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: off
+ * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+```
+Then, open your web browser and enter the following URL:
+`http://localhost:5000/`
+
+When finished, press `CTRL+C` in your terminal to shutdown the web-app.

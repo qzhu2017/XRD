@@ -667,6 +667,7 @@ class XRD(object):
         intense = []
         angle = []
         count = 0
+
         for hkl, s2, theta, d_hkl in zip(self.hkl_list, d0, self.theta, self.d_hkl):
             count+=1
             
@@ -830,7 +831,7 @@ class XRD(object):
 
     def pxrdf(self):
         """
-                Group the equivalent hkl planes together by 2\theta angle
+        Group the equivalent hkl planes together by 2\theta angle
         N*6 arrays, Angle, d_hkl, h, k, l, intensity
         """
         
