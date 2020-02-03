@@ -79,7 +79,7 @@ def classifyStructure(file):
         return 'triclinic'
     
 
-path = './data'
+path = '/Users/sayred1/Documents/Research/dXRD/XRD/data/'
 allFiles = getListOfFiles(path)
 allFiles.sort()
 poscarFiles = []
@@ -105,14 +105,24 @@ N = 10000
 Sims = []
 Sgs = []
 clss = []
+# profile = {'function': 'gaussian', 'params': 0.2}
+
+U = 5.776410E-03 # FWHM parameter, U
+V = -1.673830E-03 # FWHM parameter, V
+W = 5.668770E-03 # FWHM parameter, W
+A = 1.03944 # Asymmetry parameter, a1
+eta_h = 0.504656 # Mixing parameter, eta_H0
+eta_l = 0.611844  # Mixing parameter, eta_L0
+profile = {'function':'split-type', 'theta_dependence': True, 'U': U, 'V':V, 'W':W, 'A':A, 'eta_h':eta_h, 'eta_l':eta_l}
+
+
 for poscardata, diffdata, cifFile in zip(poscarFiles,diffFiles,cifFiles):
-    
     """
     Run POSCAR files through XRD, get profile
     """
     struct = crystal('POSCAR',filename=poscardata)
     xrd1 = XRD(struct, wavelength, max2theta)   
-    xrd1.get_profile(xrd1.theta2, xrd1.xrd_intensity,N)
+    xrd1.get_profile(xrd1.theta2, xrd1.xrd_intensity,N,**profile)
     f = xrd1.spectra 
     
     """
@@ -140,7 +150,7 @@ for poscardata, diffdata, cifFile in zip(poscarFiles,diffFiles,cifFiles):
     yval = np.array(yval)
     yval/= np.max(yval)
     xrd2 = XRD(struct, wavelength, max2theta)
-    xrd2.get_profile(xval, yval,N)
+    xrd2.get_profile(xval, yval,N,**profile)
     g = xrd2.spectra 
 
     S = Similarity(f, g, N).calculate()
@@ -149,7 +159,6 @@ for poscardata, diffdata, cifFile in zip(poscarFiles,diffFiles,cifFiles):
     Sgs.append(groupName)
     clss.append(classification)
     Sims.append(S)
-    print(S)    
     """
     plt.figure(figsize=(15,7))
     plt.plot(f2thetas,fpeaks, label=poscardata)
@@ -192,7 +201,7 @@ for s, classification in zip(Sims, clss):
 
 """
 Plot histograms
-"""
+
 plt.figure(figsize=(15,10))
 plt.suptitle('Similarity Histogram')
 plt.hist(Sims)
@@ -232,3 +241,4 @@ plt.ylabel('Counts')
 plt.tight_layout()
 
 plt.show()
+"""
