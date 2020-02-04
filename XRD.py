@@ -1,4 +1,4 @@
-
+import numba
 from math import acos, pi, ceil
 import numpy as np
 import matplotlib.pyplot as plt
@@ -566,9 +566,20 @@ class XRD(object):
         self.march_parameter = march_parameter
         self.all_dhkl(crystal)
         self.intensity(crystal)
-        self.pxrdf()     
-    
-        
+        self.pxrdf()   
+        """
+        U = 5.776410E-03 # FWHM parameter, U
+        V = -1.673830E-03 # FWHM parameter, V
+        W = 5.668770E-03 # FWHM parameter, W
+        A = 1.03944 # Asymmetry parameter, a1
+        eta_h = 0.504656 # Mixing parameter, eta_H0
+        eta_l = 0.611844  # Mixing parameter, eta_L0
+        N = 1000
+        profile = {'function':'split-type', 'theta_dependence': True, 'U': U, 'V':V, 'W':W, 'A':A, 'eta_h':eta_h, 'eta_l':eta_l}
+        s = time.time()
+        self.get_profile(self.theta2,self.xrd_intensity,N,**profile)
+        # print(time.time() - s)
+        """
     def by_hkl(self, hkl):
         
         # this is a simple print statement, does not need to be optimized
@@ -663,14 +674,10 @@ class XRD(object):
         TWO_THETA_TOL = 1e-5 # tolerance to find repeating angles
         SCALED_INTENSITY_TOL = 1e-5 # threshold for intensities
         
-        ind = 0
-        intense = []
-        angle = []
-        count = 0
-
         for hkl, s2, theta, d_hkl in zip(self.hkl_list, d0, self.theta, self.d_hkl):
-            count+=1
             
+
+   
             # calculate the scattering factor sf
             g_dot_r = np.dot(crystal.coordinate, np.transpose([hkl])).T[0]
             sf = zs - 41.78214 * s2 * np.sum(coeffs[:, :, 0] * np.exp(-coeffs[:, :, 1] * s2), axis=1)
@@ -730,8 +737,6 @@ class XRD(object):
         self.hkl_list = hkls
         self.d_hkl = d_hkls
 
-        # if self.profiling != None:
-        #     self.get_profile(max_intensity)
  
     def get_profile(self, theta2, xrd_intensity, N, **kwargs):
     
@@ -761,9 +766,15 @@ class XRD(object):
         # profile parameters
         tail = 5
         profile = kwargs['function']
-        gpeaks = np.zeros((N))
-        g2thetas = np.linspace(np.min(theta2) - tail, np.max(theta2) + tail, N)
+        # gpeaks = np.zeros((len(xrd_intensity),2,N))
+        # g2thetas = np.zeros((len(theta2),2,N))
+        spectra = np.zeros((len(xrd_intensity),2,N))
+
         for i,j in zip(range(len(theta2)),range(len(xrd_intensity))):
+          
+            # x = np.linspace(np.min(theta2[i]) - tail, np.max(theta2[i]) + tail, N, retstep = True)
+            # y = np.zeros((x.shape))
+
             if profile == 'gaussian':
                 try:
                     V = kwargs['V']
@@ -779,7 +790,7 @@ class XRD(object):
                 except:
                     fwhm = kwargs['FWHM']
                 tmp = self.lorentzian_profile(xrd_intensity[i],theta2[i],g2thetas,fwhm)
-            
+
             elif profile == 'split-type': 
                 try:
                     U = kwargs['U']
@@ -789,16 +800,30 @@ class XRD(object):
                 except:
                     fwhm = kwargs['FWHM']
 
-                x = g2thetas - theta2[i]    
-                tmp = self.split_type(x, xrd_intensity[i], N, fwhm, **kwargs) 
-
+                # x = g2thetas - theta2[i]    
+           
+                spectra[i,:,:] = self.split_type(theta2[i], xrd_intensity[i], N, fwhm, **kwargs) 
             else:
                 msg = profile + ' is not supported'
                 raise NotImplementedError(msg)
-            gpeaks += tmp 
+       
+        from scipy import interpolate 
+        spectra[:,1,:] = spectra[:,1,:]/np.max(spectra[:,1,:])
+        x = spectra[:,0,:]
+        y = spectra[:,1,:]
+        px = np.concatenate((x),axis = 0)
+        px = np.sort(px)
+        py = np.zeros((px.shape))
+        for theta2,peak in zip(x,y):
+            inter = interpolate.UnivariateSpline(theta2, peak)#, 'cubic', fill_value = 'extrapolate')
+            py_new = inter(px)
+            py += py_new
+        
+        self.spectra = np.vstack((px,py))
 
-        gpeaks /= np.max(gpeaks)
-        self.spectra = np.vstack((g2thetas, gpeaks))
+        # print(px.shape,py.shape)
+
+    # def 
 
     def gaussian_profile(self, I0, theta2, alpha, fwhm):
         tmp = ((alpha - theta2)/fwhm)**2
@@ -808,26 +833,33 @@ class XRD(object):
         tmp = 1 + 4*((alpha - theta2)/fwhm)**2
         return I0 * 1/tmp
 
-    def split_type(self, x, I0, N, fwhm, **kwargs):
-        tmp = np.zeros((N))
-        for k, dx in enumerate(x):
-            if dx < 0:
-                A = kwargs['A']
-                eta_l = kwargs['eta_l']
-                eta_h = kwargs['eta_h']
+    def split_type(self, theta2, I0, N, fwhm, **kwargs):
+        A = kwargs['A']
+        eta_l = kwargs['eta_l']
+        eta_h = kwargs['eta_h']
+        tmpx = np.linspace(np.min(theta2) - 5, np.max(theta2) + 5, N) 
+        tmpy = np.zeros((N))
+        # move this outside 
 
-            else:
-                A = 1/kwargs['A'] 
-                eta_l = kwargs['eta_h']
-                eta_h = kwargs['eta_l']
-
-            tmp[k] = ((1+A)*(eta_h + np.sqrt(np.pi*np.log(2))*(1-eta_h))) /\
-                     (eta_l + np.sqrt(np.pi*np.log(2)) * (1-eta_l) + A*(eta_h + \
-                     np.sqrt(np.pi*np.log(2))*(1-eta_h))) * (eta_l*2/(np.pi*fwhm) * \
-                     (1+((1+A)/A)**2 * (dx/fwhm)**2)**(-1) + (1-eta_l)*np.sqrt(np.log(2)/np.pi)* \
-                     2/fwhm *np.exp(-np.log(2) * ((1+A)/A)**2 * (dx/fwhm)**2))
-
-        return I0 * tmp
+        @numba.njit(numba.float64[:,:](numba.float64,numba.float64,numba.int64,numba.float64,numba.float64,numba.float64,numba.float64,numba.float64[:],numba.float64[:]),cache=True)
+        def wrapped(theta2, I0, N, fwhm,A,eta_l,eta_h,tmpx,tmpy):
+            x = tmpx - theta2
+            for k, dx in enumerate(x):
+                if dx > 0:
+                    A = 1/A
+                    eta_l = eta_h
+                    eta_h = eta_l
+                tmpy[k] = ((1+A)*(eta_h + np.sqrt(np.pi*np.log(2))*(1-eta_h))) /\
+                   (eta_l + np.sqrt(np.pi*np.log(2)) * (1-eta_l) + A*(eta_h + \
+                   np.sqrt(np.pi*np.log(2))*(1-eta_h))) * (eta_l*2/(np.pi*fwhm) * \
+                   (1+((1+A)/A)**2 * (dx/fwhm)**2)**(-1) + (1-eta_l)*np.sqrt(np.log(2)/np.pi)* \
+                   2/fwhm *np.exp(-np.log(2) * ((1+A)/A)**2 * (dx/fwhm)**2))
+            
+            tmp = np.vstack((tmpx,I0*tmpy))
+            
+            return tmp
+        
+        return wrapped(theta2,I0, N, fwhm,A,eta_l,eta_h,tmpx,tmpy)
 
     def pxrdf(self):
         """
