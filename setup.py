@@ -23,14 +23,9 @@ setup(
     packages=['pyxtal_xrd', 
               'pyxtal_xrd.database', 
               ],
-    package_data={'pyxtal.database': ['*.csv', '*.json'],
-                 },
+    scripts=['scripts/pxrd.py'],
+    package_data={'pyxtal_xrd.database': ['*.json']},
 
-    #scripts=['scripts/pyxtal_atom', 
-    #         'scripts/pyxtal_test', 
-    #         'scripts/pyxtal_symmetry',
-    #         'scripts/pyxtal_molecule',
-    #         ],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",

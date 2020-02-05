@@ -4,7 +4,7 @@ import json
 import os
 import collections
 from ase.io import read
-from database.element import Element
+from pyxtal_xrd.database.element import Element
 
 def create_index():
     hkl_index = []
@@ -96,11 +96,9 @@ class XRD(object):
         This scheme is based off of pymatgen
         Needs improvement from different correction factors.
         """
-        # open a json file with atomic scattering parameters, should eventuall go to Element class
-
-        with open(os.path.join(os.path.dirname(__file__),
-                       "atomic_scattering_params.json")) as f:
-                        ATOMIC_SCATTERING_PARAMS = json.load(f)
+        fp = os.path.join(os.path.dirname(__file__), "database/atomic_scattering_params.json")
+        with open(fp, 'r') as f:
+            ATOMIC_SCATTERING_PARAMS = json.load(f)
 
         d0 = (1/2/self.d_hkl)**2
 
@@ -344,6 +342,41 @@ class XRD(object):
            plt.savefig(filename)
            plt.close()
         
+    def plotly_pxrd(self, minimum_I = 0.01, html=None):
+        import plotly.graph_objects as go
+        from plotly.subplots import make_subplots
+    
+        """
+        interactive plot for pxrd powered by plotly
+        Args:
+        xrd: xrd object
+        html: html filename (str)
+        """
+    
+        x, y, labels = [], [], []
+        for i in range(len(self.pxrd)):
+            theta2, d, h, k, l, intensity = self.pxrd[i]
+            h, k, l = int(h), int(k), int(l)
+            if intensity > minimum_I:
+                label = '<br>2&#952;: {:6.2f}<br>d: {:6.4f}</br>hkl: ({:d}{:d}{:d})'.format(theta2, d, h, k, l)
+                x.append(theta2)
+                y.append(-0.1)
+                labels.append(label)
+        trace1 = go.Bar(x=x, y=y, text=labels, 
+                        hovertemplate = "%{text}",
+                        width=0.2, name='Index')
+        trace2 = go.Scatter(x=self.spectra[0], y=self.spectra[1], name='Profile')
+        fig = go.Figure(data=[trace2, trace1])
+        fig.update_layout(xaxis_title = '2&#952; ({:.4f} &#8491;)'.format(self.wavelength),
+                          yaxis_title = 'Intensity',
+                          title = 'PXRD of '+self.name)
+    
+        if html is None:
+            return fig.to_html()
+        else:
+            fig.write_html(html)
+    
+
     def get_unique_families(self,hkls):
         """
         Returns unique families of Miller indices. Families must be permutations
