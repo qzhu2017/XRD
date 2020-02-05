@@ -24,9 +24,18 @@ def index():
         flash('XRD calculated for {}, λ={} Å, 2θ={}°'.format(f.filename, wavelength, max2theta))
 
         # Calculate and plot
+        '''QZ: here is an example if you use split-type'''
+        U = 5.776410E-03 # FWHM parameter, U
+        V = -1.673830E-03 # FWHM parameter, V
+        W = 5.668770E-03 # FWHM parameter, W
+        A = 1.03944 # Asymmetry parameter, a1
+        eta_h = 0.504656 # Mixing parameter, eta_H0
+        eta_l = 0.611844  # Mixing parameter, eta_L0
+        profile = {'function':'split-type', 'theta_dependence': True, 'U': U, 'V':V, 'W':W, 'A':A, 'eta_h':eta_h, 'eta_l':eta_l}
+
         struct = crystal('cif', filename=save_path)
         xrd1 = XRD(struct, wavelength, max2theta) 
-        xrd1.get_profile(xrd1.theta2, xrd1.xrd_intensity, N)
+        xrd1.get_profile(xrd1.theta2, xrd1.xrd_intensity, N, **profile)
         plot = plot_pxrd(xrd1)
 
         return render_template('index.html', title='Calculator', form=form, plot=plot)
