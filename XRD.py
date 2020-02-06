@@ -1,4 +1,4 @@
-
+import numba
 from math import acos, pi, ceil
 import numpy as np
 import matplotlib.pyplot as plt
@@ -643,11 +643,10 @@ class XRD(object):
         # obtiain scattering parameters, atomic numbers, and occus (need to look into occus)
         coeffs = []
         zs = []
-
         
         for elem,N_elem in zip(crystal.atom_type,crystal.composition):
             for N in range(N_elem):
-                if elem == 'D':
+                if elem == 'D': # must find a better way to account for elements that don't have specified scattering params
                     elem = 'H'
                 c = ATOMIC_SCATTERING_PARAMS[elem]
                 z = Element(elem).z
@@ -661,7 +660,7 @@ class XRD(object):
         # self.march_parameter = 1
 
         TWO_THETA_TOL = 1e-5 # tolerance to find repeating angles
-        SCALED_INTENSITY_TOL = 1e-5 # threshold for intensities
+        SCALED_INTENSITY_TOL = 1e-4 # threshold for intensities
         
         ind = 0
         intense = []
@@ -718,7 +717,7 @@ class XRD(object):
             count +=1
             v = self.peaks[k]
             fam = self.get_unique_families(v[1])
-            if v[0] / max_intensity * 100 > SCALED_INTENSITY_TOL:
+            if v[0] / max_intensity  > SCALED_INTENSITY_TOL:
                 x.append(k)
                 y.append(v[0])
                 
@@ -730,105 +729,7 @@ class XRD(object):
         self.hkl_list = hkls
         self.d_hkl = d_hkls
 
-        # if self.profiling != None:
-        #     self.get_profile(max_intensity)
- 
-    def get_profile(self, theta2, xrd_intensity, N, **kwargs):
-    
-        """
-        args:
-            theta2 (1D array): simulated theta values 
-            xrd_intensity (1D array): simulated peaks 
-            N (int): Resolution for profiling arrays 
-            Keyword Arguments (dict): The user can choose between theta dependent OR independent fwhm.
-                Key 1 (string): Function used to profile spectra (must be gaussian, lorentzian, or split-type).
-                Theta independent:
-                    Key 2 (float): constant value for fwhm
-                Theta dependent:
-                    Key 1 = gaussian:
-                        Key 2 (float/int): adjustable parameter (V) for theta dep. fwhm
-                    Key 1 = lorentzian:
-                        key 2 (float/int): adjustable parameter (X) for theta dep. fwhm
-                    Key 1 = split-type:
-                        Key 2-4 (float/int): adjustable parameters (U, V, W) for theta dep. fwhm
-                        Key 5 (float/int): assymetry parameter (A)
-                        key 6 (float/int): mixing parameter (eta_l)
-                        key 7 (float/int): mixing parameter (eta_h)
-        stores:
-            self.spectra: x and y values of profiling function (2D array)
-        """
-
-        # profile parameters
-        tail = 5
-        profile = kwargs['function']
-        gpeaks = np.zeros((N))
-        g2thetas = np.linspace(np.min(theta2) - tail, np.max(theta2) + tail, N)
-        for i,j in zip(range(len(theta2)),range(len(xrd_intensity))):
-            if profile == 'gaussian':
-                try:
-                    V = kwargs['V']
-                    fwhm = V*np.tan(np.pi*theta2[i]/2/180)
-                except:
-                    fwhm = kwargs['FWHM']
-                tmp = self.gaussian_profile(xrd_intensity[i],theta2[i],g2thetas,fwhm)
-
-            elif profile == 'lorentzian':
-                try:
-                    X = kwargs['X']
-                    fwhm = X/np.cos(np.pi*theta2[i]/2/180)
-                except:
-                    fwhm = kwargs['FWHM']
-                tmp = self.lorentzian_profile(xrd_intensity[i],theta2[i],g2thetas,fwhm)
-            
-            elif profile == 'split-type': 
-                try:
-                    U = kwargs['U']
-                    V = kwargs['V']
-                    W = kwargs['W']
-                    fwhm = np.sqrt(U*np.tan(np.pi*theta2[i]/2/180)**2 + V*np.tan(np.pi*theta2[i]/2/180) + W)
-                except:
-                    fwhm = kwargs['FWHM']
-
-                x = g2thetas - theta2[i]    
-                tmp = self.split_type(x, xrd_intensity[i], N, fwhm, **kwargs) 
-
-            else:
-                msg = profile + ' is not supported'
-                raise NotImplementedError(msg)
-            gpeaks += tmp 
-
-        gpeaks /= np.max(gpeaks)
-        self.spectra = np.vstack((g2thetas, gpeaks))
-
-    def gaussian_profile(self, I0, theta2, alpha, fwhm):
-        tmp = ((alpha - theta2)/fwhm)**2
-        return I0 * np.exp(-4*np.log(2)*tmp)
-    
-    def lorentzian_profile(self, I0, theta2, alpha,fwhm):
-        tmp = 1 + 4*((alpha - theta2)/fwhm)**2
-        return I0 * 1/tmp
-
-    def split_type(self, x, I0, N, fwhm, **kwargs):
-        tmp = np.zeros((N))
-        for k, dx in enumerate(x):
-            if dx < 0:
-                A = kwargs['A']
-                eta_l = kwargs['eta_l']
-                eta_h = kwargs['eta_h']
-
-            else:
-                A = 1/kwargs['A'] 
-                eta_l = kwargs['eta_h']
-                eta_h = kwargs['eta_l']
-
-            tmp[k] = ((1+A)*(eta_h + np.sqrt(np.pi*np.log(2))*(1-eta_h))) /\
-                     (eta_l + np.sqrt(np.pi*np.log(2)) * (1-eta_l) + A*(eta_h + \
-                     np.sqrt(np.pi*np.log(2))*(1-eta_h))) * (eta_l*2/(np.pi*fwhm) * \
-                     (1+((1+A)/A)**2 * (dx/fwhm)**2)**(-1) + (1-eta_l)*np.sqrt(np.log(2)/np.pi)* \
-                     2/fwhm *np.exp(-np.log(2) * ((1+A)/A)**2 * (dx/fwhm)**2))
-
-        return I0 * tmp
-
+       
     def pxrdf(self):
         """
         Group the equivalent hkl planes together by 2\theta angle
