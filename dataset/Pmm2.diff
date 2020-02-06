@@ -1,0 +1,39 @@
+      Dyscrasite
+      Scott J D
+      The Canadian Mineralogist 14 (1976) 139-142
+      Refinement of the crystal structure of dyscrasite, and its implications
+      for the structure of allargentum
+      _database_code_amcsd 0005121
+
+      CELL PARAMETERS:   3.0080  4.8280  5.2140   90.000   90.000   90.000
+      SPACE GROUP: Pmm2      
+      X-RAY WAVELENGTH:     1.541838
+      Cell Volume:     75.721
+      Density (g/cm3):      9.765
+      MAX. ABS. INTENSITY / VOLUME**2:      311.8360576    
+      RIR:     10.398
+      RIR based on corundum from Acta Crystallographica A38 (1982) 733-739
+               2-THETA      INTENSITY    D-SPACING   H   K   L   Multiplicity
+                34.40         12.25        2.6070    0   0   2         1
+                34.42         25.11        2.6055    1   0   1         2
+                37.25         39.55        2.4140    0   2   0         2
+                39.27         49.77        2.2939    0   1   2         2
+                39.29        100.00        2.2929    1   1   1         4
+                51.60          6.56        1.7713    0   2   2         2
+                51.62         13.55        1.7708    1   2   1         4
+                61.63         13.70        1.5049    1   0   3         2
+                61.67          7.07        1.5040    2   0   0         2
+                68.52          7.12        1.3694    0   3   2         2
+                68.53         14.25        1.3692    1   3   1         4
+                72.56          1.87        1.3028    2   0   2         2
+                74.27         13.80        1.2770    1   2   3         4
+                74.30          7.13        1.2765    2   2   0         4
+                75.56          4.67        1.2584    0   1   4         2
+                75.60          9.98        1.2578    2   1   2         4
+                79.39          2.83        1.2070    0   4   0         2
+                84.46          1.15        1.1470    0   2   4         2
+                84.51          2.22        1.1465    2   2   2         4
+                89.48          1.98        1.0952    1   4   1         4
+================================================================================
+       XPOW Copyright 1993 Bob Downs, Ranjini Swaminathan and Kurt Bartelmehs
+  For reference, see Downs et al. (1993) American Mineralogist 78, 1104-1107.

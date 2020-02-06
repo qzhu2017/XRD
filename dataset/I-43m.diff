@@ -1,0 +1,37 @@
+      Manganese-alpha
+      Gazzara C P, Middleton R M, Weiss R J, Hall E O
+      Acta Crystallographica 22 (1967) 859-862
+      A refinement of the parameters of alpha manganese
+      Localilty: synthetic
+      Sample: at T = 298K
+      _database_code_amcsd 0009311
+
+      CELL PARAMETERS:   8.9125  8.9125  8.9125   90.000   90.000   90.000
+      SPACE GROUP: I-43m     
+      X-RAY WAVELENGTH:     1.541838
+      Cell Volume:    707.944
+      Density (g/cm3):      7.473
+      MAX. ABS. INTENSITY / VOLUME**2:      188.8605637    
+      RIR:      8.229
+      RIR based on corundum from Acta Crystallographica A38 (1982) 733-739
+               2-THETA      INTENSITY    D-SPACING   H   K   L   Multiplicity
+                40.49          4.06        2.2281    4   0   0         6
+                43.06         32.93        2.1007    3   3   0        12
+                43.06         67.07        2.1007    4   1   1        12
+                47.87         23.26        1.9002    3   3   2        12
+                50.14          8.75        1.8193    4   2   2        12
+                52.34          2.84        1.7479    5   1   0        24
+                52.34         10.50        1.7479    4   3   1        24
+                70.03          1.73        1.3436    6   2   2        12
+                73.64          4.59        1.2864    4   4   4         4
+                75.42          5.99        1.2604    5   5   0        12
+                78.93          3.88        1.2128    6   3   3        12
+                78.93          3.70        1.2128    5   5   2        12
+                78.93         12.42        1.2128    7   2   1        24
+                80.68          3.26        1.1910    6   4   2        24
+                82.41          1.69        1.1703    7   3   0        24
+                85.86          1.08        1.1319    7   3   2        24
+                85.86          1.94        1.1319    6   5   1        24
+================================================================================
+       XPOW Copyright 1993 Bob Downs, Ranjini Swaminathan and Kurt Bartelmehs
+  For reference, see Downs et al. (1993) American Mineralogist 78, 1104-1107.

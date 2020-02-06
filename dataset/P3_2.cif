@@ -1,0 +1,52 @@
+data_global
+_chemical_name_mineral 'Parakhinite'
+loop_
+_publ_author_name
+'Burns P C'
+'Cooper M A'
+'Hawthorne F C'
+_journal_name_full 'The Canadian Mineralogist'
+_journal_volume 33 
+_journal_year 1995
+_journal_page_first 33
+_journal_page_last 40
+_publ_section_title
+;
+ Parakhinite, Cu3PbTeO6(OH)2: Crystal structure and revision of chemical formula
+;
+_database_code_amcsd 0005427
+_chemical_formula_sum 'Pb Te Cu3 O8 H2'
+_chemical_formula_sum ''
+_cell_length_a 5.765
+_cell_length_b 5.765
+_cell_length_c 18.001
+_cell_angle_alpha 90
+_cell_angle_beta 90
+_cell_angle_gamma 120
+_cell_volume 518.115
+_exptl_crystal_density_diffrn      6.302
+_symmetry_space_group_name_H-M 'P 32'
+loop_
+_space_group_symop_operation_xyz
+  'x,y,z'
+  '-y,x-y,2/3+z'
+  '-x+y,-x,1/3+z'
+loop_
+_atom_site_label
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_U_iso_or_equiv
+Pb   0.33310   0.16590   0.18830   0.00950
+Te   0.32960   0.16610  -0.01670   0.00030
+Cu1   0.83300   0.65900  -0.27330   0.00120
+Cu2   0.32600   0.66000   0.05920   0.00060
+Cu3  -0.17700   0.66000  -0.01550   0.00050
+O1   0.57500   0.41300  -0.08200   0.00100
+O2   0.08000   0.90900  -0.08400   0.00270
+O3   0.49700   0.98000  -0.01200   0.00360
+O4   0.57600   0.41200   0.05900   0.00060
+O5   0.11800   0.36400  -0.01500   0.00860
+O6   0.07600   0.91100   0.05800   0.00100
+O-H7   0.56100   0.91600   0.13400   0.00150
+O-H8   0.08100   0.41300   0.13200   0.00190

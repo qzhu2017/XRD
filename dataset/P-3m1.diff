@@ -1,0 +1,42 @@
+      Melonite
+      Peacock M A, Thompson R M
+      American Mineralogist 31 (1946) 204-204
+      On melonite from Quebec and the crystal structure of NiTe2
+      _database_code_amcsd 0000033
+
+      CELL PARAMETERS:   3.8350  3.8350  5.2550   90.000   90.000  120.000
+      SPACE GROUP: P-3m1     
+      X-RAY WAVELENGTH:     1.541838
+      Cell Volume:     66.932
+      Density (g/cm3):      7.786
+      MAX. ABS. INTENSITY / VOLUME**2:      363.0543200    
+      RIR:     15.182
+      RIR based on corundum from Acta Crystallographica A38 (1982) 733-739
+               2-THETA      INTENSITY    D-SPACING   H   K   L   Multiplicity
+                16.87          7.38        5.2550    0   0   1         2
+                26.84          5.18        3.3212    1   0   0         6
+                31.88         78.34        2.8075    0   1   1         6
+                31.88         21.66        2.8075    1   0   1         6
+                34.12          8.92        2.6275    0   0   2         2
+                43.94         13.87        2.0606    0   1   2         6
+                43.94         13.87        2.0606    1   0   2         6
+                47.41         29.65        1.9175    1   1   0         6
+                50.68          2.12        1.8013    1   1   1        12
+                58.27          3.35        1.5834    0   2   1         6
+                58.27         11.89        1.5834    2   0   1         6
+                59.68          3.09        1.5494    0   1   3         6
+                59.68         10.94        1.5494    1   0   3         6
+                59.70          9.23        1.5489    1   1   2        12
+                66.62          3.41        1.4037    2   0   2         6
+                66.62          3.41        1.4037    0   2   2         6
+                71.86          2.40        1.3138    0   0   4         2
+                78.31          8.66        1.2209    1   2   1        12
+                78.31          2.52        1.2209    2   1   1        12
+                79.54          1.20        1.2051    2   0   3         6
+                79.54          4.12        1.2051    0   2   3         6
+                85.78          3.00        1.1327    2   1   2        12
+                85.78          3.00        1.1327    1   2   2        12
+                88.27          3.82        1.1071    3   0   0         6
+================================================================================
+       XPOW Copyright 1993 Bob Downs, Ranjini Swaminathan and Kurt Bartelmehs
+  For reference, see Downs et al. (1993) American Mineralogist 78, 1104-1107.

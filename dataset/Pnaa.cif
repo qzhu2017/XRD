@@ -1,0 +1,63 @@
+data_global
+_chemical_name_mineral 'Simonellite'
+loop_
+_publ_author_name
+'Foresti E'
+'Riva di Sanseverino L'
+_journal_name_full 'Atti della Accademia Nazionale dei Lincei'
+_journal_volume 47 
+_journal_year 1969
+_journal_page_first 41
+_journal_page_last 54
+_publ_section_title
+;
+ The X-ray crystal and molecular structure of an organic mineral: simonellite, C19H24
+;
+_database_code_amcsd 0012054
+_chemical_compound_source 'Synthetic'
+_chemical_formula_sum 'C19'
+_chemical_formula_sum ''
+_cell_length_a 9.231
+_cell_length_b 9.134
+_cell_length_c 36.01
+_cell_angle_alpha 90
+_cell_angle_beta 90
+_cell_angle_gamma 90
+_cell_volume 3036.217
+_exptl_crystal_density_diffrn      0.998
+_symmetry_space_group_name_H-M 'P n a a'
+loop_
+_space_group_symop_operation_xyz
+  'x,y,z'
+  '1/2+x,y,1/2-z'
+  '1/2-x,-y,1/2+z'
+  '1/2+x,1/2-y,z'
+  '1/2-x,1/2+y,-z'
+  '-x,1/2+y,1/2+z'
+  'x,1/2-y,1/2-z'
+  '-x,-y,-z'
+loop_
+_atom_site_label
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_U_iso_or_equiv
+C-1   0.09458   0.58012   0.18070   0.04369
+CH2-2   0.11495   0.47394   0.21374   0.05155
+CH2-3   0.26874   0.46425   0.22579   0.04851
+CH2-4   0.36318   0.40037   0.19476   0.04395
+CH-5   0.56490   0.37095   0.13186   0.04382
+CH-6   0.66610   0.35811   0.10416   0.05142
+C-7   0.64867   0.43797   0.07029   0.04192
+CH-8   0.53031   0.52239   0.06625   0.04293
+CH-9   0.29930   0.62198   0.08954   0.05028
+CH-10   0.19724   0.63518   0.11755   0.04496
+C-11   0.21548   0.56019   0.15204   0.03698
+C-12   0.33539   0.47711   0.15772   0.03470
+C-13   0.44191   0.45964   0.12869   0.03293
+C-14   0.42167   0.53550   0.09458   0.03774
+CH3-15   0.09385   0.74048   0.19488   0.05991
+CH3-16  -0.05379   0.54551   0.16356   0.06421
+CH-17   0.76321   0.42646   0.03970   0.05497
+CH3-18   0.91250   0.46952   0.05351   0.07536
+CH3-19   0.76532   0.27374   0.02213   0.07232

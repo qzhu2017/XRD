@@ -1,0 +1,38 @@
+      Beryllium
+      Vijayakumar V, Godwal B K, Vohra Y K, Sikka S K, Chidambaram R
+      Journal of Physics F: Metal Physics 14 (1984) L65-L68
+      On the high-pressure phase transition in beryllium metal
+      Locality: synthetic
+      Sample: at P = 28.3 GPa
+      Note: phase II
+      _database_code_amcsd 0013191
+
+      CELL PARAMETERS:   2.1680  3.7550  3.4160   90.000   90.000   90.000
+      SPACE GROUP: P2_12_12  
+      X-RAY WAVELENGTH:     1.541838
+      Cell Volume:     27.809
+      Density (g/cm3):      2.152
+      MAX. ABS. INTENSITY / VOLUME**2:      1.719796640    
+      RIR:      0.260
+      RIR based on corundum from Acta Crystallographica A38 (1982) 733-739
+               2-THETA      INTENSITY    D-SPACING   H   K   L   Multiplicity
+                26.09         51.20        3.4160    0   0   1         2
+                35.53         61.13        2.5268    0   1   1         4
+                48.49          5.57        1.8775    1   1   0         4
+                48.49         26.88        1.8775    0   2   0         2
+                49.82         25.47        1.8305    1   0   1         4
+                53.66         31.37        1.7080    0   0   2         2
+                55.88         96.72        1.6454    1   1   1         4
+                55.88          3.28        1.6454    0   2   1         4
+                59.45          4.36        1.5547    0   1   2         4
+                65.80         23.33        1.4193    1   2   0         4
+                70.14          3.39        1.3417    1   0   2         4
+                72.06         10.09        1.3106    1   2   1         4
+                75.20         16.99        1.2634    1   1   2         4
+                75.21          9.23        1.2634    0   2   2         4
+                81.98         23.47        1.1753    0   3   1         4
+                85.23          8.26        1.1387    0   0   3         2
+                89.86         14.94        1.0916    1   2   2         4
+================================================================================
+       XPOW Copyright 1993 Bob Downs, Ranjini Swaminathan and Kurt Bartelmehs
+  For reference, see Downs et al. (1993) American Mineralogist 78, 1104-1107.

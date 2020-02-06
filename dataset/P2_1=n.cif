@@ -1,0 +1,42 @@
+data_global
+_chemical_name_mineral 'Claudetite'
+loop_
+_publ_author_name
+'Frueh A J'
+_journal_name_full 'American Mineralogist'
+_journal_volume 36 
+_journal_year 1951
+_journal_page_first 833
+_journal_page_last 850
+_publ_section_title
+;
+ The crystal structure of claudetite (monoclinic As2O3)
+;
+_database_code_amcsd 0000053
+_chemical_formula_sum 'As2 O3'
+_chemical_formula_sum ''
+_cell_length_a 5.25
+_cell_length_b 12.87
+_cell_length_c 4.54
+_cell_angle_alpha 90
+_cell_angle_beta 93.82
+_cell_angle_gamma 90
+_cell_volume 306.075
+_exptl_crystal_density_diffrn      4.293
+_symmetry_space_group_name_H-M 'P 1 21/n 1'
+loop_
+_space_group_symop_operation_xyz
+  'x,y,z'
+  '1/2+x,1/2-y,1/2+z'
+  '1/2-x,1/2+y,1/2-z'
+  '-x,-y,-z'
+loop_
+_atom_site_label
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+As1   0.25800   0.10200   0.04000
+As2   0.36300   0.35200   0.00700
+O1   0.45000   0.22000   0.03000
+O2   0.62000   0.41000   0.18000
+O3   0.95000   0.16000   0.13000

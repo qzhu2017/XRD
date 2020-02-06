@@ -1,0 +1,57 @@
+data_global
+_amcsd_formula_title 'KCuTa3O9'
+loop_
+_publ_author_name
+'Groult D'
+'Hervieu M'
+'Raveau B'
+_journal_name_full 'Journal of Solid State Chemistry'
+_journal_volume 53 
+_journal_year 1984
+_journal_page_first 184
+_journal_page_last 192
+_publ_section_title
+;
+ A Pentagonal Tunnel Structure with Copper in Square Planar
+ Coordination: The Oxides KCuNb3O9 and KCuTa3O9
+ _cod_database_code 1001197
+;
+_database_code_amcsd 0013527
+_chemical_formula_sum 'K Cu Ta3 O9'
+_chemical_formula_sum ''
+_cell_length_a 8.862
+_cell_length_b 10.187
+_cell_length_c 7.638
+_cell_angle_alpha 90
+_cell_angle_beta 90
+_cell_angle_gamma 90
+_cell_volume 689.537
+_exptl_crystal_density_diffrn      7.605
+_symmetry_space_group_name_H-M 'P n c 2'
+loop_
+_space_group_symop_operation_xyz
+  'x,y,z'
+  'x,1/2-y,1/2+z'
+  '-x,1/2+y,1/2+z'
+  '-x,-y,z'
+loop_
+_atom_site_label
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+K1   0.08100   0.25900   0.25500
+Cu1   0.50000   0.00000   0.25200
+Cu2   0.50000   0.00000   0.75200
+Ta1   0.42920   0.25200  -0.00300
+Ta2   0.80210   0.43600  -0.01800
+Ta3   0.79910   0.06130  -0.01200
+O1   0.00000   0.00000   0.00000
+O2   0.00000   0.00000   0.50000
+O3   0.26000   0.11800  -0.03100
+O4   0.25900   0.40300   0.06100
+O5   0.57500   0.38400   0.05800
+O6   0.57600   0.39200   0.46100
+O7   0.87500   0.25300   0.00600
+O8   0.40600   0.18600   0.25800
+O9   0.17100   0.58900   0.24900
+O10   0.27100   0.54000   0.75700

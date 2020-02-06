@@ -1,0 +1,38 @@
+      GeO2
+      Haines J, Leger J M, Chateau C, Pereira A S
+      Physics and Chemistry of Minerals 27 (2000) 575-582
+      Structural evolution of rutile-type and CaCl2-type germanium dioxide
+      at high pressure
+      Sample: CaCl2-type, post-argutite, P = 28 GPa
+      _database_code_amcsd 0008440
+
+      CELL PARAMETERS:   4.2841  4.2098  2.8089   90.000   90.000   90.000
+      SPACE GROUP: Pnnm      
+      X-RAY WAVELENGTH:     1.541838
+      Cell Volume:     50.659
+      Density (g/cm3):      6.859
+      MAX. ABS. INTENSITY / VOLUME**2:      124.3982083    
+      RIR:      5.906
+      RIR based on corundum from Acta Crystallographica A38 (1982) 733-739
+               2-THETA      INTENSITY    D-SPACING   H   K   L   Multiplicity
+                29.75        100.00        3.0027    1   1   0         4
+                38.32         29.18        2.3490    1   0   1         4
+                38.53         43.26        2.3365    0   1   1         4
+                42.19         11.54        2.1421    2   0   0         2
+                42.97          6.13        2.1049    0   2   0         2
+                44.15          7.29        2.0513    1   1   1         8
+                47.63          2.78        1.9091    2   1   0         4
+                58.45         26.18        1.5789    2   1   1         8
+                58.92         34.02        1.5676    1   2   1         8
+                61.79         14.17        1.5014    2   2   0         4
+                66.58          7.16        1.4045    0   0   2         2
+                69.51          6.74        1.3523    3   1   0         4
+                70.63          6.21        1.3336    1   3   0         4
+                74.55          9.57        1.2730    3   0   1         4
+                74.60         11.61        1.2722    1   1   2         8
+                75.78          6.25        1.2553    0   3   1         4
+                82.05          3.14        1.1745    2   0   2         4
+                82.58          2.15        1.1683    0   2   2         4
+================================================================================
+       XPOW Copyright 1993 Bob Downs, Ranjini Swaminathan and Kurt Bartelmehs
+  For reference, see Downs et al. (1993) American Mineralogist 78, 1104-1107.

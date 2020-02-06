@@ -1,0 +1,137 @@
+data_global
+_chemical_name_mineral 'Buckminsterfullerene'
+loop_
+_publ_author_name
+'Dorset D L'
+'McCourt M P'
+_journal_name_full 'Acta Crystallographica, Section A'
+_journal_volume 50 
+_journal_year 1994
+_journal_page_first 344
+_journal_page_last 351
+_publ_section_title
+;
+ Disorder and the molecular packing of C60 buckminsterfullerene:
+ a direct electron-crystallographic analysis
+ Sample: room T
+;
+_database_code_amcsd 0009329
+_chemical_compound_source 'Synthetic'
+_chemical_formula_sum 'C5'
+_chemical_formula_sum ''
+_cell_length_a 14.26
+_cell_length_b 14.26
+_cell_length_c 14.26
+_cell_angle_alpha 90
+_cell_angle_beta 90
+_cell_angle_gamma 90
+_cell_volume 2899.737
+_exptl_crystal_density_diffrn      1.651
+_symmetry_space_group_name_H-M 'F m 3'
+loop_
+_space_group_symop_operation_xyz
+  'x,y,z'
+  'x,1/2+y,1/2+z'
+  '1/2+x,y,1/2+z'
+  '1/2+x,1/2+y,z'
+  'z,x,-y'
+  'z,1/2+x,1/2-y'
+  '1/2+z,x,1/2-y'
+  '1/2+z,1/2+x,-y'
+  'z,-x,y'
+  'z,1/2-x,1/2+y'
+  '1/2+z,-x,1/2+y'
+  '1/2+z,1/2-x,y'
+  '-z,x,y'
+  '-z,1/2+x,1/2+y'
+  '1/2-z,x,1/2+y'
+  '1/2-z,1/2+x,y'
+  '-z,-x,-y'
+  '-z,1/2-x,1/2-y'
+  '1/2-z,-x,1/2-y'
+  '1/2-z,1/2-x,-y'
+  'y,-z,-x'
+  'y,1/2-z,1/2-x'
+  '1/2+y,-z,1/2-x'
+  '1/2+y,1/2-z,-x'
+  '-y,-z,x'
+  '-y,1/2-z,1/2+x'
+  '1/2-y,-z,1/2+x'
+  '1/2-y,1/2-z,x'
+  '-y,z,-x'
+  '-y,1/2+z,1/2-x'
+  '1/2-y,z,1/2-x'
+  '1/2-y,1/2+z,-x'
+  'y,z,x'
+  'y,1/2+z,1/2+x'
+  '1/2+y,z,1/2+x'
+  '1/2+y,1/2+z,x'
+  'x,-y,z'
+  'x,1/2-y,1/2+z'
+  '1/2+x,-y,1/2+z'
+  '1/2+x,1/2-y,z'
+  '-x,y,z'
+  '-x,1/2+y,1/2+z'
+  '1/2-x,y,1/2+z'
+  '1/2-x,1/2+y,z'
+  'x,y,-z'
+  'x,1/2+y,1/2-z'
+  '1/2+x,y,1/2-z'
+  '1/2+x,1/2+y,-z'
+  '-x,-y,-z'
+  '-x,1/2-y,1/2-z'
+  '1/2-x,-y,1/2-z'
+  '1/2-x,1/2-y,-z'
+  '-z,-x,y'
+  '-z,1/2-x,1/2+y'
+  '1/2-z,-x,1/2+y'
+  '1/2-z,1/2-x,y'
+  '-z,x,-y'
+  '-z,1/2+x,1/2-y'
+  '1/2-z,x,1/2-y'
+  '1/2-z,1/2+x,-y'
+  'z,-x,-y'
+  'z,1/2-x,1/2-y'
+  '1/2+z,-x,1/2-y'
+  '1/2+z,1/2-x,-y'
+  'z,x,y'
+  'z,1/2+x,1/2+y'
+  '1/2+z,x,1/2+y'
+  '1/2+z,1/2+x,y'
+  '-y,z,x'
+  '-y,1/2+z,1/2+x'
+  '1/2-y,z,1/2+x'
+  '1/2-y,1/2+z,x'
+  'y,z,-x'
+  'y,1/2+z,1/2-x'
+  '1/2+y,z,1/2-x'
+  '1/2+y,1/2+z,-x'
+  'y,-z,x'
+  'y,1/2-z,1/2+x'
+  '1/2+y,-z,1/2+x'
+  '1/2+y,1/2-z,x'
+  '-y,-z,-x'
+  '-y,1/2-z,1/2-x'
+  '1/2-y,-z,1/2-x'
+  '1/2-y,1/2-z,-x'
+  '-x,y,-z'
+  '-x,1/2+y,1/2-z'
+  '1/2-x,y,1/2-z'
+  '1/2-x,1/2+y,-z'
+  'x,-y,-z'
+  'x,1/2-y,1/2-z'
+  '1/2+x,-y,1/2-z'
+  '1/2+x,1/2-y,-z'
+  '-x,-y,z'
+  '-x,1/2-y,1/2+z'
+  '1/2-x,-y,1/2+z'
+  '1/2-x,1/2-y,z'
+loop_
+_atom_site_label
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_U_iso_or_equiv
+C1   0.05200   0.00000   0.24900   0.07599
+C2   0.10500   0.08500   0.22000   0.07599
+C3   0.18500   0.05200   0.16500   0.07599

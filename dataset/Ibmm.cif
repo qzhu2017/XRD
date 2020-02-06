@@ -1,0 +1,59 @@
+data_global
+_chemical_name_mineral 'Wadsleyite'
+loop_
+_publ_author_name
+'Baur W H'
+_journal_name_full 'American Mineralogist'
+_journal_volume 57 
+_journal_year 1972
+_journal_page_first 709
+_journal_page_last 731
+_publ_section_title
+;
+ Computer-simulated crystal structures of observed and hypothetical Mg2SiO4
+ Polymorphs of low and high density
+;
+_database_code_amcsd 0000277
+_chemical_compound_source 'hypothetical'
+_chemical_formula_sum 'Si Mg2 O4'
+_chemical_formula_sum ''
+_cell_length_a 8.16
+_cell_length_b 11.68
+_cell_length_c 5.71
+_cell_angle_alpha 90
+_cell_angle_beta 90
+_cell_angle_gamma 90
+_cell_volume 544.213
+_exptl_crystal_density_diffrn      3.434
+_symmetry_space_group_name_H-M 'I b m m'
+loop_
+_space_group_symop_operation_xyz
+  'x,y,z'
+  '1/2+x,1/2+y,1/2+z'
+  'x,y,1/2-z'
+  '1/2+x,1/2+y,-z'
+  '-x,-y,1/2+z'
+  '1/2-x,1/2-y,+z'
+  'x,-y,z'
+  '1/2+x,1/2-y,1/2+z'
+  '-x,y,-z'
+  '1/2-x,1/2+y,1/2-z'
+  '-x,y,1/2+z'
+  '1/2-x,1/2+y,+z'
+  'x,-y,1/2-z'
+  '1/2+x,1/2-y,-z'
+  '-x,-y,-z'
+  '1/2-x,1/2-y,1/2-z'
+loop_
+_atom_site_label
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+Si   0.13030   0.12550   0.25000
+Mg1   0.22970   0.00000   0.75000
+Mg2   0.25000   0.25000   0.75000
+Mg3   0.00000   0.37010   0.00000
+O1   0.03000   0.00000   0.25000
+O2   0.47990   0.00000   0.75000
+O3   0.00400   0.23480   0.25000
+O4   0.25570   0.37510   0.01680

@@ -1,0 +1,51 @@
+data_global
+_chemical_name_mineral 'Krupkaite'
+loop_
+_publ_author_name
+'Synecek V'
+'Hybler J'
+_journal_name_full 'Neues Jahrbuch fur Mineralogie, Monatshefte'
+_journal_volume 1974 
+_journal_year 1974
+_journal_page_first 541
+_journal_page_last 560
+_publ_section_title
+;
+ The crystal structures of krupkaite, CuPbBi3S6, and of gladite, CuPbBi5S9,
+ and the classification of superstructures in the bismuthinite-aikinite group,
+;
+_database_code_amcsd 0014750
+_chemical_compound_source 'Krupka, Ore Mountains, NW-Bohemia'
+_chemical_formula_sum 'Cu Bi3 Pb S6'
+_chemical_formula_sum ''
+_cell_length_a 11.15
+_cell_length_b 11.51
+_cell_length_c 4.01
+_cell_angle_alpha 90
+_cell_angle_beta 90
+_cell_angle_gamma 90
+_cell_volume 514.629
+_exptl_crystal_density_diffrn      7.035
+_symmetry_space_group_name_H-M 'P b 21 m'
+loop_
+_space_group_symop_operation_xyz
+  'x,y,z'
+  '1/2-x,1/2+y,z'
+  'x,y,1/2-z'
+  '1/2-x,1/2+y,1/2-z'
+loop_
+_atom_site_label
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+Cu   0.19400   0.24900   0.25000
+Bi(A1)   0.66900   0.03300   0.25000
+Bi(A2)   0.18400   0.49100   0.75000
+Bi(B1)   0.95800   0.16200   0.75000
+Pb(B2)   0.49800   0.33600   0.25000
+S(1,1)   0.62400   0.45100   0.75000
+S(1,2)   0.10600   0.05900   0.25000
+S(2.1)   0.60600   0.10800   0.75000
+S(2,2)   0.04600   0.39400   0.25000
+S(3,1)   0.78400   0.22700   0.25000
+S(3,2)   0.31400   0.29900   0.75000

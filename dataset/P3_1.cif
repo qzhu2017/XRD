@@ -1,0 +1,65 @@
+data_global
+_chemical_name_mineral 'Stillwellite-(Ce)'
+loop_
+_publ_author_name
+'Callegari A'
+'Giuseppetti G'
+'Mazzi F'
+'Tadini C'
+_journal_name_full 'Neues Jahrbuch fur Mineralogie, Monatshefte'
+_journal_volume 1992 
+_journal_year 1992
+_journal_page_first 49
+_journal_page_last 57
+_publ_section_title
+;
+ The refinement of the crystal structure of stillwellite: RE[BSiO5]
+;
+_database_code_amcsd 0018728
+_chemical_compound_source 'Bassano Romano, Viterbo, Italy'
+_chemical_formula_sum 'Ce B Si O5'
+_chemical_formula_sum ''
+_cell_length_a 6.844
+_cell_length_b 6.844
+_cell_length_c 6.700
+_cell_angle_alpha 90
+_cell_angle_beta 90
+_cell_angle_gamma 120
+_cell_volume 271.785
+_exptl_crystal_density_diffrn      4.747
+_symmetry_space_group_name_H-M 'P 31'
+loop_
+_space_group_symop_operation_xyz
+  'x,y,z'
+  '-y,x-y,1/3+z'
+  '-x+y,-x,2/3+z'
+loop_
+_atom_site_label
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_U_iso_or_equiv
+Ce   0.58690  -0.00180   0.83330   0.00980
+B   0.11590   0.01840   0.81080   0.01010
+Si   0.58230  -0.00260   0.33420   0.01080
+O1   0.35320   0.19780   0.86000   0.00960
+O2   0.18930   0.32940   0.14630   0.01530
+O3   0.61400   0.47680   0.15830   0.01320
+O4   0.45300   0.59740   0.83400   0.01420
+O5   0.05890   0.05710   0.61330   0.01260
+loop_
+_atom_site_aniso_label
+_atom_site_aniso_U_11
+_atom_site_aniso_U_22
+_atom_site_aniso_U_33
+_atom_site_aniso_U_12
+_atom_site_aniso_U_13
+_atom_site_aniso_U_23
+Ce 0.00568 0.00486 0.00448 0.00345 -0.00015 0.00012
+B 0.00632 0.00168 0.00694 0.00180 0.00163 0.00105
+Si 0.00929 0.00613 0.00473 0.00636 0.00376 0.00036
+O1 0.00104 0.00342 0.00752 -0.00046 -0.00041 -0.00353
+O2 0.00647 0.01002 0.00571 0.00266 -0.00014 0.00048
+O3 0.00133 0.00826 0.00792 0.00055 -0.00126 -0.00002
+O4 0.00808 0.00869 0.00480 0.00343 -0.00159 -0.00062
+O5 0.00904 0.00444 0.00453 0.00193 -0.00127 0.00051
