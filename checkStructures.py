@@ -7,7 +7,7 @@ from similarity import Similarity
 import csv
 import scipy.integrate as integrate
 from scipy import interpolate
-
+from profile import Profile
 
 def getListOfFiles(dirName):
     # create a list of file and sub directories 
@@ -79,7 +79,7 @@ def classifyStructure(file):
         return 'triclinic'
     
 
-path = '/Users/sayred1/Documents/Research/dXRD/XRD/data/'
+path = './data/' #'/Users/sayred1/Documents/Research/dXRD/XRD/data/'
 allFiles = getListOfFiles(path)
 allFiles.sort()
 poscarFiles = []
@@ -101,7 +101,7 @@ for file in allFiles:
 
 wavelength = 1.54056
 max2theta = 90
-N = 10000
+N = 1000
 Sims = []
 Sgs = []
 clss = []
@@ -122,9 +122,9 @@ for poscardata, diffdata, cifFile in zip(poscarFiles,diffFiles,cifFiles):
     """
     struct = crystal('POSCAR',filename=poscardata)
     xrd1 = XRD(struct, wavelength, max2theta)   
-    xrd1.get_profile(xrd1.theta2, xrd1.xrd_intensity,N,**profile)
-    f = xrd1.spectra 
-    
+    proff = Profile()
+    proff.get_profile(xrd1.theta2, xrd1.xrd_intensity)
+    f = proff.spectra
     """
     Load the diffraction data 
     """
@@ -146,35 +146,31 @@ for poscardata, diffdata, cifFile in zip(poscarFiles,diffFiles,cifFiles):
     """
     Get profile for diffraction data
     """
+    
+    
     xval = np.array(xval)
     yval = np.array(yval)
     yval/= np.max(yval)
+    
     xrd2 = XRD(struct, wavelength, max2theta)
-    xrd2.get_profile(xval, yval,N,**profile)
-    g = xrd2.spectra 
-
+    profg = Profile()
+    profg.get_profile(xval,yval)
+    g = profg.spectra
     S = Similarity(f, g, N).calculate()
+    print(S)
     classification = classifyStructure(cifFile)
     groupName = getSpaceGroup(cifFile)
     Sgs.append(groupName)
     clss.append(classification)
     Sims.append(S)
-    """
-    plt.figure(figsize=(15,7))
-    plt.plot(f2thetas,fpeaks, label=poscardata)
-    plt.plot(g2thetas,gpeaks, label=diffdata)
-    plt.plot(f2thetas, gpeaks-fpeaks,label = 'gpeaks-fpeaks')
-    plt.legend()
-    plt.show()
-    """
     
 """
 Write similarity, space group, and classificaition to file
-"""
+
 with open('valData02.csv', 'w') as f:
     writer = csv.writer(f, delimiter=',')
     writer.writerows(zip(Sgs,clss,Sims))
-
+"""
 """
 Classify structure
 """
