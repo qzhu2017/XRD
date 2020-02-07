@@ -14,8 +14,8 @@ with open("README.md", "r") as fh:
 setup(
     name="pyxtal_xrd",
     version=__version__,
-    author="Dean Sayred and Qiang Zhu",
-    author_email="qiang.zhu@unlv.edu",
+    author="Dean Sayre and Qiang Zhu",
+    author_email="sayred1@unlv.nevada.edu or qiang.zhu@unlv.edu",
     description="Python code for crystal XRD simulation",
     long_description=long_description,
     long_description_content_type="text/markdown",
