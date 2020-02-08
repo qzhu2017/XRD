@@ -14,7 +14,7 @@ class CalcForm(FlaskForm):
         label='&lambda; (&#8491;)',
         validators=[DataRequired(), NumberRange(
             min=0.1,
-            max=50,
+            max=5,
             message='Must be between %(min)s Å and %(max)s Å'
         )],
         description='Wavelength in angstroms',
@@ -23,7 +23,7 @@ class CalcForm(FlaskForm):
         label='2&theta;<sub>max</sub> (&deg;)',
         validators=[DataRequired(), NumberRange(
             min=5,
-            max=120,
+            max=180,
             message='Must be between %(min)s° and %(max)s°'
         )],
         description='Maximum diffraction angle in degrees',

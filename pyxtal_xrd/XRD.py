@@ -1,6 +1,22 @@
-from math import acos, pi, ceil, sin,cos,sqrt
+import numba
+from math import acos, pi, ceil
 import numpy as np
+import matplotlib.pyplot as plt
 import re
+from math import sin,cos,sqrt, degrees
+import time
+import sys
+import json
+import os
+import collections
+import scipy
+import scipy.integrate as integrate    
+import itertools
+
+
+def angle(a,b):
+    """ calculate the angle between vector a and b """
+    return acos(np.dot(a,b)/np.linalg.norm(a)/np.linalg.norm(b))
 
 
 class Element:
@@ -116,104 +132,9 @@ class Element:
             (104,'Rf','Rutherfordium',4.0,3,None),
             (105, 'Db', 'Dubnium',  2.0, 3, None),
         ]
-        
-        #scatter factor
-        self.sf=[
-            [  0.493,  0.323,  0.140,  0.041, 10.511, 26.126,  3.142, 57.800,  0.003],
-            [  0.873,  0.631,  0.311,  0.178,  9.104,  3.357, 22.928,  0.982,  0.006],
-            [  1.128,  0.751,  0.618,  0.465,  3.955,  1.052, 85.391,168.261,  0.038],
-            [  1.592,  1.128,  0.539,  0.703, 43.643,  1.862,103.483,  0.542,  0.038],
-            [  2.055,  1.333,  1.098,  0.707, 23.219,  1.021, 60.350,  0.140, -0.193],
-            [  2.310,  1.020,  1.589,  0.865, 20.844, 10.208,  0.569, 51.651,  0.216],
-            [ 12.213,  3.132,  2.013,  1.166,  0.006,  9.893, 28.997,  0.583,-11.529],
-            [  3.049,  2.287,  1.546,  0.867, 13.277,  5.701,  0.324, 32.909,  0.251],
-            [  3.539,  2.641,  1.517,  1.024, 10.283,  4.294,  0.262, 26.148,  0.278],
-            [  3.955,  3.112,  1.455,  1.125,  8.404,  3.426,  0.231, 21.718,  0.352],
-            [  4.763,  3.174,  1.267,  1.113,  3.285,  8.842,  0.314,129.424,  0.676],
-            [  5.420,  2.174,  1.227,  2.307,  2.828, 79.261,  0.381,  7.194,  0.858],
-            [  6.420,  1.900,  1.594,  1.965,  3.039,  0.743, 31.547, 85.089,  1.115],
-            [  6.292,  3.035,  1.989,  1.541,  2.439, 32.334,  0.678, 81.694,  1.141],
-            [  6.435,  4.179,  1.780,  1.491,  1.907, 27.157,  0.526, 68.164,  1.115],
-            [  6.905,  5.203,  1.438,  1.586,  1.468, 22.215,  0.254, 56.172,  0.867],
-            [ 11.460,  7.196,  6.256,  1.645,  0.010,  1.166, 18.519, 47.778, -9.557],
-            [  7.484,  6.772,  0.654,  1.644,  0.907, 14.841, 43.898, 33.393,  1.444],
-            [  8.219,  7.440,  1.052,  0.866, 12.795,  0.775,213.187, 41.684,  1.423],
-            [  8.627,  7.387,  1.590,  1.021, 10.442,  0.660, 85.748,178.437,  1.375],
-            [  9.189,  7.368,  1.641,  1.468,  9.021,  0.573,136.108, 51.353,  1.333],
-            [  9.759,  7.356,  1.699,  1.902,  7.851,  0.500, 35.634,116.105,  1.281],
-            [ 10.297,  7.351,  2.070,  2.057,  6.866,  0.438, 26.894,102.478,  1.220],
-            [ 10.641,  7.354,  3.324,  1.492,  6.104,  0.392, 20.263, 98.740,  1.183],
-            [ 11.282,  7.357,  3.019,  2.244,  5.341,  0.343, 17.867, 83.754,  1.090],
-            [ 11.769,  7.357,  3.522,  2.305,  4.761,  0.307, 15.354, 76.881,  1.037],
-            [ 12.284,  7.341,  4.003,  2.349,  4.279,  0.278, 13.536, 71.169,  1.012],
-            [ 12.838,  7.292,  4.444,  2.380,  3.878,  0.257, 12.176, 66.342,  1.034],
-            [ 13.338,  7.168,  5.616,  1.673,  3.583,  0.247, 11.397, 64.831,  1.191],
-            [ 14.074,  7.032,  5.165,  2.410,  3.266,  0.233, 10.316, 58.710,  1.304],
-            [ 15.235,  6.701,  4.359,  2.962,  3.067,  0.241, 10.781, 61.414,  1.719],
-            [ 16.082,  6.375,  3.707,  3.683,  2.851,  0.252, 11.447, 54.763,  2.131],
-            [ 16.672,  6.070,  3.431,  4.278,  2.635,  0.265, 12.948, 47.797,  2.531],
-            [ 17.001,  5.820,  3.973,  4.354,  2.410,  0.273, 15.237, 43.816,  2.841],
-            [ 17.179,  5.236,  5.638,  3.985,  2.172, 16.580,  0.261, 41.433,  2.956],
-            [ 17.355,  6.729,  5.549,  3.537,  1.938, 16.562,  0.226, 39.397,  2.825],
-            [ 17.178,  9.644,  5.140,  1.529,  1.789, 17.315,  0.275,164.934,  3.487],
-            [ 17.566,  9.818,  5.422,  2.669,  1.556, 14.099,  0.166,132.376,  2.506],
-            [ 17.776, 10.295,  5.726,  3.266,  1.403, 12.801,  0.261,104.354,  1.912],
-            [ 17.876, 10.948,  5.417,  3.657,  1.276, 11.916,  0.118, 87.663,  2.069],
-            [ 17.614, 12.014,  4.042,  3.533,  1.189, 11.766,  0.205, 69.796,  3.756],
-            [  3.703, 17.236, 12.888,  3.743,  0.277,  1.096, 11.004, 61.658,  4.387],
-            [ 19.130, 11.095,  4.649,  2.713,  0.864,  8.145, 21.571, 86.847,  5.404],
-            [ 19.267, 12.918,  4.863,  1.568,  0.809,  8.435, 24.800, 94.293,  5.379],
-            [ 19.296, 14.350,  4.734,  1.289,  0.752,  8.218, 25.875, 98.606,  5.328],
-            [ 19.332, 15.502,  5.295,  0.606,  0.699,  7.989, 25.205, 76.899,  5.266],
-            [ 19.281, 16.688,  4.805,  1.046,  0.645,  7.473, 24.660, 99.816,  5.179],
-            [ 19.221, 17.644,  4.461,  1.603,  0.595,  6.909, 24.701, 87.482,  5.069],
-            [ 19.162, 18.560,  4.295,  2.040,  0.548,  6.378, 25.850, 92.803,  4.939],
-            [ 19.189, 19.101,  4.458,  2.466,  5.830,  0.503, 26.891, 83.957,  4.782],
-            [ 19.642, 19.045,  5.037,  2.683,  5.303,  0.461, 27.907, 75.283,  4.591],
-            [ 19.964, 19.014,  6.145,  2.524,  4.817,  0.421, 28.528, 70.840,  4.352],
-            [ 20.147, 18.995,  7.514,  2.273,  4.347,  0.381, 27.766, 66.878,  4.071],
-            [ 20.293, 19.030,  8.977,  1.990,  3.928,  0.344, 26.466, 64.266,  3.712],
-            [ 20.389, 19.106, 10.662,  1.495,  3.569,  0.311, 24.388,213.904,  3.335],
-            [ 20.336, 19.297, 10.888,  2.696,  3.216,  0.276, 20.207,167.202,  2.773],
-            [ 20.578, 19.599, 11.373,  3.287,  2.948,  0.244, 18.773,133.124,  2.147],
-            [ 21.167, 19.770, 11.851,  3.330,  2.812,  0.227, 17.608,127.113,  1.863],
-            [ 22.044, 19.670, 12.386,  2.824,  2.774,  0.222, 16.767,143.644,  2.058],
-            [ 22.684, 19.685, 12.774,  2.851,  2.662,  0.211, 15.885,137.903,  1.985],
-            [ 23.340, 19.610, 13.123,  2.875,  2.563,  0.202, 15.101,132.721,  2.029],
-            [ 24.004, 19.426, 13.440,  2.896,  2.473,  0.196, 14.400,128.007,  2.210],
-            [ 24.627, 19.089, 13.760,  2.293,  2.388,  0.194, 13.755,123.174,  2.575],
-            [ 25.071, 19.080, 13.852,  3.545,  2.253,  0.182, 12.933,101.398,  2.420],
-            [ 25.898, 18.219, 14.317,  2.954,  2.243,  0.196, 12.665,115.362,  3.583],
-            [ 26.507, 17.638, 14.560,  2.966,  2.180,  0.202, 12.190,111.874,  4.297],
-            [ 26.905, 17.294, 14.558,  3.638,  2.071,  0.198, 11.441, 92.657,  4.568],
-            [ 27.656, 16.428, 14.978,  2.982,  2.074,  0.224, 11.360,105.703,  5.920],
-            [ 28.182, 15.885, 15.154,  2.987,  2.029,  0.239, 10.998,102.961,  6.756],
-            [ 28.664, 15.434, 15.309,  2.990,  1.989,  0.257, 10.665,100.417,  7.567],
-            [ 28.948, 15.221, 15.100,  3.716,  1.902,  9.985,  0.261, 84.330,  7.976],
-            [ 29.144, 15.173, 14.759,  4.300,  1.833,  9.600,  0.275, 72.029,  8.582],
-            [ 29.202, 15.229, 14.514,  4.765,  1.773,  9.370,  0.296, 63.364,  9.244],
-            [  0.000,  0.000,  0.000,  0.000,  1.722,  9.231,  0.323, 57.725,  9.858],
-            [ 28.762, 15.719, 14.556,  5.442,  1.672,  9.092,  0.350, 52.086, 10.472],
-            [ 28.189, 16.155, 14.931,  5.676,  1.629,  8.979,  0.383, 48.165, 11.000],
-            [ 27.305, 16.730, 15.611,  5.834,  1.593,  8.866,  0.418, 45.001, 11.472],
-            [ 27.006, 17.764, 15.713,  5.784,  1.513,  8.812,  0.425, 38.610, 11.688],
-            [ 16.882, 18.591, 25.558,  5.860,  0.461,  8.622,  1.483, 36.396, 12.066],
-            [ 20.681, 19.042, 21.657,  5.968,  0.545,  8.448,  1.573, 38.325, 12.609],
-            [ 27.545, 19.158, 15.538,  5.526,  0.655,  8.708,  1.963, 45.815, 13.175],
-            [ 31.062, 13.064, 18.442,  5.970,  0.690,  2.358,  8.618, 47.258, 13.412],
-            [ 33.369, 12.951, 16.588,  6.469,  0.704,  2.924,  8.794, 48.009, 13.578],
-            [  0.000,  0.000,  0.000,  0.000,  0.000,  0.000,  0.000,  0.000,  0.000],
-            [  0.000,  0.000,  0.000,  0.000,  0.000,  0.000,  0.000,  0.000,  0.000],
-            [  0.000,  0.000,  0.000,  0.000,  0.000,  0.000,  0.000,  0.000,  0.000],
-            [  0.000,  0.000,  0.000,  0.000,  0.000,  0.000,  0.000,  0.000,  0.000],
-            [  0.000,  0.000,  0.000,  0.000,  0.000,  0.000,  0.000,  0.000,  0.000],
-            [ 35.660, 23.103, 12.598,  4.087,  0.589,  3.652, 18.599,117.020, 13.527],
-            [ 35.564, 23.422, 12.747,  4.807,  0.563,  3.462, 17.831, 99.172, 13.431],
-            [ 35.885, 23.295, 14.189,  4.173,  0.548,  3.415, 16.924,105.251, 13.429],
-            [  0.000,  0.000,  0.000,  0.000,  0.530,  3.335, 16.143,101.371, 13.393],
-            [ 36.187, 23.596, 15.640,  4.186,  0.512,  3.254, 15.362, 97.491, 13.357],
-            [ 36.526, 23.808, 16.771,  3.479,  0.499,  3.264, 14.946,105.980, 13.381]]
+       
 
+        self.sf = None
         self.z = None
         self.short_name = None
         self.long_name = None
@@ -258,7 +179,6 @@ class Element:
             self.valence = self.elements_list[pos][3]
             self.valence_electrons = self.elements_list[pos][4]
             self.covalent_radius = self.elements_list[pos][5]
-            self.scatter = self.sf[pos]
 
     def get_all(self, pos):
         els = []
@@ -267,9 +187,10 @@ class Element:
         return els
 
     def get_sf(self, pos):
-        els = []
-        for el in self.sf:
-            els.append(el[pos])
+        with open(os.path.join(os.path.dirname(__file__),
+               "atomic_scattering_params.json")) as f:
+                ATOMIC_SCATTERING_PARAMS = json.load(f)
+                els = ATOMIC_SCATTERING_PARAMS[pos]
         return els
 
     def all_z(self):
@@ -319,8 +240,8 @@ class crystal(object):
     def from_POSCAR(self, filename):
 
         f = open(filename)
-
         tag = f.readline()
+
         lattice_constant = float(f.readline().split()[0])
 
         # Now the lattice vectors
@@ -348,11 +269,13 @@ class crystal(object):
         for atom in range(tot_natoms):
             ac = f.readline().split()
             coordinate[atom] = (float(ac[0]), float(ac[1]), float(ac[2]))
+
         # Done with all reading
         f.close()
         if cartesian:
             coordinate *= lattice_constant
         cell_para = []
+        self.coordinate = np.array(composition)
         self.from_dict(lattice, atom_type, composition, coordinate)
 
     def from_dict(self, lattice, atom_type, composition, coordinate):
@@ -367,7 +290,6 @@ class crystal(object):
             self.name += ele
             if num > 1:
                self.name += str(num)
-   
     #def show(self, L=2):
     #    """show crystal structure"""
     #    
@@ -389,12 +311,6 @@ class crystal(object):
         return  rec_lat #* 2 * pi
 
     @staticmethod
-    def angle(a,b):
-        """ calculate the angle between vector a and b """
-        return acos(np.dot(a,b)/np.linalg.norm(a)/np.linalg.norm(b))
-
-
-    @staticmethod
     def matrix2para(matrix):
         """ 3x3 representation -> 1x6 (a, b, c, alpha, beta, gamma)"""
         cell_para = np.zeros(6)
@@ -402,9 +318,9 @@ class crystal(object):
         cell_para[1] = np.linalg.norm(matrix[1])
         cell_para[2] = np.linalg.norm(matrix[2])
     
-        cell_para[5] = crystal.angle(matrix[0], matrix[1])
-        cell_para[4] = crystal.angle(matrix[0], matrix[2])
-        cell_para[3] = crystal.angle(matrix[1], matrix[2])
+        cell_para[5] = angle(matrix[0], matrix[1])
+        cell_para[4] = angle(matrix[0], matrix[2])
+        cell_para[3] = angle(matrix[1], matrix[2])
 
         return cell_para
 
@@ -640,19 +556,34 @@ class XRD(object):
         coordinate: atomic positions (e.g., [[0,0,0],[0.5,0.5,0.5]])
     """
 
-    def __init__(self, crystal, wavelength=1.54184, max2theta=180):
+    def __init__(self, crystal, wavelength=1.54184, max2theta=180, 
+                 preferred_orientation = False, march_parameter = None):
         """Return a XRD object with the proper info"""
         self.wavelength = wavelength
         self.max2theta = np.radians(max2theta)
         self.name = crystal.name
+        self.preferred_orientation = preferred_orientation
+        self.march_parameter = march_parameter
         self.all_dhkl(crystal)
-        self.atom_scatter(crystal)
-        self.structure_factor(crystal)
-        self.rec_matrix = crystal.rec_matrix
-        self.intensity()
-        self.pxrd()
-
+        self.intensity(crystal)
+        self.pxrdf()   
+        """
+        U = 5.776410E-03 # FWHM parameter, U
+        V = -1.673830E-03 # FWHM parameter, V
+        W = 5.668770E-03 # FWHM parameter, W
+        A = 1.03944 # Asymmetry parameter, a1
+        eta_h = 0.504656 # Mixing parameter, eta_H0
+        eta_l = 0.611844  # Mixing parameter, eta_L0
+        N = 1000
+        profile = {'function':'split-type', 'theta_dependence': True, 'U': U, 'V':V, 'W':W, 'A':A, 'eta_h':eta_h, 'eta_l':eta_l}
+        s = time.time()
+        self.get_profile(self.theta2,self.xrd_intensity,N,**profile)
+        # print(time.time() - s)
+        """
     def by_hkl(self, hkl):
+        
+        # this is a simple print statement, does not need to be optimized
+
         """ d for any give abitray [h,k,l] index """
         id1 = np.where(np.all(self.hkl_list == np.array(hkl), axis=1 ))
         if id1 is None:
@@ -660,50 +591,40 @@ class XRD(object):
         else:
            print('  2theta     d_hkl     hkl       Intensity')
            for i in id1[0]:
-              #print(len(i), self.xrd_intensity[i])
-              print('%8.3f  %8.3f   [%2d %2d %2d] %8.2f' % \
-                    (np.degrees(self.theta2[i]), self.d_hkl[i], \
-                     self.hkl_list[i,0], self.hkl_list[i,1], self.hkl_list[i,2], \
-                     self.xrd_intensity[i] ))        
-           #return np.degrees(self.theta2[id1]), self.d_hkl[id1], self.xrd_intensity[id1] 
-
+                print('%8.3f  %8.3f   [%2d %2d %2d] %8.2f' % \
+                (np.degrees(self.theta2[i]), self.d_hkl[i], \
+                 self.hkl_list[i,0], self.hkl_list[i,1], self.hkl_list[i,2], \
+                 self.xrd_intensity[i] ))
+    
     def all_dhkl(self, crystal):
         """ 3x3 representation -> 1x6 (a, b, c, alpha, beta, gamma)"""
-        #d_min = self.wavelength/self.max2theta*pi/2
         d_min = self.wavelength/sin(self.max2theta/2)/2
-  
         # This block is to find the shortest d_hkl, 
         # for all basic directions (1,0,0), (0,1,0), (1,1,0), (1,-1,0) and so on, 26 in total 
         hkl_max = np.array([1,1,1])
-        for h1 in [-1, 0, 1]:
-            for k1 in [-1, 0, 1]:
-                for l1 in [-1, 0, 1]:
-                    hkl_index = np.array([[h1,k1,l1]])
-                    d = float(np.linalg.norm( np.dot(hkl_index, crystal.rec_matrix), axis=1))
-                    if d>0:
-                       multiple = 1/d/d_min
-                       hkl_index *= round(multiple)
-                       for i in range(len(hkl_max)):
-                           if hkl_max[i] < hkl_index[0,i]:
-                              hkl_max[i] = hkl_index[0,i]
-        #h1 = 2*ceil(np.linalg.norm(crystal.cell_para[0])/d_min)
-        #k1 = 2*ceil(np.linalg.norm(crystal.cell_para[1])/d_min)
-        #l1 = 2*ceil(np.linalg.norm(crystal.cell_para[2])/d_min)
-        h1, k1, l1 = hkl_max
-        h = np.arange(-h1,h1)
-        k = np.arange(-k1,k1)
-        l = np.arange(-l1,l1)
+        hkl_index = np.array([[[-1,-1,-1]],[[-1,-1,0]],[[-1,-1,1]],[[-1,0,-1]],[[-1,0,0]],[[-1,0,1]],[[-1,1,-1]],[[-1,1,0]],[[-1,1,1]],
+                     [[0,-1,-1]],[[0,-1,0]],[[0,-1,1]],[[0,0,-1]],[[0,0,1]],[[0,1,-1]],[[0,1,0]],[[0,1,1]],
+                     [[1,-1,-1]],[[1,-1,0]],[[1,-1,1]],[[1,0,-1]],[[1,0,0]],[[1,0,1]],[[1,1,-1]],[[1,1,0]],[[1,1,1]]])
+
+
+        for index in hkl_index:
+            d = float(np.linalg.norm( np.dot(index, crystal.rec_matrix),axis = 1))
+            multiple = 1/d/d_min
+            index *= round(multiple)
+            for i in range(len(hkl_max)):
+                if hkl_max[i] < index[0,i]:
+                    hkl_max[i] = index[0,i]
         
+        h1, k1, l1 = hkl_max
+
+        h = np.arange(-h1,h1+1)
+        k = np.arange(-k1,k1+1)
+        l = np.arange(-l1,l1+1)
+
         hkl = np.array((np.meshgrid(h,k,l))).transpose()
         hkl_list = np.reshape(hkl, [len(h)*len(k)*len(l),3])
         hkl_list = hkl_list[np.where(hkl_list.any(axis=1))[0]]
         d_hkl = 1/np.linalg.norm( np.dot(hkl_list, crystal.rec_matrix), axis=1)
-        #for ix, a in enumerate(hkl_list):
-        #    if np.array_equal(a, np.array([1,-1,3])) is True:
-        #       print(a)
-        #       break
-        #
-        #print(ix, hkl_list[ix], d_hkl[ix], d_min)
 
         shortlist = d_hkl > (d_min)
         d_hkl = d_hkl[shortlist]
@@ -713,77 +634,271 @@ class XRD(object):
         self.theta = np.arcsin(sintheta)
         self.hkl_list = hkl_list
         self.d_hkl = d_hkl
-        
-        #return hkl_list, d_hkl, sintheta
 
-    def atom_scatter(self, crystal):
-        """ N*M array; N: atoms, M: N_hkl"""
-        f = np.zeros([sum(crystal.composition), len(self.d_hkl)])
-        d0 = 1/2/self.d_hkl
-        count = 0
-        for i, ele in enumerate(crystal.atom_type):
-            c = Element(ele).scatter
-            f_tmp = c[0]*np.exp(-c[4]*d0) + \
-                    c[1]*np.exp(-c[5]*d0) + \
-                    c[2]*np.exp(-c[6]*d0) + \
-                    c[3]*np.exp(-c[7]*d0) + c[8]
-            for j in range(count,count+crystal.composition[i]):
-                f[j] = f_tmp
-            count += crystal.composition[i]
+    def intensity(self, crystal):
 
-        self.f = f
-   
-    def structure_factor(self, crystal):
-        """ N*1 array"""
-        F = []
-        for fj, hkl in zip(self.f.transpose(), self.hkl_list):
-            F_tmp = np.exp(-2*pi*1j*np.dot(crystal.coordinate, hkl.transpose()))
-            F.append(np.dot(fj, F_tmp))
-
-        self.F = np.array(F)
-
-    def intensity(self):
-        """" Calculate intensity, return N*1 array """
-        LP = 1/np.sin(self.theta)**2/np.cos(self.theta)
-        P = 1 + np.cos(2*self.theta)**2
-        I = (np.abs(self.F))**2*LP*P
-        self.xrd_intensity = I
-        self.theta2 = 2*self.theta
-        rank = np.argsort(self.theta2)
-        self.theta2 = self.theta2[rank]
-        self.hkl_list = self.hkl_list[rank]
-        self.d_hkl = self.d_hkl[rank]
-        self.xrd_intensity = self.xrd_intensity[rank]
-
-    def pxrd(self):
-        """ Group the equivalent hkl planes together by 2\theta angle
-            N*6 arrays, Angle, d_hkl, h, k, l, intensity
         """
+        This function calculates all that is necessary to find the intensities.
+        This scheme is based off of pymatgen
+        Needs improvement from different correction factors.
+        """
+
+        # open a json file with atomic scattering parameters, should eventuall go to Element class
+
+        with open(os.path.join(os.path.dirname(__file__),
+                       "database/atomic_scattering_params.json")) as f:
+                        ATOMIC_SCATTERING_PARAMS = json.load(f)
+
+        d0 = (1/2/self.d_hkl)**2
+
+        # obtiain scattering parameters, atomic numbers, and occus (need to look into occus)
+        coeffs = []
+        zs = []
+        
+        for elem,N_elem in zip(crystal.atom_type,crystal.composition):
+            for N in range(N_elem):
+                if elem == 'D': # must find a better way to account for elements that don't have specified scattering params
+                    elem = 'H'
+                c = ATOMIC_SCATTERING_PARAMS[elem]
+                z = Element(elem).z
+                coeffs.append(c)
+                zs.append(z) 
+
+        coeffs = np.array(coeffs)
+        self.peaks = {}
+        two_thetas = []
+
+        # self.march_parameter = 1
+
+        TWO_THETA_TOL = 1e-5 # tolerance to find repeating angles
+        SCALED_INTENSITY_TOL = 1e-4 # threshold for intensities
+        
+        for hkl, s2, theta, d_hkl in zip(self.hkl_list, d0, self.theta, self.d_hkl):
+            
+
+   
+            # calculate the scattering factor sf
+            g_dot_r = np.dot(crystal.coordinate, np.transpose([hkl])).T[0]
+            sf = zs - 41.78214 * s2 * np.sum(coeffs[:, :, 0] * np.exp(-coeffs[:, :, 1] * s2), axis=1)
+            
+            # calculate the structure factor f
+            f = np.sum(sf * np.exp(2j * pi * g_dot_r))
+            
+            # calculate the lorentz polarization factor lf
+            lf = (1 + cos(2 * theta) ** 2) / (sin(theta) ** 2 * cos(theta))
+
+            # calculate the preferred orientation factor
+            if self.preferred_orientation != False:
+                G = self.march_parameter
+                po = ((G * np.cos(theta))**2 + 1/G * np.sin(theta)**2)**(-3/2) 
+            else:
+                po = 1
+    
+            # calculate the intensity I
+            I = (f * f.conjugate()).real
+            
+            # calculate 2*theta
+            two_theta = degrees(2 * theta)
+            
+            # find where the scattered angles are equal
+            ind = np.where(np.abs(np.subtract(two_thetas, two_theta)) < TWO_THETA_TOL)
+
+            # append intensity, hkl plane, and thetas to lists
+            if len(ind[0]) > 0:
+                 self.peaks[two_thetas[ind[0][0]]][0] += I * lf * po
+                 self.peaks[two_thetas[ind[0][0]]][1].append(tuple(hkl))
+            else:
+                self.peaks[two_theta] = [I * lf * po, [tuple(hkl)],d_hkl]
+                two_thetas.append(two_theta)
+
+        # obtain important intensities (defined by SCALED_INTENSITY_TOL)
+        # and corresponding 2*theta, hkl plane + multiplicity, and d_hkl
+        # print(peaks.keys())
+        max_intensity = max([v[0] for v in self.peaks.values()])
+        x = []
+        y = []
+        hkls = []
+        d_hkls = []
+        count = 0 
+        for k in sorted(self.peaks.keys()):
+            count +=1
+            v = self.peaks[k]
+            fam = self.get_unique_families(v[1])
+            if v[0] / max_intensity  > SCALED_INTENSITY_TOL:
+                x.append(k)
+                y.append(v[0])
+                
+                hkls.append([{"hkl": hkl, "multiplicity": mult}
+                             for hkl, mult in fam.items()])
+                d_hkls.append(v[2])
+        self.theta2 = x
+        self.xrd_intensity = y
+        self.hkl_list = hkls
+        self.d_hkl = d_hkls
+
+<<<<<<< HEAD:XRD.py
+ 
+    def get_profile(self, theta2, xrd_intensity, N, **kwargs):
+    
+        """
+        args:
+            theta2 (1D array): simulated theta values 
+            xrd_intensity (1D array): simulated peaks 
+            N (int): Resolution for profiling arrays 
+            Keyword Arguments (dict): The user can choose between theta dependent OR independent fwhm.
+                Key 1 (string): Function used to profile spectra (must be gaussian, lorentzian, or split-type).
+                Theta independent:
+                    Key 2 (float): constant value for fwhm
+                Theta dependent:
+                    Key 1 = gaussian:
+                        Key 2 (float/int): adjustable parameter (V) for theta dep. fwhm
+                    Key 1 = lorentzian:
+                        key 2 (float/int): adjustable parameter (X) for theta dep. fwhm
+                    Key 1 = split-type:
+                        Key 2-4 (float/int): adjustable parameters (U, V, W) for theta dep. fwhm
+                        Key 5 (float/int): assymetry parameter (A)
+                        key 6 (float/int): mixing parameter (eta_l)
+                        key 7 (float/int): mixing parameter (eta_h)
+        stores:
+            self.spectra: x and y values of profiling function (2D array)
+        """
+
+        # profile parameters
+        tail = 5
+        profile = kwargs['function']
+        # gpeaks = np.zeros((len(xrd_intensity),2,N))
+        # g2thetas = np.zeros((len(theta2),2,N))
+        spectra = np.zeros((len(xrd_intensity),2,N))
+
+        for i,j in zip(range(len(theta2)),range(len(xrd_intensity))):
+          
+            # x = np.linspace(np.min(theta2[i]) - tail, np.max(theta2[i]) + tail, N, retstep = True)
+            # y = np.zeros((x.shape))
+
+            if profile == 'gaussian':
+                try:
+                    V = kwargs['V']
+                    fwhm = V*np.tan(np.pi*theta2[i]/2/180)
+                except:
+                    fwhm = kwargs['FWHM']
+                tmp = self.gaussian_profile(xrd_intensity[i],theta2[i],g2thetas,fwhm)
+
+            elif profile == 'lorentzian':
+                try:
+                    X = kwargs['X']
+                    fwhm = X/np.cos(np.pi*theta2[i]/2/180)
+                except:
+                    fwhm = kwargs['FWHM']
+                tmp = self.lorentzian_profile(xrd_intensity[i],theta2[i],g2thetas,fwhm)
+
+            elif profile == 'split-type': 
+                try:
+                    U = kwargs['U']
+                    V = kwargs['V']
+                    W = kwargs['W']
+                    fwhm = np.sqrt(U*np.tan(np.pi*theta2[i]/2/180)**2 + V*np.tan(np.pi*theta2[i]/2/180) + W)
+                except:
+                    fwhm = kwargs['FWHM']
+
+                # x = g2thetas - theta2[i]    
+           
+                spectra[i,:,:] = self.split_type(theta2[i], xrd_intensity[i], N, fwhm, **kwargs) 
+            else:
+                msg = profile + ' is not supported'
+                raise NotImplementedError(msg)
+       
+        from scipy import interpolate 
+        spectra[:,1,:] = spectra[:,1,:]/np.max(spectra[:,1,:])
+        x = spectra[:,0,:]
+        y = spectra[:,1,:]
+        px = np.concatenate((x),axis = 0)
+        px = np.sort(px)
+        py = np.zeros((px.shape))
+        for theta2,peak in zip(x,y):
+            inter = interpolate.UnivariateSpline(theta2, peak)#, 'cubic', fill_value = 'extrapolate')
+            py_new = inter(px)
+            py += py_new
+        
+        self.spectra = np.vstack((px,py))
+
+        # print(px.shape,py.shape)
+
+    # def 
+
+    def gaussian_profile(self, I0, theta2, alpha, fwhm):
+        tmp = ((alpha - theta2)/fwhm)**2
+        return I0 * np.exp(-4*np.log(2)*tmp)
+    
+    def lorentzian_profile(self, I0, theta2, alpha,fwhm):
+        tmp = 1 + 4*((alpha - theta2)/fwhm)**2
+        return I0 * 1/tmp
+
+    def split_type(self, theta2, I0, N, fwhm, **kwargs):
+        A = kwargs['A']
+        eta_l = kwargs['eta_l']
+        eta_h = kwargs['eta_h']
+        tmpx = np.linspace(np.min(theta2) - 5, np.max(theta2) + 5, N) 
+        tmpy = np.zeros((N))
+        # move this outside 
+
+        @numba.njit(numba.float64[:,:](numba.float64,numba.float64,numba.int64,numba.float64,numba.float64,numba.float64,numba.float64,numba.float64[:],numba.float64[:]),cache=True)
+        def wrapped(theta2, I0, N, fwhm,A,eta_l,eta_h,tmpx,tmpy):
+            x = tmpx - theta2
+            for k, dx in enumerate(x):
+                if dx > 0:
+                    A = 1/A
+                    eta_l = eta_h
+                    eta_h = eta_l
+                tmpy[k] = ((1+A)*(eta_h + np.sqrt(np.pi*np.log(2))*(1-eta_h))) /\
+                   (eta_l + np.sqrt(np.pi*np.log(2)) * (1-eta_l) + A*(eta_h + \
+                   np.sqrt(np.pi*np.log(2))*(1-eta_h))) * (eta_l*2/(np.pi*fwhm) * \
+                   (1+((1+A)/A)**2 * (dx/fwhm)**2)**(-1) + (1-eta_l)*np.sqrt(np.log(2)/np.pi)* \
+                   2/fwhm *np.exp(-np.log(2) * ((1+A)/A)**2 * (dx/fwhm)**2))
+            
+            tmp = np.vstack((tmpx,I0*tmpy))
+            
+            return tmp
+        
+        return wrapped(theta2,I0, N, fwhm,A,eta_l,eta_h,tmpx,tmpy)
+
+=======
+       
+>>>>>>> origin/master:pyxtal_xrd/XRD.py
+    def pxrdf(self):
+        """
+        Group the equivalent hkl planes together by 2\theta angle
+        N*6 arrays, Angle, d_hkl, h, k, l, intensity
+        """
+        
         rank = range(len(self.theta2)) #np.argsort(self.theta2)
         PL = []
-        last = []
+        last = 0
         for i in rank:
             if self.xrd_intensity[i] > 0.01:
-               angle = np.degrees(self.theta2[i])
-               if PL is None:
-                  PL.append([angle, self.d_hkl[i], \
-                             self.hkl_list[i,0], self.hkl_list[i,1], self.hkl_list[i,2], \
-                             self.xrd_intensity[i]])
-               elif abs(angle-last) < 1e-2:
-                  PL[-1][-1] += self.xrd_intensity[i]
-               else:
-                  PL.append([angle, self.d_hkl[i], \
-                             self.hkl_list[i,0], self.hkl_list[i,1], self.hkl_list[i,2], \
-                             self.xrd_intensity[i]])
-               last = angle
+                angle = self.theta2[i]
+                if abs(angle-last) < 1e-4:
+                    PL[-1][-1] += self.xrd_intensity[i]
+                else:
+                    PL.append([angle, self.d_hkl[i], \
+                             self.hkl_list[i][0]["hkl"][0], self.hkl_list[i][0]["hkl"][1], \
+                             self.hkl_list[i][0]["hkl"][2], self.xrd_intensity[i]])
+                last = angle
+
         PL = (np.array(PL))
         PL[:,-1] = PL[:,-1]/max(PL[:,-1])
         self.pxrd = PL
-
+        # print(PL[0],PL[-1])
+    
     def plot_pxrd(self, filename=None, minimum_I = 0.01, show_hkl=True):
         """ plot PXRD """
 
-        #print('  2theta     d_hkl     hkl       Intensity')
+
+
+        plt.figure(figsize=(20,10))
+
+        if self.profiling != None:
+            plt.plot(self.gtwo_thetas,self.gpeaks,'g-',label = str(self.profiling) + ' profiling')
+
         dx = np.degrees(self.max2theta)
         for i in self.pxrd:
             plt.bar(i[0],i[-1], color='b', width=dx/180)
@@ -791,19 +906,53 @@ class XRD(object):
                if show_hkl:
                   label = self.draw_hkl(i[2:5])
                   plt.text(i[0]-dx/40, i[-1], label[0]+label[1]+label[2])
-   
+        
         ax=plt.gca()
         plt.grid()
         plt.xlim(0,dx)
         plt.xlabel('2θ')
         plt.ylabel('Intensity')
         plt.title('PXRD of '+self.name+ ', $\lambda$='+str(self.wavelength)+'$\AA$')
+        
         if filename is None:
            plt.show()
+        """ 
         else:
            plt.savefig(filename)
            plt.close()
+        """
+    def get_unique_families(self,hkls):
+        """
+        Returns unique families of Miller indices. Families must be permutations
+        of each other.
+        Args:
+            hkls ([h, k, l]): List of Miller indices.
+        Returns:
+            {hkl: multiplicity}: A dict with unique hkl and multiplicity.
+        """
 
+       # TODO: Definitely can be sped up.
+        def is_perm(hkl1, hkl2):
+            h1 = np.abs(hkl1)
+            h2 = np.abs(hkl2)
+            return all([i == j for i, j in zip(sorted(h1), sorted(h2))])
+
+        unique = collections.defaultdict(list)
+        for hkl1 in hkls:
+            found = False
+            for hkl2 in unique.keys():
+                if is_perm(hkl1, hkl2):
+                    found = True
+                    unique[hkl2].append(hkl1)
+                    break
+            if not found:
+                unique[hkl1].append(hkl1)
+
+        pretty_unique = {}
+        for k, v in unique.items():
+            pretty_unique[sorted(v)[-1]] = len(v)
+
+        return pretty_unique
     #def plot_Laue(self, filename=None, projection=[0,0,1]):
     #    """ plot  Laue graphs"""
     #    maxI = max(self.xrd_intensity)
@@ -846,109 +995,60 @@ class XRD(object):
 from optparse import OptionParser
 import pandas as pd
 from tabulate import tabulate
-import codecs
-
-def read_multi_POSCAR(filename):
-    strucs = []
-    #f = open(filename, 'rb', encoding="utf-8") 
-    f = codecs.open( filename, "rb", "utf-8" )
-    while True:
-        content = f.readline()
-        if content == "":
-            print('---------------------------------------------')
-            print('finishing reading all structures')
-            print(len(strucs), ' structures have been loaded')
-            print('---------------------------------------------')
-            break
-        else:
-            lattice_constant = float(f.readline().split()[0])
-            # Now the lattice vectors
-            a = []
-            for ii in range(3):
-                s = f.readline().split()
-                floatvect = float(s[0]), float(s[1]), float(s[2])
-                a.append(floatvect)
-            lattice = np.array(a) * lattice_constant
-
-            # Number of atoms. 
-            atom_type = f.readline().split()
-            comp = f.readline().split()
-            composition = []
-            if len(atom_type)==len(comp):
-                for num in comp:
-                    composition.append(int(num))
-            else:
-                print('Value Error POSCAR symbol and composition is inconsistent')
-                break
-            ac_type = f.readline().split()
-            # Check if atom coordinates are cartesian or direct
-            cartesian = ac_type[0].lower() == "c" or ac_type[0].lower() == "k"
-            tot_natoms = sum(composition)
-            coordinate = np.empty((tot_natoms, 3))
-            for atom in range(tot_natoms):
-                ac = f.readline().split()
-                coordinate[atom] = (float(ac[0]), float(ac[1]), float(ac[2]))
-            if cartesian:
-                coordinate *= lattice_constant
-            
-            tmp = crystal(fileformat='dict', lattice=lattice, 
-                        atom_type=atom_type, composition=composition,
-                    coordinate=coordinate)
-
-            strucs.append(tmp)
-
-    return strucs
-
 
 if __name__ == "__main__":
     #-------------------------------- Options -------------------------
     parser = OptionParser()
+    parser.add_option("-m", "--hkl", dest="hkl", metavar='hkl index',
+                      help="show hkl_index info, e.g., [1,0,0]")
     parser.add_option("-a", "--angle", dest="max2theta", default=180, type='float',
                       help="2theta angle range, default=180", metavar="angle")
+    parser.add_option("-t", "--transform", dest="trans", metavar="files",
+                      help="export file in different format")
+    parser.add_option("-p", "--plot", dest="plot", default='yes',
+                      help="plot pxrd, default: yes", metavar="plot")
     parser.add_option("-w", "--wavelength", dest="wavelength", default=1.54184, type='float',
                       help="wavelength: 1.54184", metavar="wave")
     parser.add_option("-c", "--crystal", dest="structure",default='',
                       help="crystal from file, cif or poscar, REQUIRED", metavar="crystal")
+    parser.add_option("-f", "--full", dest="full",default='no',
+                      help="show full hkl reflections", metavar="full")
     parser.add_option("-i", "--intensity", dest="minimum_I",default=0.01, type='float',
                       help="the minimum intensity to show, default 0.01", metavar="intensity")
-    parser.add_option("-n", "--number", dest="number",default=5, type='int',
-                      help="the number of reflections from low to high, default 5", metavar="number")
+
 
 
     (options, args) = parser.parse_args()    
     if options.structure.find('cif') > 0:
-        fileformat = 'cif'
+       fileformat = 'cif'
     else:
-        fileformat = 'POSCAR'
-        strucs = read_multi_POSCAR(filename=options.structure)
-    
-    #test = crystal(fileformat, filename=options.structure)
-    theta = []
-    intensity = []
+       fileformat = 'POSCAR'
 
-    for test in strucs:
-        xrd = XRD(test, wavelength=options.wavelength, \
-                   max2theta=options.max2theta)   
-        rank = xrd.pxrd[:, 5] > options.minimum_I
-        pxrd = xrd.pxrd[rank, :]
-        if len(rank) < options.number:
-            N = len(xrd.pxrd)
-        else:
-            N = options.number
-        theta1 = pxrd[:N,0]
-        intensity1 = pxrd[:N,5]*100
-        str1 = ["%5.2f" % member for member in theta1 ]
-        str2 = ["%5.1f" % member for member in intensity1]
-        print(str1, test.composition)
-        theta.append(str1)
-        intensity.append(str2)
+    test = crystal(fileformat, filename=options.structure)
+    if options.plot == 'yes' or options.hkl is not None:
+       xrd = XRD(test, wavelength=options.wavelength, \
+                       max2theta=options.max2theta)   
+       if options.full in  ['no', 'No', 'NO']:
+          col_name = {'2theta': xrd.pxrd[:,0], \
+                      'd_hkl':  xrd.pxrd[:,1], \
+                      'h': xrd.pxrd[:,2], \
+                      'k': xrd.pxrd[:,3], \
+                      'l': xrd.pxrd[:,4], \
+                      'Intensity':xrd.pxrd[:,5]}
+       else:
+          rank1 = xrd.xrd_intensity > options.minimum_I
+          col_name = {'2theta':    np.degrees(xrd.theta2[rank1]), \
+                      'd_hkl':     xrd.d_hkl[rank1],\
+                      'h':         xrd.hkl_list[rank1,0], \
+                      'k':         xrd.hkl_list[rank1,1], \
+                      'l':         xrd.hkl_list[rank1,2], \
+                      'Intensity': xrd.xrd_intensity[rank1] }
 
-    col_name = {'2theta(degree)': theta, \
-                'Intensity(0-100)':intensity}
-    
-    df = pd.DataFrame(col_name)
-    print(tabulate(df, headers='keys')) #, tablefmt='psql'))
+       df = pd.DataFrame(col_name)
+       print(tabulate(df, headers='keys')) #, tablefmt='psql'))
 
+       if options.plot == 'yes':
+          xrd.plot_pxrd(filename=options.structure+'.png', minimum_I = options.minimum_I)
  
     #for name in ['alpha','gamma','delta']:
     #    fname = 'POSCAR-P3N5-'+name

@@ -1,13 +1,13 @@
 import numpy as np 
 import matplotlib.pyplot as plt
-from XRD import crystal, Element, XRD
 import sys
 import os
-from similarity import Similarity
 import csv
 import scipy.integrate as integrate
 from scipy import interpolate
-
+from pyxtal_xrd.XRD import crystal, Element, XRD
+from pyxtal_xrd.profile import Profile
+from pyxtal_xrd.similarity import Similarity
 
 def getListOfFiles(dirName):
     # create a list of file and sub directories 
@@ -79,7 +79,11 @@ def classifyStructure(file):
         return 'triclinic'
     
 
+<<<<<<< HEAD:checkStructures.py
 path = './data/' #'/Users/sayred1/Documents/Research/dXRD/XRD/data/'
+=======
+path = './dataset/' #'/Users/sayred1/Documents/Research/dXRD/XRD/data/'
+>>>>>>> origin/master:scripts/checkStructures.py
 allFiles = getListOfFiles(path)
 allFiles.sort()
 poscarFiles = []
@@ -101,12 +105,20 @@ for file in allFiles:
 
 wavelength = 1.54056
 max2theta = 90
+<<<<<<< HEAD:checkStructures.py
 N = 10
+=======
+N = 1000
+>>>>>>> origin/master:scripts/checkStructures.py
 Sims = []
 Sgs = []
 clss = []
 # profile = {'function': 'gaussian', 'params': 0.2}
+<<<<<<< HEAD:checkStructures.py
 
+=======
+"""
+>>>>>>> origin/master:scripts/checkStructures.py
 U = 5.776410E-03 # FWHM parameter, U
 V = -1.673830E-03 # FWHM parameter, V
 W = 5.668770E-03 # FWHM parameter, W
@@ -114,7 +126,11 @@ A = 1.03944 # Asymmetry parameter, a1
 eta_h = 0.504656 # Mixing parameter, eta_H0
 eta_l = 0.611844  # Mixing parameter, eta_L0
 profile = {'function':'split-type', 'theta_dependence': True, 'U': U, 'V':V, 'W':W, 'A':A, 'eta_h':eta_h, 'eta_l':eta_l}
+<<<<<<< HEAD:checkStructures.py
 
+=======
+"""
+>>>>>>> origin/master:scripts/checkStructures.py
 
 for poscardata, diffdata, cifFile in zip(poscarFiles,diffFiles,cifFiles):
     """
@@ -122,9 +138,15 @@ for poscardata, diffdata, cifFile in zip(poscarFiles,diffFiles,cifFiles):
     """
     struct = crystal('POSCAR',filename=poscardata)
     xrd1 = XRD(struct, wavelength, max2theta)   
+<<<<<<< HEAD:checkStructures.py
     xrd1.get_profile(xrd1.theta2, xrd1.xrd_intensity,N,**profile)
     f = xrd1.spectra 
     
+=======
+    proff = Profile()
+    proff.get_profile(xrd1.theta2, xrd1.xrd_intensity)
+    f = proff.spectra
+>>>>>>> origin/master:scripts/checkStructures.py
     """
     Load the diffraction data 
     """
@@ -146,12 +168,21 @@ for poscardata, diffdata, cifFile in zip(poscarFiles,diffFiles,cifFiles):
     """
     Get profile for diffraction data
     """
+    
+    
     xval = np.array(xval)
     yval = np.array(yval)
     yval/= np.max(yval)
+    
     xrd2 = XRD(struct, wavelength, max2theta)
+<<<<<<< HEAD:checkStructures.py
     xrd2.get_profile(xval, yval,N,**profile)
     g = xrd2.spectra 
+=======
+    profg = Profile()
+    profg.get_profile(xval,yval)
+    g = profg.spectra
+>>>>>>> origin/master:scripts/checkStructures.py
     S = Similarity(f, g, N).calculate()
     print(S)
     classification = classifyStructure(cifFile)
@@ -159,6 +190,7 @@ for poscardata, diffdata, cifFile in zip(poscarFiles,diffFiles,cifFiles):
     Sgs.append(groupName)
     clss.append(classification)
     Sims.append(S)
+<<<<<<< HEAD:checkStructures.py
     """
     plt.figure(figsize=(15,7))
     plt.plot(f2thetas,fpeaks, label=poscardata)
@@ -167,14 +199,16 @@ for poscardata, diffdata, cifFile in zip(poscarFiles,diffFiles,cifFiles):
     plt.legend()
     plt.show()
     """
+=======
+>>>>>>> origin/master:scripts/checkStructures.py
     
 """
 Write similarity, space group, and classificaition to file
-"""
+
 with open('valData02.csv', 'w') as f:
     writer = csv.writer(f, delimiter=',')
     writer.writerows(zip(Sgs,clss,Sims))
-
+"""
 """
 Classify structure
 """
