@@ -8,7 +8,7 @@ class Similarity(object):
     Class to compute the similarity between two diffraction patterns
     """
 
-    def __init__(self, f, g, N = None, x_range = [-1,1], l = 1, weight = 'cosine'):
+    def __init__(self, f, g, N = None, x_range = None, l = 1, weight = 'cosine'):
         
         """
         Args:
@@ -22,6 +22,7 @@ class Similarity(object):
         """
         self.fx, self.fy = f[0], f[1]
         self.gx, self.gy = g[0], g[1]
+
         self.N = N
         self.x_range = x_range
         self.l = abs(l)
@@ -71,8 +72,8 @@ class Similarity(object):
             x_min = max(np.min(self.fx), np.min(self.gx))
             x_max = min(np.max(self.fx), np.max(self.gx))
             self.x_range = [x_min,x_max]
-        f_inter = interpolate.UnivariateSpline(self.fx, self.fy)#, 'cubic', fill_value = 'extrapolate')
-        g_inter = interpolate.UnivariateSpline(self.gx, self.gy)#, 'cubic', fill_value = 'extrapolate')
+        f_inter = interpolate.interp1d(self.fx, self.fy, 'cubic', fill_value = 'extrapolate')
+        g_inter = interpolate.interp1d(self.gx, self.gy, 'cubic', fill_value = 'extrapolate')
 
         fgx_new = np.linspace(self.x_range[0], self.x_range[1], self.N)
         fy_new = f_inter(fgx_new)
@@ -80,7 +81,8 @@ class Similarity(object):
 
         self.fx, self.fy = fgx_new, fy_new
         self.gx, self.gy = fgx_new, gy_new
-        
+     #    plt.plot(self.fx, self.fy)
+     #    plt.plot(self.gx, self.gy)
     def triangleFunction(self):
         
         """
