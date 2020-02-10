@@ -138,3 +138,4 @@ class Profile:
        py /= np.max(py)
 
        self.spectra = np.vstack((px,py))
+       return self.spectra

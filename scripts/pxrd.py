@@ -19,17 +19,9 @@ if __name__ == "__main__":
        fileformat = 'vasp'
 
 
-    U = 5.776410E-03 # FWHM parameter, U
-    V = -1.673830E-03 # FWHM parameter, V
-    W = 5.668770E-03 # FWHM parameter, W
-    A = 1.03944 # Asymmetry parameter, a1
-    eta_h = 0.504656 # Mixing parameter, eta_H0
-    eta_l = 0.611844  # Mixing parameter, eta_L0
-    profile = {'function':'split-type', 'theta_dependence': True, 'U': U, 'V':V, 'W':W, 'A':A, 'eta_h':eta_h, 'eta_l':eta_l}
-
     test = read(options.structure, format=fileformat)
     xrd = XRD(test, wavelength=options.wavelength, max2theta=options.max2theta)   
-    xrd.get_profile(xrd.theta2, xrd.xrd_intensity, 1000, **profile)
+    xrd.get_profile(res=0.01)
     xrd.plotly_pxrd(html='1.html')
 
 
