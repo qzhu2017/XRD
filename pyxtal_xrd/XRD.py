@@ -48,24 +48,37 @@ class XRD(object):
         
 
     def get_profile(self, method='pseudo_voigt', res=0.01):
-        self.spectra = Profile(method, res).get_profile(self.theta2, self.xrd_intensity, 
-                               np.degrees(self.min2theta), np.degrees(self.max2theta))
+        self.spectra = Profile(method, res).get_profile(self.theta2, \
+                        self.xrd_intensity, \
+                        np.degrees(self.min2theta), np.degrees(self.max2theta))
 
-    def by_hkl(self, hkl):
+    def by_hkl(self, hkl=None):
         
         # this is a simple print statement, does not need to be optimized
 
         """ d for any give abitray [h,k,l] index """
-        id1 = np.where(np.all(self.hkl_list == np.array(hkl), axis=1 ))
-        if id1 is None:
-           print('This hkl is not in the given 2theta range')
+        if hkl is None:
+            id1 = self.hkl_labels
+            seqs = range(len(id1))
         else:
-           print('  2theta     d_hkl     hkl       Intensity')
-           for i in id1[0]:
-                print('%8.3f  %8.3f   [%2d %2d %2d] %8.2f' % \
-                (np.degrees(self.theta2[i]), self.d_hkl[i], \
-                 self.hkl_list[i,0], self.hkl_list[i,1], self.hkl_list[i,2], \
-                 self.xrd_intensity[i] ))
+            seqs = None
+            for id, label in enumerate(self.hkl_labels):
+                hkl0 = list(label[0]['hkl']) #label['multiplicity']
+                if hkl == hkl0:
+                    seqs = [id]
+
+        if seqs is not None:
+           print('  2theta     d_hkl     hkl       Intensity  Multi')
+           for i in seqs:
+               print('{:8.3f}  {:8.3f}   [{:2d} {:2d} {:2d}] {:8.2f} {:8d}'.format(\
+                       self.theta2[i], self.d_hkls[i], \
+                       self.hkl_labels[i][0]["hkl"][0], \
+                       self.hkl_labels[i][0]["hkl"][1], \
+                       self.hkl_labels[i][0]["hkl"][2], \
+                       100*self.xrd_intensity[i]/max(self.xrd_intensity),
+                       self.hkl_labels[i][0]["multiplicity"]))
+        else:
+            print('This hkl is not in the given 2theta range')
     
     def all_dhkl(self, crystal):
         """ 3x3 representation -> 1x6 (a, b, c, alpha, beta, gamma)"""
@@ -94,7 +107,7 @@ class XRD(object):
         sintheta = self.wavelength/2/d_hkl
 
         self.theta = np.arcsin(sintheta)
-        self.hkl_list = hkl_list
+        self.hkl_list = np.array(hkl_list)
         self.d_hkl = d_hkl
 
     def intensity(self, crystal):
@@ -195,8 +208,8 @@ class XRD(object):
 
         self.theta2 = x
         self.xrd_intensity = y
-        self.hkl_list = hkls
-        self.d_hkl = d_hkls
+        self.hkl_labels = hkls
+        self.d_hkls = d_hkls
 
     def pxrdf(self):
         """
@@ -213,9 +226,11 @@ class XRD(object):
                 if abs(angle-last) < 1e-4:
                     PL[-1][-1] += self.xrd_intensity[i]
                 else:
-                    PL.append([angle, self.d_hkl[i], \
-                             self.hkl_list[i][0]["hkl"][0], self.hkl_list[i][0]["hkl"][1], \
-                             self.hkl_list[i][0]["hkl"][2], self.xrd_intensity[i]])
+                    PL.append([angle, self.d_hkls[i], \
+                             self.hkl_labels[i][0]["hkl"][0], \
+                             self.hkl_labels[i][0]["hkl"][1], \
+                             self.hkl_labels[i][0]["hkl"][2], \
+                             self.xrd_intensity[i]])
                 last = angle
 
         PL = (np.array(PL))
@@ -310,10 +325,10 @@ class XRD(object):
         
         x, y, labels = [], [], []
         for i in range(len(self.pxrd)):
-            theta2, d, h, k, l, intensity = self.pxrd[i]
+            theta2, d, h, k, l, I = self.pxrd[i]
             h, k, l = int(h), int(k), int(l)
-            if intensity > minimum_I:
-                label = '<br>2&#952;: {:6.2f}<br>d: {:6.4f}</br>hkl: ({:d}{:d}{:d})'.format(theta2, d, h, k, l)
+            if I > minimum_I:
+                label = '<br>2&#952;: {:6.2f}<br>d: {:6.4f}<br>I: {:6.4f}</br>hkl: ({:d}{:d}{:d})'.format(theta2, d, I, h, k, l)
                 x.append(theta2)
                 y.append(-0.1)
                 labels.append(label)

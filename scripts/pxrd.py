@@ -24,5 +24,4 @@ if __name__ == "__main__":
     xrd = XRD(test, wavelength=options.wavelength, thetas=t)   
     xrd.get_profile(res=0.01)
     xrd.plotly_pxrd(html='1.html')
-
-
+    xrd.by_hkl() #[1,1,3])
