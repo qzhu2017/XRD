@@ -19,23 +19,15 @@ def index():
         # Retrieve form data
         wavelength = form.wavelength.data
         max2theta = form.theta.data
+        min2theta = 0 # form.theta.data1
         N = 10000
         # Alert w/ submission data
         flash('XRD calculated for {}, λ={} Å, 2θ={}°'.format(f.filename, wavelength, max2theta))
 
         # Calculate and plot
-        '''QZ: here is an example if you use split-type'''
-        U = 5.776410E-03 # FWHM parameter, U
-        V = -1.673830E-03 # FWHM parameter, V
-        W = 5.668770E-03 # FWHM parameter, W
-        A = 1.03944 # Asymmetry parameter, a1
-        eta_h = 0.504656 # Mixing parameter, eta_H0
-        eta_l = 0.611844  # Mixing parameter, eta_L0
-        profile = {'function':'split-type', 'theta_dependence': True, 'U': U, 'V':V, 'W':W, 'A':A, 'eta_h':eta_h, 'eta_l':eta_l}
-
         struct = read(save_path, format='cif')
-        xrd = XRD(struct, wavelength=wavelength, max2theta=max2theta) 
-        xrd.get_profile(xrd.theta2, xrd.xrd_intensity, N, **profile)
+        xrd = XRD(struct, wavelength=wavelength, thetas=[0, max2theta]) 
+        xrd.get_profile(res=0.01)
         plot = xrd.plotly_pxrd()
 
         return render_template('index.html', title='Calculator', form=form, plot=plot)
