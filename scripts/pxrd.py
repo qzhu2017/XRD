@@ -5,7 +5,7 @@ from optparse import OptionParser
 if __name__ == "__main__":
     #-------------------------------- Options -------------------------
     parser = OptionParser()
-    parser.add_option("-a", "--angle", dest="max2theta", default=180, type='float',
+    parser.add_option("-a", "--angle", dest="thetas", default='[0, 120]', type='str',
                       help="2theta angle range, default=180", metavar="angle")
     parser.add_option("-w", "--wavelength", dest="wavelength", default=1.54184, type='float',
                       help="wavelength: 1.54184", metavar="wave")
@@ -18,9 +18,10 @@ if __name__ == "__main__":
     else:
        fileformat = 'vasp'
 
-
     test = read(options.structure, format=fileformat)
-    xrd = XRD(test, wavelength=options.wavelength, max2theta=options.max2theta)   
+    thetas = options.thetas.replace('[','').replace(']','')
+    t = [float(i) for i in thetas.split(',')]
+    xrd = XRD(test, wavelength=options.wavelength, thetas=t)   
     xrd.get_profile(res=0.01)
     xrd.plotly_pxrd(html='1.html')
 
