@@ -37,7 +37,7 @@ class Similarity(object):
             msg = function + 'is not supported'
             raise NotImplementedError(msg)
 
-        self.showPlot()
+        #self.showPlot()
     
     def calculate(self):
         
@@ -61,7 +61,7 @@ class Similarity(object):
         aCorrff_w = integrate.trapz(self.w*aCorrff, self.r)
         aCorrgg_w = integrate.trapz(self.w*aCorrgg, self.r)
 
-        return np.abs(xCorrfg_w / np.sqrt(aCorrff_w * aCorrgg_w))
+        self.S = np.abs(xCorrfg_w / np.sqrt(aCorrff_w * aCorrgg_w))
 
     def preprocess(self):
 
@@ -128,5 +128,6 @@ class Similarity(object):
         residuals = self.gy-self.fy
         frame2=fig1.add_axes((.1,.1,.8,.2))        
         plt.plot(self.gx,residuals,'.r', markersize = 0.5)
+        plt.title("{:6f}".format(self.S))
         plt.show()
 

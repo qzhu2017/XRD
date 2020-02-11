@@ -21,7 +21,8 @@ class XRD(object):
     """a XRD class
     """
 
-    def __init__(self, crystal, wavelength=1.54184, max2theta=180, 
+    def __init__(self, crystal, wavelength=1.54184, 
+                 thetas = [0, 180], 
                  preferred_orientation = False, march_parameter = None):
        
         """ Class to compute the powder XRD.
@@ -36,7 +37,8 @@ class XRD(object):
         """
         self.profiling = None
         self.wavelength = wavelength
-        self.max2theta = np.radians(max2theta)
+        self.min2theta = np.radians(thetas[0])
+        self.max2theta = np.radians(thetas[1])
         self.name = crystal.get_chemical_formula()
         self.preferred_orientation = preferred_orientation
         self.march_parameter = march_parameter
@@ -46,7 +48,8 @@ class XRD(object):
         
 
     def get_profile(self, method='pseudo_voigt', res=0.01):
-        self.spectra = Profile(method, res).get_profile(self.theta2, self.xrd_intensity)
+        self.spectra = Profile(method, res).get_profile(self.theta2, self.xrd_intensity, 
+                               np.degrees(self.min2theta), np.degrees(self.max2theta))
 
     def by_hkl(self, hkl):
         

@@ -313,7 +313,7 @@ class Element:
     def all_metallic_radii(self):
         return self.get_all(7)
     def get_sf(self, pos):
-        fp = resource_filename("xrd", "database/atomic_scattering_params.json")
+        fp = resource_filename("pyxtal_xrd", "database/atomic_scattering_params.json")
         with open(fp, 'r') as f:
                 ATOMIC_SCATTERING_PARAMS = json.load(f)
                 els = ATOMIC_SCATTERING_PARAMS[pos]

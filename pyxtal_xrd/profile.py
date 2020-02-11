@@ -59,7 +59,7 @@ class Profile:
     method: str
         Type of function used to profile
     res: float
-        resolution of the profiling array
+        resolution of the profiling array in degree
     user_kwargs: dict
         The parameters for the profiling method.
     """
@@ -67,9 +67,8 @@ class Profile:
     def __init__(self, method='pseudo_voigt', res = 0.01, user_kwargs=None):
         
         self.method = method
-        self.N = int(1/res)
         self.user_kwargs = user_kwargs
-        
+        self.res = res       
         kwargs = {}
 
         if method == 'pseudo_voigt':
@@ -96,46 +95,47 @@ class Profile:
 
         self.kwargs = kwargs
 
-    def get_profile(self, two_thetas, intensities):
+    def get_profile(self, two_thetas, intensities, min2theta, max2theta):
 
-       """
-       Performs profiling with selected function, resolution, and parameters 
+        """
+        Performs profiling with selected function, resolution, and parameters 
        
-       Parameters
-       ----------
-       two_thetas: 1d float array 
+        Parameters
+        ----------
+        two_thetas: 1d float array 
            simulated/measured 2 theta values
-       intensities: 
+        intensities: 
            simulated/measures peaks
-       """
+        """
+    
+        N = int((max2theta-min2theta)/self.res)
+        px = np.linspace(min2theta, max2theta, N) 
+        py = np.zeros((N))
 
-       px = np.linspace(np.min(two_thetas) - 5, np.max(two_thetas) + 5, self.N) 
-       py = np.zeros((self.N))
+        for two_theta, intensity in zip(two_thetas, intensities):
+            if self.method == 'gaussian':
+               fwhm = self.kwargs['FWHM']
+               tmp = gaussian(two_theta, px, fwhm)
+            
+            elif self.method == 'lorentzian':
+               fwhm = self.kwargs['FWHM'] 
+               tmp = lorentzian(two_theta, px, fwhm) 
 
-       for two_theta, intensity in zip(two_thetas, intensities):
-           if self.method == 'gaussian':
-              fwhm = self.kwargs['FWHM']
-              tmp = gaussian(two_theta, px, fwhm)
-           
-           elif self.method == 'lorentzian':
-              fwhm = self.kwargs['FWHM'] 
-              tmp = lorentzian(two_theta, px, fwhm) 
+            elif self.method == 'pseudo_voigt':
+               U = self.kwargs['U']
+               V = self.kwargs['V']
+               W = self.kwargs['W']
+               A = self.kwargs['A']
+               eta_h = self.kwargs['eta_h']
+               eta_l = self.kwargs['eta_l']
+               
+               fwhm = np.sqrt(U*np.tan(np.pi*two_theta/2/180)**2 + V*np.tan(np.pi*two_theta/2/180) + W)
+               x = px - two_theta
+               tmp = pseudo_voigt(x, fwhm, A, eta_h, eta_l, N)
+            
+            py += intensity * tmp
 
-           elif self.method == 'pseudo_voigt':
-              U = self.kwargs['U']
-              V = self.kwargs['V']
-              W = self.kwargs['W']
-              A = self.kwargs['A']
-              eta_h = self.kwargs['eta_h']
-              eta_l = self.kwargs['eta_l']
-              
-              fwhm = np.sqrt(U*np.tan(np.pi*two_theta/2/180)**2 + V*np.tan(np.pi*two_theta/2/180) + W)
-              x = px - two_theta
-              tmp = pseudo_voigt(x, fwhm, A, eta_h, eta_l, self.N)
-           
-           py += intensity * tmp
+        py /= np.max(py)
 
-       py /= np.max(py)
-
-       self.spectra = np.vstack((px,py))
-       return self.spectra
+        self.spectra = np.vstack((px,py))
+        return self.spectra
