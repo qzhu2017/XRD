@@ -15,7 +15,8 @@ def create_index():
                 hkl = np.array([i,j,k])
                 if sum(hkl*hkl)>0:
                     hkl_index.append(hkl)
-    return np.array(hkl_index)            
+    hkl_index = np.array(hkl_index).reshape([len(hkl_index), 3])
+    return hkl_index           
 
 class XRD(object):
     """a XRD class
@@ -88,10 +89,17 @@ class XRD(object):
         # This block is to find the shortest d_hkl, 
         # for all basic directions (1,0,0), (0,1,0), (1,1,0), (1,-1,0) 
         hkl_index = create_index()
-        multiple = np.round(1/np.linalg.norm(np.dot(hkl_index, rec_matrix), axis=1)/d_min)
-        hkl_max = np.max(np.abs(np.einsum('i,ij->ij', multiple, hkl_index)), axis=1)
-        h1, k1, l1 = int(hkl_max[0]), int(hkl_max[1]), int(hkl_max[2])
+        hkl_max = np.array([1,1,1])
 
+        for index in hkl_index:
+            d = np.linalg.norm(np.dot(index, rec_matrix))
+            multiple = int(np.ceil(1/d/d_min))
+            index *= multiple
+            for i in range(len(hkl_max)):
+                if hkl_max[i] < index[i]:
+                    hkl_max[i] = index[i]
+        
+        h1, k1, l1 = hkl_max
         h = np.arange(-h1,h1+1)
         k = np.arange(-k1,k1+1)
         l = np.arange(-l1,l1+1)
@@ -99,7 +107,7 @@ class XRD(object):
         hkl = np.array((np.meshgrid(h,k,l))).transpose()
         hkl_list = np.reshape(hkl, [len(h)*len(k)*len(l),3])
         hkl_list = hkl_list[np.where(hkl_list.any(axis=1))[0]]
-        d_hkl = 1/np.linalg.norm(np.dot(hkl_list, rec_matrix), axis=1)
+        d_hkl = 1/np.linalg.norm( np.dot(hkl_list, rec_matrix), axis=1)
 
         shortlist = d_hkl > (d_min)
         d_hkl = d_hkl[shortlist]
