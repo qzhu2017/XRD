@@ -1,3 +1,4 @@
+ase==3.19.0
 certifi==2019.11.28
 Click==7.0
 cycler==0.10.0
@@ -9,8 +10,10 @@ Flask-WTF==0.14.2
 itsdangerous==1.1.0
 Jinja2==2.10.3
 kiwisolver==1.1.0
+llvmlite==0.31.0
 MarkupSafe==1.1.1
 matplotlib==3.1.2
+numba==0.48.0
 numpy==1.18.1
 pandas==1.0.0
 plotly==4.5.0
