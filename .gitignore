@@ -1,3 +1,4 @@
+__pycache__/*
+pyxtal_xrd/__pycache__/*
 flask/__pycache__/*
 flask/app/__pycache__/*
-
