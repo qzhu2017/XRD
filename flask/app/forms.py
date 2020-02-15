@@ -9,17 +9,15 @@ from wtforms.validators import DataRequired, NumberRange, ValidationError
 # from werkzeug.utils import secure_filename
 
 class CalcForm(FlaskForm):
-    # struct = [] # try new attribute
-
     upload = FileField(
         label='CIF/POSCAR',
         validators=[
-            FileRequired(),
+            # FileRequired(), # temp disable
             # FileAllowed(
             #     ['cif', ''],
             #     message='.CIF (Crystallographic Information Files) and -POSCAR only!')
             ],
-        description='Upload a Crystallographic Information File (.CIF) or -POSCAR')
+        description='Upload a .CIF or -POSCAR file')
     wavelength = FloatField(
         label='&lambda; (&#8491;)',
         validators=[
@@ -42,7 +40,7 @@ class CalcForm(FlaskForm):
         default=90)
     submit = SubmitField('Calculate')
 
-    # Tried introspective validator
+    # Try introspective validator
     # def validate_upload(self, upload):
     #     try:
     #         f = upload.data
