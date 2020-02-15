@@ -79,17 +79,15 @@ In order to run and view VXRD locally, run the following shell commands:
 ```bash
 $ cd XRD
 $ pip install -r requirements.txt
+$ cd ./flask
 $ flask run
 ```
-It's **important** to rerun `pip install -r requirements.txt` if this repository has been updated in case there are new dependencies.
+It's **important** to rerun `pip install -r requirements.txt` if this repository has been updated in case there are any new dependencies.
 
 If everything is setup correctly, you should see the following output:
 ```bash
  * Serving Flask app "vxrd.py"
- * Environment: production
-   WARNING: This is a development server. Do not use it in a production deployment.
-   Use a production WSGI server instead.
- * Debug mode: off
+ * ...
  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
 ```
 Then, open your web browser and enter the following URL:
