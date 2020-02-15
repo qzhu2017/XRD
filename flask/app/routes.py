@@ -11,11 +11,12 @@ from ase.io import read
 def index():
     form = CalcForm()
     if form.validate_on_submit():
-        # Save uploaded CIF to disk
-        f = form.cif.data
-        save_path = os.path.join(app.instance_path, 'CIF', secure_filename(f.filename))
+        # Save uploaded files to disk
+        f = form.upload.data
+        save_path = os.path.join(app.instance_path, 'uploads', secure_filename(f.filename))
         f.save(save_path)
-        
+        # ext = os.path.splitext(save_path)[1] # retrieve file extension
+
         # Retrieve form data
         wavelength = form.wavelength.data
         max2theta = form.theta.data
@@ -24,8 +25,7 @@ def index():
         # Alert w/ submission data
         flash('XRD calculated for {}, λ={} Å, 2θ={}°'.format(f.filename, wavelength, max2theta))
 
-        # Calculate and plot
-        struct = read(save_path, format='cif')
+        struct = read(save_path)
         xrd = XRD(struct, wavelength=wavelength, thetas=[0, max2theta]) 
         xrd.get_profile(res=0.01)
         plot = xrd.plotly_pxrd()
