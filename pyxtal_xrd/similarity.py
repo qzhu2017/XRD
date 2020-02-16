@@ -8,7 +8,7 @@ class Similarity(object):
     Class to compute the similarity between two diffraction patterns
     """
 
-    def __init__(self, f, g, N = None, x_range = None, l = 1, weight = 'cosine'):
+    def __init__(self, f, g, N = None, x_range = None, l = None, weight = 'cosine'):
         
         """
         Args:
@@ -22,13 +22,19 @@ class Similarity(object):
         """
         self.fx, self.fy = f[0], f[1]
         self.gx, self.gy = g[0], g[1]
-
-        self.N = N
+        if N is None:
+            self.N = max([len(self.fx), len(self.gx)])
+        else:
+            self.N = N
         self.x_range = x_range
-        self.l = abs(l)
+        self.preprocess()
+        if l is None:
+            self.l = (self.x_range[1] - self.x_range[0])/10
+        else:
+            self.l = abs(l)
         self.weight = weight
         self.r = np.linspace(-self.l, self.l, self.N)
-        self.preprocess()
+        #self.preprocess()
         if self.weight == 'triangle':
             self.triangleFunction()
         elif self.weight == 'cosine':
@@ -62,6 +68,7 @@ class Similarity(object):
         aCorrgg_w = integrate.trapz(self.w*aCorrgg, self.r)
 
         self.S = np.abs(xCorrfg_w / np.sqrt(aCorrff_w * aCorrgg_w))
+        return self.S
 
     def preprocess(self):
 
