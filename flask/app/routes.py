@@ -10,12 +10,12 @@ from ase.io import read
 @app.route('/index', methods=['GET', 'POST'])
 def index():
     form = CalcForm()
-    if form.validate_on_submit(): # passed basic validation
+    if form.validate_on_submit():
         if form.upload.data:
             process_upload(form)
         if not session.get("SAVEPATH"): # new session
-            flash('ERROR: Please upload a .CIF\
-                    or -POSCAR file!', 'danger')
+            flash('ERROR: Please upload an input file.', 
+                'danger')
             return render_template('index.html',
                 title='Calculator',
                 form=form)
@@ -47,11 +47,12 @@ def process_upload(form):
         # Update session keys
         session["FILENAME"] = f.filename
         session["SAVEPATH"] = savepath
-        flash('Successfully processed XRD for {}'.format(
+        flash('SUCCESS: {} processed.'.format(
             session.get("FILENAME")), 'success')
     except:
-        flash('ERROR: Unable to read file.\
-            Please try again or another file.',
+        flash('ERROR: Unable to read {}.\
+            Please try again or a different file.'.format(
+            f.filename),
             'danger')
 
 def process_form(form):
@@ -78,6 +79,7 @@ def process_form(form):
     session["MIN2THETA"] = min2theta
     session["MAX2THETA"] = max2theta
     session["RES"] = res
+    session["PROFILE"] = profile
         
 def plot(form):
     """
@@ -88,6 +90,8 @@ def plot(form):
         wavelength=session.get("WAVELENGTH"),
         thetas=[session.get("MIN2THETA"),
             session.get("MAX2THETA")]) 
-
     xrd.get_profile(res=session.get("RES"))
+    flash('Showing {} with {} profile.'.format(
+            session.get("FILENAME"),
+            session.get("PROFILE")), 'info')
     return xrd.plotly_pxrd()
