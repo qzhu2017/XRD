@@ -11,12 +11,6 @@ from wtforms.validators import DataRequired, NumberRange, ValidationError
 class CalcForm(FlaskForm):
     upload = FileField(
         label='CIF/POSCAR',
-        validators=[
-            # FileRequired(), # temp disable
-            # FileAllowed(
-            #     ['cif', ''],
-            #     message='.CIF (Crystallographic Information Files) and -POSCAR only!')
-            ],
         description='Upload a .CIF or -POSCAR file')
     wavelength = FloatField(
         label='&lambda; (&#8491;)',
@@ -63,15 +57,5 @@ class CalcForm(FlaskForm):
         choices=[('gaussian', 'Gaussian'), ('lorentzian', 'Lorentzian'), ('split-type', 'Split-type')],
         description='Profiling function applied to simulated XRD pattern')
     submit = SubmitField('Visualize')
-
-    # Try introspective validator
-    # def validate_upload(self, upload):
-    #     try:
-    #         f = upload.data
-    #         savepath = os.path.join(app.instance_path, 'uploads', secure_filename(f.filename))
-    #         f.save(savepath)
-    #         struct.append(read(savepath))
-    #     except:
-    #         raise ValidationError('.CIF and -POSCAR files only!')
     
 # Create separate classes for each profiling branch w/ member parameters (see "Field Enclosures")
