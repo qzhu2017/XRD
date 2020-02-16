@@ -60,7 +60,7 @@ def validate_form(form):
     wavelength = form.wavelength.data
     max2theta = form.max2theta.data
     min2theta = form.min2theta.data
-    N = 10000
+    res = form.res.data
 
     if min2theta > max2theta:
         min2theta = 0 # use default
@@ -70,6 +70,7 @@ def validate_form(form):
     session["WAVELENGTH"] = wavelength
     session["MIN2THETA"] = min2theta
     session["MAX2THETA"] = max2theta
+    session["RES"] = res
         
 def plot(form):
     """
@@ -81,7 +82,7 @@ def plot(form):
         thetas=[session.get("MIN2THETA"),
             session.get("MAX2THETA")]) 
 
-    xrd.get_profile(res=0.01)
+    xrd.get_profile(res=session.get("RES"))
     flash('SUCCESS: XRD for {} plotted below.'.format(
         session.get("FILENAME")), 'success')
 

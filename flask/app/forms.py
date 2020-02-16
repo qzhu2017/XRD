@@ -47,6 +47,17 @@ class CalcForm(FlaskForm):
                 message='Must be between %(min)s° and %(max)s°')],
         description='Maximum diffraction angle in degrees',
         default=90)
+    res = FloatField(
+        label='Resolution',
+        validators=[
+            DataRequired(),
+            # NumberRange(
+            #     min=5,
+            #     max=180,
+            #     message='Must be between %(min)s° and %(max)s°')
+            ],
+        description='Profiling resolution',
+        default=0.01)
     submit = SubmitField('Visualize')
 
     # Try introspective validator
