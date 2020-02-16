@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileRequired, FileAllowed
-from wtforms import FloatField, SubmitField
+from wtforms import FloatField, SelectField, SubmitField
 from wtforms.validators import DataRequired, NumberRange, ValidationError
 
 # from ase.io import read
@@ -51,13 +51,17 @@ class CalcForm(FlaskForm):
         label='Resolution',
         validators=[
             DataRequired(),
-            # NumberRange(
-            #     min=5,
-            #     max=180,
-            #     message='Must be between %(min)s° and %(max)s°')
+            NumberRange(
+                min=1e-3,
+                max=1,
+                message='Must be between %(min)s and %(max)s')
             ],
         description='Profiling resolution',
         default=0.01)
+    profile = SelectField(
+        label='Profile',
+        choices=[('gaussian', 'Gaussian'), ('lorentzian', 'Lorentzian'), ('split-type', 'Split-type')],
+        description='Profiling function applied to simulated XRD pattern')
     submit = SubmitField('Visualize')
 
     # Try introspective validator
