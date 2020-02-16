@@ -10,7 +10,8 @@ from ase.io import read
 @app.route('/index', methods=['GET', 'POST'])
 def index():
     form = CalcForm()
-    if form.validate_on_submit():
+    if form.validate_on_submit(): # pass basic validation
+        validate_form(form) # advanced validation
         # Brand new session
         if not session.get("SAVEPATH"):
             if form.upload.data:
@@ -20,7 +21,7 @@ def index():
                     form=form,
                     plot=plot(form))
             else:
-                flash('Please upload a .CIF or -POSCAR file!',
+                flash('ERROR: Please upload a .CIF or -POSCAR file!',
                     'danger')
                 return render_template('index.html',
                     title='Calculator',
@@ -49,24 +50,39 @@ def save_upload(form):
     # Update session data
     session["FILENAME"] = f.filename
     session["SAVEPATH"] = savepath
+
+def validate_form(form):
+    """
+    Advanced form validation and session update.
+    Failure flashes detailed alert-danger.
+    """
+    # Retrieve form data
+    wavelength = form.wavelength.data
+    max2theta = form.max2theta.data
+    min2theta = form.min2theta.data
+    N = 10000
+
+    if min2theta > max2theta:
+        min2theta = 0 # use default
+        flash('WARNING: 2θmin greater than 2θmax—defaulting\
+            2θmin to 0°.',
+            'warning')
+    session["WAVELENGTH"] = wavelength
+    session["MIN2THETA"] = min2theta
+    session["MAX2THETA"] = max2theta
         
 def plot(form):
     """
     Convenience function to process and return PXRD plotly
     """
-    # Retrieve form data
-    wavelength = form.wavelength.data
-    max2theta = form.theta.data
-    min2theta = 0 # form.theta.data1
-    N = 10000
-
     struct = read(session.get("SAVEPATH"))
     xrd = XRD(struct,
-        wavelength=wavelength,
-        thetas=[min2theta, max2theta]) 
-    xrd.get_profile(res=0.01)
+        wavelength=session.get("WAVELENGTH"),
+        thetas=[session.get("MIN2THETA"),
+            session.get("MAX2THETA")]) 
 
-    flash('XRD for {} plotted below.'.format(
+    xrd.get_profile(res=0.01)
+    flash('SUCCESS: XRD for {} plotted below.'.format(
         session.get("FILENAME")), 'success')
 
     return xrd.plotly_pxrd()

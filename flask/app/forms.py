@@ -26,9 +26,18 @@ class CalcForm(FlaskForm):
                 min=0.1,
                 max=5,
                 message='Must be between %(min)s Å and %(max)s Å')],
-        description='Wavelength in angstroms',
+        description='X-ray wavelength in angstroms',
         default=1.54056)
-    theta = FloatField(
+    min2theta = FloatField(
+        label='2&theta;<sub>min</sub> (&deg;)',
+        validators=[
+            NumberRange(
+                min=0,
+                max=180,
+                message='Must be between %(min)s° and %(max)s°')],
+        description='Minimum diffraction angle in degrees',
+        default=0)
+    max2theta = FloatField(
         label='2&theta;<sub>max</sub> (&deg;)',
         validators=[
             DataRequired(),
@@ -38,7 +47,7 @@ class CalcForm(FlaskForm):
                 message='Must be between %(min)s° and %(max)s°')],
         description='Maximum diffraction angle in degrees',
         default=90)
-    submit = SubmitField('Calculate')
+    submit = SubmitField('Visualize')
 
     # Try introspective validator
     # def validate_upload(self, upload):
