@@ -3,15 +3,10 @@ from flask_wtf.file import FileField, FileRequired, FileAllowed
 from wtforms import FloatField, SelectField, SubmitField
 from wtforms.validators import DataRequired, NumberRange, ValidationError
 
-# from ase.io import read
-# import os
-# from app import app
-# from werkzeug.utils import secure_filename
-
 class CalcForm(FlaskForm):
     upload = FileField(
-        label='CIF/POSCAR',
-        description='Upload a .CIF or -POSCAR file')
+        label='Input file (CIF, POSCAR, etc.)',
+        description='See <a href="https://wiki.fysik.dtu.dk/ase/ase/io/io.html?highlight=formats#file-input-and-output" target="_blank">table</a> for a list of readable formats')
     wavelength = FloatField(
         label='&lambda; (&#8491;)',
         validators=[
@@ -42,15 +37,15 @@ class CalcForm(FlaskForm):
         description='Maximum diffraction angle in degrees',
         default=90)
     res = FloatField(
-        label='Resolution',
+        label='Resolution (&deg;)',
         validators=[
             DataRequired(),
             NumberRange(
                 min=1e-3,
                 max=1,
-                message='Must be between %(min)s and %(max)s')
+                message='Must be between %(min)s° and %(max)s°')
             ],
-        description='Profiling resolution',
+        description='Plot resolution in degrees',
         default=0.01)
     profile = SelectField(
         label='Profile',
