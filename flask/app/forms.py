@@ -141,7 +141,7 @@ class CompForm(FlaskForm):
         label='Shift',
         validators=[NumberRange(
                 min=0,
-                max=1,
+                max=3,
                 message='Must be between %(min)s and %(max)s')
             ],
         description='Shift for similarity',

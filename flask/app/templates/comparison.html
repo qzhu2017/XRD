@@ -10,13 +10,14 @@
             
             <div class="col-md-3">
                 {{ wtf.form_field(form.upload) }}
+                {{ wtf.form_field(comp.upload) }}
                 {{ wtf.form_field(form.wavelength) }}
                 {{ wtf.form_field(form.res) }}
             </div>
             <div class="col-md-3">
-                {{ wtf.form_field(comp.upload) }}
                 {{ wtf.form_field(form.min2theta) }}
                 {{ wtf.form_field(form.max2theta) }}
+                {{ wtf.form_field(comp.shift) }}
                 {{ wtf.form_field(form.submit, button_map={'submit': 'primary'}) }}
             </div>
             <div class="col-md-3">
