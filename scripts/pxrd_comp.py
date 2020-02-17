@@ -14,7 +14,7 @@ if __name__ == "__main__":
                       help="wavelength: 1.54184", metavar="wave")
     parser.add_option("-c", "--crystal", dest="structure",default='',
                       help="crystal from file, cif or poscar, REQUIRED", metavar="crystal")
-    parser.add_option("-l", "--shift", dest="shift",default=None,
+    parser.add_option("-l", "--shift", dest="shift",default=None, type='float',
                       help="shift for similarity", metavar="shift")
 
 
@@ -40,9 +40,9 @@ if __name__ == "__main__":
     if len(xrds) == 1:
         xrd.plotly_pxrd(html='1.html')
     elif len(xrds) == 2:
-        S = Similarity(xrds[0].spectra, xrds[1].spectra, l=options.shift)
+        S = Similarity(xrds[0].spectra, xrds[1].spectra, l=options.shift, weight='triangle')
         S.calculate()
-        title = 'PXRD Similarity {:6.3f} with shift {:6.3f}'.format(S.S, S.l)
+        title = 'PXRD Similarity {:6.4f} with shift {:6.4f}'.format(S.S, S.l)
         traces = []
         for i, xrd in enumerate(xrds):
             traces.append(go.Scatter(x=xrd.spectra[0], y=xrd.spectra[1], name=str(files[i])))

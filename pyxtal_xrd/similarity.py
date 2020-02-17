@@ -1,4 +1,5 @@
 import numpy as np
+import numba as nb
 import scipy.integrate as integrate
 import matplotlib.pyplot as plt
 from scipy import interpolate
@@ -43,29 +44,28 @@ class Similarity(object):
             msg = function + 'is not supported'
             raise NotImplementedError(msg)
 
-        #self.showPlot()
-    
+    #@nb.jit   
     def calculate(self):
         
         """
         Compute the similarity between the pair of spectra f, g
         """
+        xCorrfg_w = 0
+        aCorrff_w = 0
+        aCorrgg_w = 0
+        count = 0
+        for r0, w0 in zip(self.r, self.w):
+            Corrfg, Corrff, Corrgg = 0, 0, 0
+            for i in range(self.Npts):
+                shift = int(round(r0/self.d))
+                if 0 <= i + shift <= self.Npts-1:
+                    Corrfg += self.fy[i]*self.gy[i+shift]
+                    Corrff += self.fy[i]*self.fy[i+shift]
+                    Corrgg += self.gy[i]*self.gy[i+shift]
 
-        fx_r = self.fx + self.r
-        fy_r = self.fy
-        gx_r = self.gx + self.r
-        gy_r = self.gy
-        fg_dx = np.linspace(self.fx[0], gx_r[-1], self.N)
-        ff_dx = np.linspace(self.fx[0], fx_r[-1], self.N)
-        gg_dx = np.linspace(self.gx[0], gx_r[-1], self.N)
-
-        xCorrfg = integrate.trapz(self.fy*gy_r, fg_dx)
-        aCorrff = integrate.trapz(self.fy*fy_r, ff_dx)
-        aCorrgg = integrate.trapz(self.gy*gy_r, gg_dx)
-
-        xCorrfg_w = integrate.trapz(self.w*xCorrfg, self.r)
-        aCorrff_w = integrate.trapz(self.w*aCorrff, self.r)
-        aCorrgg_w = integrate.trapz(self.w*aCorrgg, self.r)
+            xCorrfg_w += w0*Corrfg 
+            aCorrff_w += w0*Corrff
+            aCorrgg_w += w0*Corrgg
 
         self.S = np.abs(xCorrfg_w / np.sqrt(aCorrff_w * aCorrgg_w))
         return self.S
@@ -86,10 +86,10 @@ class Similarity(object):
         fy_new = f_inter(fgx_new)
         gy_new = g_inter(fgx_new)
 
-        self.fx, self.fy = fgx_new, fy_new
-        self.gx, self.gy = fgx_new, gy_new
-     #    plt.plot(self.fx, self.fy)
-     #    plt.plot(self.gx, self.gy)
+        self.fx, self.fy, self.gy = fgx_new, fy_new, gy_new
+        self.Npts = len(self.fx)
+        self.d = (self.fx[-1] - self.fx[0])/self.Npts
+
     def triangleFunction(self):
         
         """
