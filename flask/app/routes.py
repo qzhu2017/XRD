@@ -103,7 +103,6 @@ def plot(form):
                     'eta_h': session.get("eta_h"),
                     'eta_l': session.get("eta_l"),
                 }
-    print("***DEBUG OUT:", kwargs)
 
     struct = read(session.get("SAVEPATH"))
     xrd = XRD(struct,
@@ -111,7 +110,8 @@ def plot(form):
         thetas=[session.get("MIN2THETA"),
             session.get("MAX2THETA")]) 
     xrd.get_profile(method=method,
-        res=session.get("RES"))
+        res=session.get("RES"),
+        user_kwargs=kwargs)
     flash(Markup('Showing <b>{}</b> with <i>{}</i>\
         profiling.').format(
             session.get("FILENAME"),
