@@ -38,8 +38,10 @@ def comparison():
     comp = CompForm()
     if form.validate_on_submit():
         if form.upload.data:
+            print("***DBOUT: IF #1") # DEBUG
             process_upload(form)
         if comp.upload.data:
+            print("***DBOUT: IF #2") # DEBUG
             process_upload(comp, True)
         if not session.get("SAVEPATH")\
             or not session.get("SAVEPATH2"): # new session
@@ -50,7 +52,7 @@ def comparison():
                 form=form,
                 comp=comp)
         else:
-            process_form(form)
+            process_form(form, comp)
             return render_template('comparison.html', 
                 title='Comparison',
                 form=form,
@@ -78,6 +80,7 @@ def process_upload(form, comp=False):
 
         # Update session keys
         if comp:
+            print("***DBOUT: HERE!") # DEBUG
             session["FILENAME2"] = f.filename
             session["SAVEPATH2"] = savepath
         else:
@@ -91,7 +94,7 @@ def process_upload(form, comp=False):
             <b>{}</b>. Please try again or a different\
             file.').format(f.filename), 'danger')
 
-def process_form(form):
+def process_form(form, comp=None):
     """
     Advanced form validation and session update.
     """
@@ -118,8 +121,10 @@ def process_form(form):
     session["V"] = form.v.data
     session["W"] = form.w.data
     session["A"] = form.a.data
-    session["eta_h"] = form.eta_h.data
-    session["eta_l"] = form.eta_l.data
+    session["ETA_H"] = form.eta_h.data
+    session["ETA_L"] = form.eta_l.data
+    if comp:
+        session["SHIFT"] = comp.shift.data
         
 def plot():
     """
@@ -136,8 +141,8 @@ def plot():
                     'V': session.get("V"),
                     'W': session.get("W"),
                     'A': session.get("A"),
-                    'eta_h': session.get("eta_h"),
-                    'eta_l': session.get("eta_l"),
+                    'eta_h': session.get("ETA_H"),
+                    'eta_l': session.get("ETA_L"),
                 }
 
     struct = read(session.get("SAVEPATH"))
@@ -170,8 +175,8 @@ def compare():
                     'V': session.get("V"),
                     'W': session.get("W"),
                     'A': session.get("A"),
-                    'eta_h': session.get("eta_h"),
-                    'eta_l': session.get("eta_l"),
+                    'eta_h': session.get("ETA_H"),
+                    'eta_l': session.get("ETA_L"),
                 }
 
     files = [session.get("FILENAME"),
