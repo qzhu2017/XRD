@@ -2,26 +2,41 @@
 {% import 'bootstrap/wtf.html' as wtf %}
 
 {% block app_content %}
-    <h1>VXRD: X-ray Diffraction Visualizer</h1>
+    <h1>VXRD: X-ray Diffraction Visualizer (Single)</h1>
     <h3></h3>
     <div class="row">
-        <div class="col-md-4">
-            {{ wtf.quick_form(form) }}
-        </div>
-        <div class="col-md-8">
-            {% if jsmol %}
-                <h2>[JSmol Visualizer Here]</h2>
-            {% endif %}
-
-            {% if plot %}
-                {{ plot|safe }}
-            {% endif %}
-        </div>
+        <form class="form" method="post" role="form">
+            {{ form.hidden_tag() }}
+            {{ wtf.form_errors(form, hiddens="only") }}
+            
+            <div class="col-md-3">
+                {{ wtf.form_field(form.upload) }}
+                {{ wtf.form_field(form.wavelength) }}
+                {{ wtf.form_field(form.res) }}
+            </div>
+            <div class="col-md-3">
+                {{ wtf.form_field(form.min2theta) }}
+                {{ wtf.form_field(form.max2theta) }}
+                {{ wtf.form_field(form.submit, button_map={'submit': 'primary'}) }}
+            </div>
+            <div class="col-md-3">
+                {{ wtf.form_field(form.method) }}
+                {{ wtf.form_field(form.fwhm) }}
+                {{ wtf.form_field(form.u) }}
+                {{ wtf.form_field(form.v) }}
+            </div>
+            <div class="col-md-3">
+                {{ wtf.form_field(form.w) }}
+                {{ wtf.form_field(form.a) }}
+                {{ wtf.form_field(form.eta_h) }}
+                {{ wtf.form_field(form.eta_l) }}
+            </div>
+        </form>
     </div>
     <div class="row">
         <div class="col-md-12">
             {% if plot %}
-                <!-- {{ plot|safe }} -->
+                {{ plot|safe }}
             {% endif %}
         </div>
     </div>
