@@ -48,8 +48,8 @@ class XRD(object):
         self.pxrdf()     
         
 
-    def get_profile(self, method='pseudo_voigt', res=0.01):
-        self.spectra = Profile(method, res).get_profile(self.theta2, \
+    def get_profile(self, method='pseudo_voigt', res=0.01, user_kwargs=None):
+        self.spectra = Profile(method, res, user_kwargs).get_profile(self.theta2, \
                         self.xrd_intensity, \
                         np.degrees(self.min2theta), np.degrees(self.max2theta))
 
