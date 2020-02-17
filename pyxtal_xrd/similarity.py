@@ -35,7 +35,6 @@ class Similarity(object):
             self.l = abs(l)
         self.weight = weight
         self.r = np.linspace(-self.l, self.l, self.N)
-        #self.preprocess()
         if self.weight == 'triangle':
             self.triangleFunction()
         elif self.weight == 'cosine':
@@ -44,31 +43,39 @@ class Similarity(object):
             msg = function + 'is not supported'
             raise NotImplementedError(msg)
 
-    #@nb.jit   
+
     def calculate(self):
+        self.S = self._calculate(self.r,self.w,self.d,self.Npts,self.fy,self.gy)
+        return self.S
+    
+    @staticmethod
+    @nb.njit(nb.f8(nb.f8[:], nb.f8[:], nb.f8, nb.i8, nb.f8[:], nb.f8[:]),nopython=True)
+    def _calculate(r,w,d,Npts,fy,gy):
         
         """
         Compute the similarity between the pair of spectra f, g
         """
+        
         xCorrfg_w = 0
         aCorrff_w = 0
         aCorrgg_w = 0
         count = 0
-        for r0, w0 in zip(self.r, self.w):
+
+        for r0, w0 in zip(r, w):
             Corrfg, Corrff, Corrgg = 0, 0, 0
-            for i in range(self.Npts):
-                shift = int(round(r0/self.d))
-                if 0 <= i + shift <= self.Npts-1:
-                    Corrfg += self.fy[i]*self.gy[i+shift]
-                    Corrff += self.fy[i]*self.fy[i+shift]
-                    Corrgg += self.gy[i]*self.gy[i+shift]
+            for i in range(Npts):
+                shift = int(round(r0/d))
+                if 0 <= i + shift <= Npts-1:
+                    Corrfg += fy[i]*gy[i+shift]
+                    Corrff += fy[i]*fy[i+shift]
+                    Corrgg += gy[i]*gy[i+shift]
 
             xCorrfg_w += w0*Corrfg 
             aCorrff_w += w0*Corrff
             aCorrgg_w += w0*Corrgg
 
-        self.S = np.abs(xCorrfg_w / np.sqrt(aCorrff_w * aCorrgg_w))
-        return self.S
+        return np.abs(xCorrfg_w / np.sqrt(aCorrff_w * aCorrgg_w))
+
 
     def preprocess(self):
 
