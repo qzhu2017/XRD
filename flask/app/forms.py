@@ -6,7 +6,7 @@ from wtforms.validators import DataRequired, NumberRange, ValidationError
 
 class CalcForm(FlaskForm):
     upload = FileField(
-        label='Input file (CIF, POSCAR, etc.)',
+        label='Input File (CIF, POSCAR, etc.)',
         description='See <a href="https://wiki.fysik.dtu.dk/ase/ase/io/io.html?highlight=formats#file-input-and-output" target="_blank">table</a> for a list of readable formats')
     wavelength = FloatField(
         label='<i>&lambda;</i> (&#8491;)',
@@ -132,6 +132,20 @@ class CalcForm(FlaskForm):
         description='Pseudo-Voigt parameter',
         default=0.611844)
     submit = SubmitField('Visualize')
+
+class CompForm(FlaskForm):
+    upload = FileField(
+        label='2<sup>nd</sup> Input File',
+        description='Second input to compare')
+    shift = FloatField(
+        label='Shift',
+        validators=[NumberRange(
+                min=0,
+                max=1,
+                message='Must be between %(min)s and %(max)s')
+            ],
+        description='Shift for similarity',
+        default=2.0)
 
 # Create separate classes for each profiling branch
 # w/ member parameters (see "Field Enclosures")

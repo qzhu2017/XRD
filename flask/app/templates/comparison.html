@@ -2,7 +2,7 @@
 {% import 'bootstrap/wtf.html' as wtf %}
 
 {% block app_content %}
-    <h1>VXRD: X-ray Diffraction Visualizer (Single)</h1>
+    <h1>VXRD: X-ray Diffraction Visualizer (Comparison)</h1>
     <div class="row">
         <form class="form" method="post" role="form">
             {{ form.hidden_tag() }}
@@ -14,6 +14,7 @@
                 {{ wtf.form_field(form.res) }}
             </div>
             <div class="col-md-3">
+                {{ wtf.form_field(comp.upload) }}
                 {{ wtf.form_field(form.min2theta) }}
                 {{ wtf.form_field(form.max2theta) }}
                 {{ wtf.form_field(form.submit, button_map={'submit': 'primary'}) }}

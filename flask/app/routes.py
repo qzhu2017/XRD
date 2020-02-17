@@ -1,9 +1,11 @@
 import os
+import plotly.graph_objects as go
 from flask import render_template, flash, session, Markup
 from app import app
-from app.forms import CalcForm
+from app.forms import CalcForm, CompForm
 from werkzeug.utils import secure_filename
 from pyxtal_xrd.XRD import XRD
+from pyxtal_xrd.similarity import Similarity
 from ase.io import read
 
 @app.route('/', methods=['GET', 'POST'])
@@ -17,20 +19,50 @@ def index():
             flash(Markup('<b>ERROR</b>: Please upload an\
                 input file.'), 'danger')
             return render_template('index.html',
-                title='Calculator',
+                title='Single',
                 form=form)
         else:
             process_form(form)
             return render_template('index.html', 
-                title='Calculator',
+                title='Single',
                 form=form,
-                plot=plot(form))
+                plot=plot())
     # initial page visit
     return render_template('index.html',
-        title='Calculator',
+        title='Single',
         form=form)
 
-def process_upload(form):
+@app.route('/comparison', methods=['GET', 'POST'])
+def comparison():
+    form = CalcForm()
+    comp = CompForm()
+    if form.validate_on_submit():
+        if form.upload.data:
+            process_upload(form)
+        if comp.upload.data:
+            process_upload(comp, True)
+        if not session.get("SAVEPATH")\
+            or not session.get("SAVEPATH2"): # new session
+            flash(Markup('<b>ERROR</b>: Please upload\
+                <b>two</b> input files.'), 'danger')
+            return render_template('comparison.html',
+                title='Comparison',
+                form=form,
+                comp=comp)
+        else:
+            process_form(form)
+            return render_template('comparison.html', 
+                title='Comparison',
+                form=form,
+                comp=comp,
+                plot=compare())
+    # initial page visit
+    return render_template('comparison.html',
+        title='Comparison',
+        form=form,
+        comp=comp)
+
+def process_upload(form, comp=False):
     """
     Save upload, check validity, and update session.
     """
@@ -45,11 +77,15 @@ def process_upload(form):
         read(savepath) # attempt ase.io.read
 
         # Update session keys
-        session["FILENAME"] = f.filename
-        session["SAVEPATH"] = savepath
-        flash(Markup('<b>{}</b> successfully\
-            processed.').format(session.get("FILENAME")), 
-            'success')
+        if comp:
+            session["FILENAME2"] = f.filename
+            session["SAVEPATH2"] = savepath
+        else:
+            session["FILENAME"] = f.filename
+            session["SAVEPATH"] = savepath
+            flash(Markup('<b>{}</b> successfully\
+                processed.').format(session.get("FILENAME")), 
+                'success')
     except:
         flash(Markup('<b>ERROR</b>: Unable to read\
             <b>{}</b>. Please try again or a different\
@@ -85,7 +121,7 @@ def process_form(form):
     session["eta_h"] = form.eta_h.data
     session["eta_l"] = form.eta_l.data
         
-def plot(form):
+def plot():
     """
     Process and return PXRD plotly.
     """
@@ -112,8 +148,66 @@ def plot(form):
     xrd.get_profile(method=method,
         res=session.get("RES"),
         user_kwargs=kwargs)
-    flash(Markup('Showing <b>{}</b> with <i>{}</i>\
+    flash(Markup('Comparing <b>{}</b> and <b>{}</b> with <i>{}</i>\
         profiling.').format(
             session.get("FILENAME"),
+            session.get("FILENAME2"),
             method), 'info')
     return xrd.plotly_pxrd()
+
+def compare():
+    """
+    Process and return comparison PXRD plotly.
+    """
+    method = session.get("METHOD")
+    if method == 'gaussian' or method == 'lorentzian':
+        kwargs = {
+                    'FWHM': session.get("FWHM")
+                }
+    elif method == 'pseudo_voigt':
+        kwargs = {
+                    'U': session.get("U"), 
+                    'V': session.get("V"),
+                    'W': session.get("W"),
+                    'A': session.get("A"),
+                    'eta_h': session.get("eta_h"),
+                    'eta_l': session.get("eta_l"),
+                }
+
+    files = [session.get("FILENAME"),
+            session.get("FILENAME2")]
+    xrds = []
+    structs = [read(session.get("SAVEPATH")),
+                read(session.get("SAVEPATH2"))]
+
+    for struct in structs:
+        xrd = XRD(struct,
+                wavelength=session.get("WAVELENGTH"),
+                thetas=[session.get("MIN2THETA"),
+                session.get("MAX2THETA")])
+        xrd.get_profile(method=method,
+            res=session.get("RES"),
+            user_kwargs=kwargs)
+        xrds.append(xrd)
+
+    S = Similarity(xrds[0].spectra, xrds[1].spectra, l=session.get("SHIFT"))
+
+    S.calculate()
+    title = 'PXRD Similarity {:6.3f} with shift {:6.3f}'.format(S.S, S.l)
+    traces = []
+    for i, xrd in enumerate(xrds):
+        traces.append(go.Scatter(x=xrd.spectra[0], y=xrd.spectra[1], name=str(files[i])))
+    fig = go.Figure(data=traces)
+    fig.update_layout(xaxis_title = '2&#952; ({:.4f} &#8491;)'.format(session.get("WAVELENGTH")),
+                        yaxis_title = 'Intensity',
+                        title_text = title, 
+                        title_x=0.5)
+    print(title)
+
+    flash(Markup('Comparing <b>{}</b> and <b>{}</b> with\
+        <i>{}</i> profiling.').format(
+            session.get("FILENAME"),
+            session.get("FILENAME2"),
+            method), 'info')
+
+    return fig.to_html()
