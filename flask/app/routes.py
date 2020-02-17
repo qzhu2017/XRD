@@ -2,7 +2,7 @@ import os
 import plotly.graph_objects as go
 from flask import render_template, flash, session, Markup
 from app import app
-from app.forms import CalcForm, CompForm
+from app.forms import CalcForm
 from werkzeug.utils import secure_filename
 from pyxtal_xrd.XRD import XRD
 from pyxtal_xrd.similarity import Similarity
@@ -35,41 +35,38 @@ def index():
 @app.route('/comparison', methods=['GET', 'POST'])
 def comparison():
     form = CalcForm()
-    comp = CompForm()
     if form.validate_on_submit():
         if form.upload.data:
-            print("***DBOUT: IF #1") # DEBUG
             process_upload(form)
-        if comp.upload.data:
-            print("***DBOUT: IF #2") # DEBUG
-            process_upload(comp, True)
+        if form.upload2.data:
+            process_upload(form, True)
         if not session.get("SAVEPATH")\
             or not session.get("SAVEPATH2"): # new session
             flash(Markup('<b>ERROR</b>: Please upload\
                 <b>two</b> input files.'), 'danger')
             return render_template('comparison.html',
                 title='Comparison',
-                form=form,
-                comp=comp)
+                form=form)
         else:
-            process_form(form, comp)
+            process_form(form, True)
             return render_template('comparison.html', 
                 title='Comparison',
                 form=form,
-                comp=comp,
                 plot=compare())
     # initial page visit
     return render_template('comparison.html',
         title='Comparison',
-        form=form,
-        comp=comp)
+        form=form)
 
 def process_upload(form, comp=False):
     """
     Save upload, check validity, and update session.
     """
     # Save uploaded file to disk
-    f = form.upload.data
+    if comp:
+        f = form.upload2.data
+    else:
+        f = form.upload.data
     savepath = os.path.join(app.instance_path, 
         'uploads', secure_filename(f.filename))
     f.save(savepath)
@@ -80,7 +77,6 @@ def process_upload(form, comp=False):
 
         # Update session keys
         if comp:
-            print("***DBOUT: HERE!") # DEBUG
             session["FILENAME2"] = f.filename
             session["SAVEPATH2"] = savepath
         else:
@@ -94,7 +90,7 @@ def process_upload(form, comp=False):
             <b>{}</b>. Please try again or a different\
             file.').format(f.filename), 'danger')
 
-def process_form(form, comp=None):
+def process_form(form, comp=True):
     """
     Advanced form validation and session update.
     """
@@ -124,7 +120,7 @@ def process_form(form, comp=None):
     session["ETA_H"] = form.eta_h.data
     session["ETA_L"] = form.eta_l.data
     if comp:
-        session["SHIFT"] = comp.shift.data
+        session["SHIFT"] = form.shift.data
         
 def plot():
     """
@@ -181,9 +177,9 @@ def compare():
 
     files = [session.get("FILENAME"),
             session.get("FILENAME2")]
-    xrds = []
     structs = [read(session.get("SAVEPATH")),
                 read(session.get("SAVEPATH2"))]
+    xrds = []
 
     for struct in structs:
         xrd = XRD(struct,
@@ -195,24 +191,29 @@ def compare():
             user_kwargs=kwargs)
         xrds.append(xrd)
 
-    S = Similarity(xrds[0].spectra, xrds[1].spectra, l=session.get("SHIFT"))
+    S = Similarity(xrds[0].spectra,
+        xrds[1].spectra,
+        l=session.get("SHIFT"))
 
     S.calculate()
-    title = 'PXRD Similarity {:6.3f} with shift {:6.3f}'.format(S.S, S.l)
+    title = 'PXRD Similarity {:6.3f} with shift\
+        {:6.3f}'.format(S.S, S.l)
     traces = []
-    for i, xrd in enumerate(xrds):
-        traces.append(go.Scatter(x=xrd.spectra[0], y=xrd.spectra[1], name=str(files[i])))
-    fig = go.Figure(data=traces)
-    fig.update_layout(xaxis_title = '2&#952; ({:.4f} &#8491;)'.format(session.get("WAVELENGTH")),
-                        yaxis_title = 'Intensity',
-                        title_text = title, 
-                        title_x=0.5)
-    print(title)
 
+    for i, xrd in enumerate(xrds):
+        traces.append(go.Scatter(x=xrd.spectra[0],
+            y=xrd.spectra[1],
+            name=str(files[i])))
+    
+    fig = go.Figure(data=traces)
+    fig.update_layout(xaxis_title = '2&#952; ({:.4f}\
+        &#8491;)'.format(session.get("WAVELENGTH")),
+        yaxis_title = 'Intensity',
+        title_text = title, 
+        title_x=0.5)
     flash(Markup('Comparing <b>{}</b> and <b>{}</b> with\
         <i>{}</i> profiling.').format(
             session.get("FILENAME"),
             session.get("FILENAME2"),
             method), 'info')
-
     return fig.to_html()

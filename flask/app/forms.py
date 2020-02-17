@@ -133,15 +133,15 @@ class CalcForm(FlaskForm):
         default=0.611844)
     submit = SubmitField('Visualize')
 
-class CompForm(FlaskForm):
-    upload = FileField(
+    # Additional fields for comparison page
+    upload2 = FileField(
         label='2<sup>nd</sup> Input File',
         description='Second input to compare')
     shift = FloatField(
-        label='Shift',
+        label='Shift (&deg;)',
         validators=[NumberRange(
                 min=0,
-                max=3,
+                max=180,
                 message='Must be between %(min)s and %(max)s')
             ],
         description='Shift for similarity',
