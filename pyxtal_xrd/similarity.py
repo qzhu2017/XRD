@@ -1,6 +1,5 @@
 import numpy as np
 import numba as nb
-import scipy.integrate as integrate
 import matplotlib.pyplot as plt
 from scipy import interpolate
 
@@ -9,7 +8,7 @@ class Similarity(object):
     Class to compute the similarity between two diffraction patterns
     """
 
-    def __init__(self, f, g, N = None, x_range = None, l = None, weight = 'cosine'):
+    def __init__(self, f, g, N = None, x_range = None, l = 2.0, weight = 'cosine'):
         
         """
         Args:
@@ -23,18 +22,19 @@ class Similarity(object):
         """
         self.fx, self.fy = f[0], f[1]
         self.gx, self.gy = g[0], g[1]
-        if N is None:
-            self.N = max([len(self.fx), len(self.gx)])
-        else:
-            self.N = N
         self.x_range = x_range
-        self.preprocess()
-        if l is None:
-            self.l = (self.x_range[1] - self.x_range[0])/10
-        else:
-            self.l = abs(l)
-        self.weight = weight
+        self.l = abs(l)
+        res1 = (self.fx[-1] - self.fx[0])/len(self.fx)
+        res2 = (self.gx[-1] - self.gx[0])/len(self.gx)
+        self.resolution = min([res1, res2])
+        if N is None:
+            self.N = int(2*self.l/self.resolution)
+        else: 
+            self.N = N
         self.r = np.linspace(-self.l, self.l, self.N)
+
+        self.preprocess()
+        self.weight = weight
         if self.weight == 'triangle':
             self.triangleFunction()
         elif self.weight == 'cosine':
@@ -46,20 +46,20 @@ class Similarity(object):
 
     def calculate(self):
         self.S = self._calculate(self.r,self.w,self.d,self.Npts,self.fy,self.gy)
+
         return self.S
     
     @staticmethod
-    @nb.njit(nb.f8(nb.f8[:], nb.f8[:], nb.f8, nb.i8, nb.f8[:], nb.f8[:]),nopython=True)
+    @nb.njit(nb.f8(nb.f8[:], nb.f8[:], nb.f8, nb.i8, nb.f8[:], nb.f8[:]), nopython=True)
     def _calculate(r,w,d,Npts,fy,gy):
         
         """
         Compute the similarity between the pair of spectra f, g
         """
-        
+
         xCorrfg_w = 0
         aCorrff_w = 0
         aCorrgg_w = 0
-        count = 0
 
         for r0, w0 in zip(r, w):
             Corrfg, Corrff, Corrgg = 0, 0, 0
@@ -86,10 +86,13 @@ class Similarity(object):
             x_min = max(np.min(self.fx), np.min(self.gx))
             x_max = min(np.max(self.fx), np.max(self.gx))
             self.x_range = [x_min,x_max]
+        else:
+            x_min, x_max = self.x_range[0], self.x_range[1]
+
         f_inter = interpolate.interp1d(self.fx, self.fy, 'cubic', fill_value = 'extrapolate')
         g_inter = interpolate.interp1d(self.gx, self.gy, 'cubic', fill_value = 'extrapolate')
 
-        fgx_new = np.linspace(self.x_range[0], self.x_range[1], self.N)
+        fgx_new = np.linspace(x_min, x_max, int((x_max-x_min)/self.resolution)+1)
         fy_new = f_inter(fgx_new)
         gy_new = g_inter(fgx_new)
 
