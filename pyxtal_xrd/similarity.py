@@ -26,7 +26,7 @@ class Similarity(object):
         self.l = abs(l)
         res1 = (self.fx[-1] - self.fx[0])/len(self.fx)
         res2 = (self.gx[-1] - self.gx[0])/len(self.gx)
-        self.resolution = min([res1, res2])
+        self.resolution = min([res1, res2])/3 # improve the resolution
         if N is None:
             self.N = int(2*self.l/self.resolution)
         else: 
@@ -55,24 +55,43 @@ class Similarity(object):
         
         """
         Compute the similarity between the pair of spectra f, g
+        with an approximated Simpson rule
         """
 
         xCorrfg_w = 0
         aCorrff_w = 0
         aCorrgg_w = 0
-
+        count0 = 0
+        count = 0
         for r0, w0 in zip(r, w):
             Corrfg, Corrff, Corrgg = 0, 0, 0
             for i in range(Npts):
                 shift = int(round(r0/d))
                 if 0 <= i + shift <= Npts-1:
-                    Corrfg += fy[i]*gy[i+shift]
-                    Corrff += fy[i]*fy[i+shift]
-                    Corrgg += gy[i]*gy[i+shift]
+                    if count == 0:
+                        coef = 1/3
+                    elif count %2 == 1:
+                        coef = 4/3
+                    else:
+                        coef = 2/3
 
-            xCorrfg_w += w0*Corrfg 
-            aCorrff_w += w0*Corrff
-            aCorrgg_w += w0*Corrgg
+                    count += 1
+                    Corrfg += coef*fy[i]*gy[i+shift]
+                    Corrff += coef*fy[i]*fy[i+shift]
+                    Corrgg += coef*gy[i]*gy[i+shift]
+
+
+            if count0 == 0:
+                 coef = 1/3
+            elif count0 %2 == 1:
+                 coef = 4/3
+            else:
+                 coef = 2/3
+
+            count0 += 1
+            xCorrfg_w += coef*w0*Corrfg 
+            aCorrff_w += coef*w0*Corrff
+            aCorrgg_w += coef*w0*Corrgg
 
         return np.abs(xCorrfg_w / np.sqrt(aCorrff_w * aCorrgg_w))
 
