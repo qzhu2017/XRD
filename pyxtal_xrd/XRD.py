@@ -151,13 +151,8 @@ class XRD(object):
         TWO_THETA_TOL = 1e-5 # tolerance to find repeating angles
         SCALED_INTENSITY_TOL = 1e-5 # threshold for intensities
         
-        ind = 0
-        intense = []
-        angle = []
-        count = 0
 
         for hkl, s2, theta, d_hkl in zip(self.hkl_list, d0, self.theta, self.d_hkl):
-            count+=1
             
             # calculate the scattering factor sf
             g_dot_r = np.dot(crystal.get_scaled_positions(), np.transpose([hkl])).T[0]
