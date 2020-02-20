@@ -1,13 +1,12 @@
 import numpy as np
 import numba as nb
 
-
 @nb.njit(nb.f8[:](nb.f8[:], nb.f8, nb.f8, nb.f8, nb.f8, nb.i8), cache = True)
-def pseudo_voigt(x, fwhm, A, eta_h, eta_l, N):
+def mod_pseudo_voigt(x, fwhm, A, eta_h, eta_l, N):
     
     """
     A modified split-type pseudo-Voigt function for profiling peaks
-    (Izumi, F., & Ikeda, T. (2000). 
+    - Izumi, F., & Ikeda, T. (2000). 
     """
     
     tmp = np.zeros((N))
@@ -28,6 +27,7 @@ def pseudo_voigt(x, fwhm, A, eta_h, eta_l, N):
             2/fwhm *np.exp(-np.log(2) * ((1+A)/A)**2 * (dx/fwhm)**2))
     return tmp
 
+@nb.njit(nb.f8[:](nb.f8, nb.f8[:], nb.f8), cache = True)
 def gaussian(theta2, alpha, fwhm):
 
     """
@@ -37,6 +37,7 @@ def gaussian(theta2, alpha, fwhm):
     tmp = ((alpha - theta2)/fwhm)**2
     return np.exp(-4*np.log(2)*tmp)
 
+@nb.njit(nb.f8[:](nb.f8, nb.f8[:], nb.f8), cache = True)
 def lorentzian(theta2, alpha, fwhm):
 
     """
@@ -45,6 +46,17 @@ def lorentzian(theta2, alpha, fwhm):
 
     tmp = 1 + 4*((alpha - theta2)/fwhm)**2
     return 1/tmp
+
+def pseudo_voigt(theta2, alpha, fwhm, eta):
+
+    """
+    Original Pseudo-Voigt function for profiling peaks
+    - Thompson, D. E. Cox & J. B. Hastings (1986). 
+    """
+    
+    L = lorentzian(theta2, alpha, fwhm)
+    G = gaussian(theta2, alpha, fwhm)
+    return eta * L + (1 - eta) * G
 
 
 
@@ -64,14 +76,14 @@ class Profile:
         The parameters for the profiling method.
     """
 
-    def __init__(self, method='pseudo_voigt', res = 0.01, user_kwargs=None):
+    def __init__(self, method='mod_pseudo-voigt', res = 0.01, user_kwargs=None):
         
         self.method = method
         self.user_kwargs = user_kwargs
         self.res = res       
         kwargs = {}
 
-        if method == 'pseudo_voigt':
+        if method == 'mod_pseudo-voigt':
            _kwargs = {
                         'U': 5.776410E-03,
                         'V': -1.673830E-03,
@@ -80,10 +92,11 @@ class Profile:
                         'eta_h': 0.504656,
                         'eta_l': 0.611844,
                      }
-        elif method == 'gaussian' or method == 'lorentzian':
+        elif method == 'gaussian' or method == 'lorentzian' or method == 'pseudo-voigt':
            _kwargs = {
                         'FWHM': 0.02
                      }
+        
         else:
            msg = method + " isn't supported."
            raise NotImplementedError(msg)
@@ -120,8 +133,23 @@ class Profile:
             elif self.method == 'lorentzian':
                fwhm = self.kwargs['FWHM'] 
                tmp = lorentzian(two_theta, px, fwhm) 
+            
+            elif self.method == 'pseudo-voigt':
+               try:
+                  fwhm_g = self.kwargs['FWHM-G'] 
+                  fwhm_l = self.kwargs['FWHM-L']
+               except:
+                  fwhm_g = self.kwargs['FWHM']
+                  fwhm_l = self.kwargs['FWHM'] 
+                
+               fwhm = (fwhm_g**5 + 2.69269*fwhm_g**4*fwhm_l + 2.42843*fwhm_g**3*fwhm_l**2 +
+                       4.47163*fwhm_g**2*fwhm_l**3 + 0.07842*fwhm_g*fwhm_l**4 + fwhm_l**5)**(1/5)
+               
+               eta = 1.36603*fwhm_l/fwhm - 0.47719*(fwhm_l/fwhm)**2 + 0.11116*(fwhm_l/fwhm)**3
 
-            elif self.method == 'pseudo_voigt':
+               tmp = pseudo_voigt(two_theta, px, fwhm, eta)
+
+            elif self.method == 'mod_pseudo-voigt':
                U = self.kwargs['U']
                V = self.kwargs['V']
                W = self.kwargs['W']
@@ -131,7 +159,7 @@ class Profile:
                
                fwhm = np.sqrt(U*np.tan(np.pi*two_theta/2/180)**2 + V*np.tan(np.pi*two_theta/2/180) + W)
                x = px - two_theta
-               tmp = pseudo_voigt(x, fwhm, A, eta_h, eta_l, N)
+               tmp = mod_pseudo_voigt(x, fwhm, A, eta_h, eta_l, N)
             
             py += intensity * tmp
 
