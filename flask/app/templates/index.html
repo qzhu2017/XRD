@@ -12,31 +12,64 @@
                 {{ wtf.form_field(form.upload) }}
                 {{ wtf.form_field(form.wavelength) }}
                 {{ wtf.form_field(form.res) }}
-            </div>
-            <div class="col-md-3">
-                {{ wtf.form_field(form.min2theta) }}
-                {{ wtf.form_field(form.max2theta) }}
+                <table>
+                    <tr>
+                        <td>
+                            {{ wtf.form_field(form.min2theta) }}
+                        </td>
+                        <td>
+                            {{ wtf.form_field(form.max2theta) }}
+                        </td>
+                    </tr>            
+                </table>                    
                 {{ wtf.form_field(form.submit, button_map={'submit': 'primary'}) }}
             </div>
             <div class="col-md-3">
                 {{ wtf.form_field(form.method) }}
                 {{ wtf.form_field(form.fwhm) }}
-                {{ wtf.form_field(form.u) }}
-                {{ wtf.form_field(form.v) }}
+                <table>
+                    <tr>
+                        <td>
+                            {{ wtf.form_field(form.u) }}
+                        </td>
+                        <td>
+                            {{ wtf.form_field(form.v) }}
+                        </td>
+                    </tr>            
+                </table>   
+                <table>
+                    <tr>
+                        <td>
+                            {{ wtf.form_field(form.w) }}
+                        </td>
+                        <td>
+                            {{ wtf.form_field(form.a) }}
+                        </td>
+                    </tr>            
+                </table>   
+                <table>
+                    <tr>
+                        <td>
+                            {{ wtf.form_field(form.eta_h) }}
+                        </td>
+                        <td>
+                            {{ wtf.form_field(form.eta_l) }}
+                        </td>
+                    </tr>            
+                </table>       
             </div>
-            <div class="col-md-3">
-                {{ wtf.form_field(form.w) }}
-                {{ wtf.form_field(form.a) }}
-                {{ wtf.form_field(form.eta_h) }}
-                {{ wtf.form_field(form.eta_l) }}
+            <div class="col-md-6">
+                {% if plot %}
+                    {{ plot|safe }}
+                {% endif %}
             </div>
         </form>
     </div>
-    <div class="row">
+    <!-- <div class="row">
         <div class="col-md-12">
             {% if plot %}
                 {{ plot|safe }}
             {% endif %}
         </div>
-    </div>
+    </div> -->
 {% endblock %}

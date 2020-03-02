@@ -25,7 +25,7 @@ class CalcForm(FlaskForm):
                 min=0,
                 max=180,
                 message='Must be between %(min)s° and %(max)s°')],
-        description='Minimum diffraction angle in degrees',
+        description='Diffraction angle',
         default=0)
     max2theta = FloatField(
         label='2<i>&theta;</i><sub>max</sub> (&deg;)',
@@ -35,7 +35,7 @@ class CalcForm(FlaskForm):
                 min=5,
                 max=180,
                 message='Must be between %(min)s° and %(max)s°')],
-        description='Maximum diffraction angle in degrees',
+        description='Diffraction angle',
         default=90)
     res = FloatField(
         label='Resolution (&deg;)',
@@ -74,7 +74,7 @@ class CalcForm(FlaskForm):
                 max=1,
                 message='Must be between %(min)s and %(max)s')
             ],
-        description='Pseudo-Voigt parameter',
+        description='',
         default=5.776410E-03)
     v = FloatField(
         label='<i>V</i>',
@@ -85,7 +85,7 @@ class CalcForm(FlaskForm):
             #     max=1,
             #     message='Must be between %(min)s and %(max)s')
             ],
-        description='Pseudo-Voigt parameter',
+        description='',
         default=-1.673830E-03)
     w = FloatField(
         label='<i>W</i>',
@@ -96,7 +96,7 @@ class CalcForm(FlaskForm):
                 max=1,
                 message='Must be between %(min)s and %(max)s')
             ],
-        description='Pseudo-Voigt parameter',
+        description='',
         default=5.668770E-03)
     a = FloatField(
         label='<i>A</i>',
@@ -107,7 +107,7 @@ class CalcForm(FlaskForm):
                 max=5,
                 message='Must be between %(min)s and %(max)s')
             ],
-        description='Pseudo-Voigt parameter',
+        description='',
         default=1.03944)
     eta_h = FloatField(
         label='<i>&eta;</i><sub>h</sub>',
@@ -118,7 +118,7 @@ class CalcForm(FlaskForm):
                 max=1,
                 message='Must be between %(min)s and %(max)s')
             ],
-        description='Pseudo-Voigt parameter',
+        description='',
         default=0.504656)
     eta_l = FloatField(
         label='<i>&eta;</i><sub>l</sub>',
@@ -129,7 +129,7 @@ class CalcForm(FlaskForm):
                 max=1,
                 message='Must be between %(min)s and %(max)s')
             ],
-        description='Pseudo-Voigt parameter',
+        description='',
         default=0.611844)
     submit = SubmitField('Visualize')
 
