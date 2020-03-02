@@ -149,10 +149,9 @@ def plot():
     xrd.get_profile(method=method,
         res=session.get("RES"),
         user_kwargs=kwargs)
-    flash(Markup('Comparing <b>{}</b> and <b>{}</b> with <i>{}</i>\
+    flash(Markup('Showing <b>{}</b> with <i>{}</i>\
         profiling.').format(
             session.get("FILENAME"),
-            session.get("FILENAME2"),
             method), 'info')
     return xrd.plotly_pxrd()
 
