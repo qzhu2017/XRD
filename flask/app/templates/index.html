@@ -24,20 +24,72 @@
                 </table>                    
                 {{ wtf.form_field(form.submit, button_map={'submit': 'primary'}) }}
             </div>
-            <div class="col-md-3">
-                {{ wtf.form_field(form.method) }}
-                {{ wtf.form_field(form.fwhm) }}
+            <div class="col-md-3">              
+                <div class="form-group ">
+                    <label class="control-label" for="method">{{ form.method.label }}</label>
+                    {{ form.method(class="form-control", onchange="toggle_subform();") }}
+                    <p class="help-block">{{ form.method.description }}</p>
+                </div>
+                <div class="form-group  required">
+                    <label class="control-label" id="fwhm-label" for="fwhm">{{ form.fwhm.label }}</label>
+                    {{ form.fwhm(class="form-control") }}
+                    <p class="help-block" id="fwhm-help">{{ form.fwhm.description }}</p>
+                </div>
                 <table>
                     <tr>
                         <td>
-                            {{ wtf.form_field(form.u) }}
+                            <div class="form-group  required">
+                                <label class="control-label" id="u-label" for="u" style="display: none;">{{ form.u.label }}</label>
+                                {{ form.u(class="form-control", style="display: none;") }}
+                                <p class="help-block" id="u-help" style="display: none;">{{ form.u.description }}</p>
+                            </div>
                         </td>
                         <td>
-                            {{ wtf.form_field(form.v) }}
+                            <div class="form-group  required">
+                                <label class="control-label" id="v-label" for="v" style="display: none;">{{ form.v.label }}</label>
+                                {{ form.v(class="form-control", style="display: none;") }}
+                                <p class="help-block" id="v-help" style="display: none;">{{ form.v.description }}</p>
+                            </div>
                         </td>
-                    </tr>            
-                </table>   
+                    </tr>
+                </table>
                 <table>
+                    <tr>
+                        <td>
+                            <div class="form-group  required">
+                                <label class="control-label" id="w-label" for="w" style="display: none;">{{ form.w.label }}</label>
+                                {{ form.w(class="form-control", style="display: none;") }}
+                                <p class="help-block" id="w-help" style="display: none;">{{ form.w.description }}</p>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group  required">
+                                <label class="control-label" id="a-label" for="a" style="display: none;">{{ form.a.label }}</label>
+                                {{ form.a(class="form-control", style="display: none;") }}
+                                <p class="help-block" id="a-help" style="display: none;">{{ form.a.description }}</p>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <table>
+                    <tr>
+                        <td>
+                            <div class="form-group  required">
+                                <label class="control-label" id="eta_h-label" for="eta_h" style="display: none;">{{ form.eta_h.label }}</label>
+                                {{ form.eta_h(class="form-control", style="display: none;") }}
+                                <p class="help-block" id="eta_h-help" style="display: none;">{{ form.eta_h.description }}</p>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group  required">
+                                <label class="control-label" id="eta_l-label" for="eta_l" style="display: none;">{{ form.eta_l.label }}</label>
+                                {{ form.eta_l(class="form-control", style="display: none;") }}
+                                <p class="help-block" id="eta_l-help" style="display: none;">{{ form.eta_l.description }}</p>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <!-- <table>
                     <tr>
                         <td>
                             {{ wtf.form_field(form.w) }}
@@ -46,8 +98,8 @@
                             {{ wtf.form_field(form.a) }}
                         </td>
                     </tr>            
-                </table>   
-                <table>
+                </table>    -->
+                <!-- <table>
                     <tr>
                         <td>
                             {{ wtf.form_field(form.eta_h) }}
@@ -56,11 +108,15 @@
                             {{ wtf.form_field(form.eta_l) }}
                         </td>
                     </tr>            
-                </table>       
+                </table>        -->
             </div>
             <div class="col-md-6">
+                <!-- JSmol will ultimately go here -->
                 {% if plot %}
                     {{ plot|safe }}
+                {% endif %}
+                {% if jsmol %}
+                    {{ jsmol|safe }}
                 {% endif %}
             </div>
         </form>
@@ -72,4 +128,63 @@
             {% endif %}
         </div>
     </div> -->
+
+    <script>
+        // only display appropriate subfield selected in method field
+        function toggle_subform()
+        {
+            if (document.getElementById('method').value == "gaussian" || document.getElementById('method').value == "lorentzian")
+            {
+                // show fwhm
+                document.getElementById('fwhm-label').style.display = 'block';
+                document.getElementById('fwhm').style.display = 'block';
+                document.getElementById('fwhm-help').style.display = 'block';
+                // hide pseudo-voigt params
+                document.getElementById('u-label').style.display = 'none';
+                document.getElementById('u').style.display = 'none';
+                document.getElementById('u-help').style.display = 'none';
+                document.getElementById('v-label').style.display = 'none';
+                document.getElementById('v').style.display = 'none';
+                document.getElementById('v-help').style.display = 'none';
+                document.getElementById('w-label').style.display = 'none';
+                document.getElementById('w').style.display = 'none';
+                document.getElementById('w-help').style.display = 'none';
+                document.getElementById('a-label').style.display = 'none';
+                document.getElementById('a').style.display = 'none';
+                document.getElementById('a-help').style.display = 'none';
+                document.getElementById('eta_h-label').style.display = 'none';
+                document.getElementById('eta_h').style.display = 'none';
+                document.getElementById('eta_h-help').style.display = 'none';
+                document.getElementById('eta_l-label').style.display = 'none';
+                document.getElementById('eta_l').style.display = 'none';
+                document.getElementById('eta_l-help').style.display = 'none';
+            } 
+            if (document.getElementById('method').value == "pseudo_voigt")
+            {
+                // hide fwhm
+                document.getElementById('fwhm-label').style.display = 'none';
+                document.getElementById('fwhm').style.display = 'none';
+                document.getElementById('fwhm-help').style.display = 'none';
+                // show pseudo-voigt params
+                document.getElementById('u-label').style.display = 'block';
+                document.getElementById('u').style.display = 'block';
+                document.getElementById('u-help').style.display = 'block';
+                document.getElementById('v-label').style.display = 'block';
+                document.getElementById('v').style.display = 'block';
+                document.getElementById('v-help').style.display = 'block';
+                document.getElementById('w-label').style.display = 'block';
+                document.getElementById('w').style.display = 'block';
+                document.getElementById('w-help').style.display = 'block';
+                document.getElementById('a-label').style.display = 'block';
+                document.getElementById('a').style.display = 'block';
+                document.getElementById('a-help').style.display = 'block';
+                document.getElementById('eta_h-label').style.display = 'block';
+                document.getElementById('eta_h').style.display = 'block';
+                document.getElementById('eta_h-help').style.display = 'block';
+                document.getElementById('eta_l-label').style.display = 'block';
+                document.getElementById('eta_l').style.display = 'block';
+                document.getElementById('eta_l-help').style.display = 'block';
+            }
+        }
+    </script>
 {% endblock %}

@@ -2,9 +2,8 @@ from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileRequired, FileAllowed
 from wtforms import FloatField, SelectField, SubmitField
 from wtforms.validators import DataRequired, NumberRange, ValidationError
-# from wtforms import StringField, FieldList, FormField
 
-class CalcForm(FlaskForm):
+class MainForm(FlaskForm):
     upload = FileField(
         label='Input File (CIF, POSCAR, etc.)',
         description='See <a href="https://wiki.fysik.dtu.dk/ase/ase/io/io.html?highlight=formats#file-input-and-output" target="_blank">table</a> for a list of readable formats')
@@ -48,11 +47,12 @@ class CalcForm(FlaskForm):
             ],
         description='Resolution in degrees',
         default=0.01)
+    profiles = [('gaussian', 'Gaussian'),
+                ('lorentzian', 'Lorentzian'),
+                ('pseudo_voigt', 'Pseudo-Voigt')]
     method = SelectField(
         label='Profiling Function',
-        choices=[('gaussian', 'Gaussian'),
-            ('lorentzian', 'Lorentzian'),
-            ('pseudo_voigt', 'Pseudo-Voigt')],
+        choices=profiles,
         description='Applied to simulated XRD pattern')
     fwhm = FloatField(
         label='FWHM',
@@ -146,15 +146,3 @@ class CalcForm(FlaskForm):
             ],
         description='Shift for similarity',
         default=2.0)
-
-# Create separate classes for each profiling branch
-# w/ member parameters (see "Field Enclosures")
-# class IMForm(FlaskForm):
-#     protocol = SelectField(choices=[('aim', 'AIM'), ('msn', 'MSN')])
-#     username = StringField()
-
-# class ContactForm(FlaskForm):
-#     first_name  = StringField()
-#     last_name   = StringField()
-#     im_accounts = FieldList(FormField(IMForm))
-    

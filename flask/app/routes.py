@@ -2,7 +2,7 @@ import os
 import plotly.graph_objects as go
 from flask import render_template, flash, session, Markup
 from app import app
-from app.forms import CalcForm
+from app.forms import MainForm
 from werkzeug.utils import secure_filename
 from pyxtal_xrd.XRD import XRD
 from pyxtal_xrd.similarity import Similarity
@@ -11,7 +11,7 @@ from ase.io import read
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
 def index():
-    form = CalcForm()
+    form = MainForm()
     if form.validate_on_submit():
         if form.upload.data:
             process_upload(form)
@@ -34,7 +34,7 @@ def index():
 
 @app.route('/comparison', methods=['GET', 'POST'])
 def comparison():
-    form = CalcForm()
+    form = MainForm()
     if form.validate_on_submit():
         if form.upload.data:
             process_upload(form)
