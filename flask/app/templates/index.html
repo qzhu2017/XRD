@@ -2,6 +2,8 @@
 {% import 'bootstrap/wtf.html' as wtf %}
 
 {% block app_content %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
     <h1>VXRD: X-ray Diffraction Visualizer (Single)</h1>
     <div class="row">
         <form class="form" method="post" enctype="multipart/form-data" role="form">
@@ -27,7 +29,7 @@
             <div class="col-md-3">              
                 <div class="form-group ">
                     <label class="control-label" for="method">{{ form.method.label }}</label>
-                    {{ form.method(class="form-control", onchange="toggle_subform();") }}
+                    {{ form.method(class="form-control") }}
                     <p class="help-block">{{ form.method.description }}</p>
                 </div>
                 <div class="form-group  required">
@@ -89,26 +91,6 @@
                         </td>
                     </tr>
                 </table>
-                <!-- <table>
-                    <tr>
-                        <td>
-                            {{ wtf.form_field(form.w) }}
-                        </td>
-                        <td>
-                            {{ wtf.form_field(form.a) }}
-                        </td>
-                    </tr>            
-                </table>    -->
-                <!-- <table>
-                    <tr>
-                        <td>
-                            {{ wtf.form_field(form.eta_h) }}
-                        </td>
-                        <td>
-                            {{ wtf.form_field(form.eta_l) }}
-                        </td>
-                    </tr>            
-                </table>        -->
             </div>
             <div class="col-md-6">
                 <!-- JSmol will ultimately go here -->
@@ -130,61 +112,55 @@
     </div> -->
 
     <script>
-        // only display appropriate subfield selected in method field
-        function toggle_subform()
-        {
-            if (document.getElementById('method').value == "gaussian" || document.getElementById('method').value == "lorentzian")
-            {
-                // show fwhm
-                document.getElementById('fwhm-label').style.display = 'block';
-                document.getElementById('fwhm').style.display = 'block';
-                document.getElementById('fwhm-help').style.display = 'block';
-                // hide pseudo-voigt params
-                document.getElementById('u-label').style.display = 'none';
-                document.getElementById('u').style.display = 'none';
-                document.getElementById('u-help').style.display = 'none';
-                document.getElementById('v-label').style.display = 'none';
-                document.getElementById('v').style.display = 'none';
-                document.getElementById('v-help').style.display = 'none';
-                document.getElementById('w-label').style.display = 'none';
-                document.getElementById('w').style.display = 'none';
-                document.getElementById('w-help').style.display = 'none';
-                document.getElementById('a-label').style.display = 'none';
-                document.getElementById('a').style.display = 'none';
-                document.getElementById('a-help').style.display = 'none';
-                document.getElementById('eta_h-label').style.display = 'none';
-                document.getElementById('eta_h').style.display = 'none';
-                document.getElementById('eta_h-help').style.display = 'none';
-                document.getElementById('eta_l-label').style.display = 'none';
-                document.getElementById('eta_l').style.display = 'none';
-                document.getElementById('eta_l-help').style.display = 'none';
-            } 
-            if (document.getElementById('method').value == "pseudo_voigt")
-            {
-                // hide fwhm
-                document.getElementById('fwhm-label').style.display = 'none';
-                document.getElementById('fwhm').style.display = 'none';
-                document.getElementById('fwhm-help').style.display = 'none';
-                // show pseudo-voigt params
-                document.getElementById('u-label').style.display = 'block';
-                document.getElementById('u').style.display = 'block';
-                document.getElementById('u-help').style.display = 'block';
-                document.getElementById('v-label').style.display = 'block';
-                document.getElementById('v').style.display = 'block';
-                document.getElementById('v-help').style.display = 'block';
-                document.getElementById('w-label').style.display = 'block';
-                document.getElementById('w').style.display = 'block';
-                document.getElementById('w-help').style.display = 'block';
-                document.getElementById('a-label').style.display = 'block';
-                document.getElementById('a').style.display = 'block';
-                document.getElementById('a-help').style.display = 'block';
-                document.getElementById('eta_h-label').style.display = 'block';
-                document.getElementById('eta_h').style.display = 'block';
-                document.getElementById('eta_h-help').style.display = 'block';
-                document.getElementById('eta_l-label').style.display = 'block';
-                document.getElementById('eta_l').style.display = 'block';
-                document.getElementById('eta_l-help').style.display = 'block';
-            }
-        }
+        $(document).ready(function() {
+            $('#method').change(function() {
+                if($(this).val() == 'gaussian' || $(this).val() == 'lorentzian') {
+                    $('#fwhm-label').show();
+                    $('#fwhm').show();
+                    $('#fwhm-help').show();
+                    $('#u-label').hide();
+                    $('#u').hide();
+                    $('#u-help').hide();
+                    $('#v-label').hide();
+                    $('#v').hide();
+                    $('#v-help').hide();
+                    $('#w-label').hide();
+                    $('#w').hide();
+                    $('#w-help').hide();
+                    $('#a-label').hide();
+                    $('#a').hide();
+                    $('#a-help').hide();
+                    $('#eta_h-label').hide();
+                    $('#eta_h').hide();
+                    $('#eta_h-help').hide();
+                    $('#eta_l-label').hide();
+                    $('#eta_l').hide();
+                    $('#eta_l-help').hide();
+                }
+                if($(this).val() == 'pseudo_voigt') {
+                    $('#fwhm-label').hide();
+                    $('#fwhm').hide();
+                    $('#fwhm-help').hide();
+                    $('#u-label').show();
+                    $('#u').show();
+                    $('#u-help').show();
+                    $('#v-label').show();
+                    $('#v').show();
+                    $('#v-help').show();
+                    $('#w-label').show();
+                    $('#w').show();
+                    $('#w-help').show();
+                    $('#a-label').show();
+                    $('#a').show();
+                    $('#a-help').show();
+                    $('#eta_h-label').show();
+                    $('#eta_h').show();
+                    $('#eta_h-help').show();
+                    $('#eta_l-label').show();
+                    $('#eta_l').show();
+                    $('#eta_l-help').show();
+                }
+            }).change(); // will trigger when DOM is ready
+        })
     </script>
 {% endblock %}
