@@ -25,7 +25,8 @@
                 </table>                    
                 {{ wtf.form_field(form.submit, button_map={'submit': 'primary'}) }}
             </div>
-            <div class="col-md-3">              
+            <div class="col-md-3">
+                {{ wtf.form_field(form.shift) }}
                 <div class="form-group ">
                     <label class="control-label" for="method">{{ form.method.label }}</label>
                     {{ form.method(class="form-control") }}
