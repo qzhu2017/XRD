@@ -2,3 +2,4 @@
 build/*
 dist/*
 pyxtal_xrd.egg-info/*
+flask/app/static/jsmol
