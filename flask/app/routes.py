@@ -1,3 +1,4 @@
+import io
 import os
 import plotly.graph_objects as go
 from flask import render_template, flash, session, Markup
@@ -26,6 +27,7 @@ def index():
             return render_template('index.html', 
                 title='Single',
                 form=form,
+                jsmol=True,
                 plot=plot())
     # initial page visit
     return render_template('index.html',
@@ -57,6 +59,33 @@ def comparison():
     return render_template('comparison.html',
         title='Comparison',
         form=form)
+
+@app.route('/struct/<type>')
+def structure(type: str):
+    """Return atomic structure as cif, xyz or json."""
+    struct = read(session.get("SAVEPATH"))
+
+    if type == 'cif':
+        fd = io.BytesIO()
+        struct.write(fd, 'cif')
+        return fd.getvalue(), 200, []
+
+    fd = io.StringIO()
+    if type == 'xyz':
+        struct.write(fd, 'xyz')
+    # elif type == 'json':
+    #     con = connect(fd, type='json')
+    #     con.write(row,                        # LOOK INTO ASE app.py
+    #               data=row.get('data', {}),
+    #               **row.get('key_value_pairs', {}))
+    else:
+        1 / 0 # force error for invalid URLs
+
+    headers = [('Content-Disposition',
+                'attachment; filename="{name}.{type}"'
+                .format(name=session.get("FILENAME"), type=type))]
+    txt = fd.getvalue()
+    return txt, 200, headers
 
 def process_upload(form, comp=False):
     """
