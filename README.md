@@ -74,7 +74,7 @@ $ python XRD.py -c NaCl.cif
 It will also generate a png file with PXRD plot as follows
 ![NaCl](https://github.com/qzhu2017/XRD/blob/master/images/NaCl.cif.png)
 
-## VXRD: Interactive Web Calculator
+## VXRD: X-Ray Diffraction Visualizer
 In order to run and view VXRD locally, run the following shell commands:
 ```bash
 $ cd XRD
@@ -94,3 +94,9 @@ Then, open your web browser and enter the following URL:
 `http://localhost:5000/`
 
 When finished, press `CTRL+C` in your terminal to shutdown the web-app.
+
+### VXRD: JSmol
+In order to see the 3D structure visualized with JSmol, you'll need to unzip `jsmol.zip` into the following directory:
+```bash
+$ unzip jsmol.zip ./flask/app/static/
+```
