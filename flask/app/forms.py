@@ -80,10 +80,10 @@ class MainForm(FlaskForm):
         label='<i>V</i>',
         validators=[
             DataRequired(),
-            # NumberRange(
-            #     min=1e-3,
-            #     max=1,
-            #     message='Must be between %(min)s and %(max)s')
+            NumberRange(
+                min=-2.0E-03,
+                max=-1.0E-03,
+                message='Must be between %(min)s and %(max)s')
             ],
         description='',
         default=-1.673830E-03)
