@@ -36,6 +36,7 @@ setup(
         'scipy>=1.1.0', 
         'matplotlib>=2.0.0',
         'ase>=3.18.0',
+        'numba>=0.44.1',
         ],
     python_requires='>=3.6.1',
     license='MIT',
