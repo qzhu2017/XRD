@@ -62,30 +62,15 @@ def comparison():
 
 @app.route('/struct/<type>')
 def structure(type: str):
-    """Return atomic structure as cif, xyz or json."""
+    """Return atomic structure as cif"""
     struct = read(session.get("SAVEPATH"))
 
     if type == 'cif':
         fd = io.BytesIO()
         struct.write(fd, 'cif')
         return fd.getvalue(), 200, []
-
-    fd = io.StringIO()
-    if type == 'xyz':
-        struct.write(fd, 'xyz')
-    # elif type == 'json':
-    #     con = connect(fd, type='json')
-    #     con.write(row,                        # LOOK INTO ASE app.py
-    #               data=row.get('data', {}),
-    #               **row.get('key_value_pairs', {}))
     else:
         1 / 0 # force error for invalid URLs
-
-    headers = [('Content-Disposition',
-                'attachment; filename="{name}.{type}"'
-                .format(name=session.get("FILENAME"), type=type))]
-    txt = fd.getvalue()
-    return txt, 200, headers
 
 def process_upload(form, comp=False):
     """
