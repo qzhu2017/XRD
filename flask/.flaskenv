@@ -1,2 +1,1 @@
 FLASK_APP=vxrd.py
-FLASK_DEBUG=1
