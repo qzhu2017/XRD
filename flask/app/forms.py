@@ -14,7 +14,7 @@ class MainForm(FlaskForm):
             NumberRange(
                 min=0.1,
                 max=5,
-                message='Must be between %(min)s Å and %(max)s Å')],
+                message='From %(min)s Å to %(max)s Å')],
         description='X-ray wavelength in angstroms',
         default=1.54056)
     min2theta = FloatField(
@@ -23,7 +23,7 @@ class MainForm(FlaskForm):
             NumberRange(
                 min=0,
                 max=180,
-                message='Must be between %(min)s° and %(max)s°')],
+                message='From %(min)s° to %(max)s°')],
         description='Diffraction angle',
         default=0)
     max2theta = FloatField(
@@ -33,7 +33,7 @@ class MainForm(FlaskForm):
             NumberRange(
                 min=5,
                 max=180,
-                message='Must be between %(min)s° and %(max)s°')],
+                message='From %(min)s° to %(max)s°')],
         description='Diffraction angle',
         default=90)
     res = FloatField(
@@ -43,7 +43,7 @@ class MainForm(FlaskForm):
             NumberRange(
                 min=1e-3,
                 max=1,
-                message='Must be between %(min)s° and %(max)s°')
+                message='From %(min)s° to %(max)s°')
             ],
         description='Resolution in degrees',
         default=0.01)
@@ -61,7 +61,7 @@ class MainForm(FlaskForm):
             NumberRange(
                 min=1e-3,
                 max=1,
-                message='Must be between %(min)s and %(max)s')
+                message='From %(min)s to %(max)s')
             ],
         description='Full width at half maximum',
         default=0.02)
@@ -72,9 +72,9 @@ class MainForm(FlaskForm):
             NumberRange(
                 min=1e-3,
                 max=1,
-                message='Must be between %(min)s and %(max)s')
+                message='From %(min)s to %(max)s')
             ],
-        description='',
+        description='Parameter',
         default=5.776410E-03)
     v = FloatField(
         label='<i>V</i>',
@@ -83,9 +83,9 @@ class MainForm(FlaskForm):
             NumberRange(
                 min=-2.0E-03,
                 max=-1.0E-03,
-                message='Must be between %(min)s and %(max)s')
+                message='%(min)s to %(max)s')
             ],
-        description='',
+        description='Parameter',
         default=-1.673830E-03)
     w = FloatField(
         label='<i>W</i>',
@@ -94,9 +94,9 @@ class MainForm(FlaskForm):
             NumberRange(
                 min=1e-3,
                 max=1,
-                message='Must be between %(min)s and %(max)s')
+                message='From %(min)s to %(max)s')
             ],
-        description='',
+        description='Parameter',
         default=5.668770E-03)
     a = FloatField(
         label='<i>A</i>',
@@ -105,9 +105,9 @@ class MainForm(FlaskForm):
             NumberRange(
                 min=0.1,
                 max=5,
-                message='Must be between %(min)s and %(max)s')
+                message='From %(min)s to %(max)s')
             ],
-        description='',
+        description='Parameter',
         default=1.03944)
     eta_h = FloatField(
         label='<i>&eta;</i><sub>h</sub>',
@@ -116,9 +116,9 @@ class MainForm(FlaskForm):
             NumberRange(
                 min=0.1,
                 max=1,
-                message='Must be between %(min)s and %(max)s')
+                message='From %(min)s to %(max)s')
             ],
-        description='',
+        description='Parameter',
         default=0.504656)
     eta_l = FloatField(
         label='<i>&eta;</i><sub>l</sub>',
@@ -127,9 +127,9 @@ class MainForm(FlaskForm):
             NumberRange(
                 min=0.1,
                 max=1,
-                message='Must be between %(min)s and %(max)s')
+                message='From %(min)s to %(max)s')
             ],
-        description='',
+        description='Parameter',
         default=0.611844)
     submit = SubmitField('Visualize')
 
@@ -142,7 +142,7 @@ class MainForm(FlaskForm):
         validators=[NumberRange(
                 min=0,
                 max=180,
-                message='Must be between %(min)s and %(max)s')
+                message='From %(min)s to %(max)s')
             ],
         description='Shift for similarity',
         default=2.0)
