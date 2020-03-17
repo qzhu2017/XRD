@@ -31,6 +31,35 @@
 {% endblock %}
 
 {% block content %}
+  <!-- BEGIN JSmol IMPORTS -->
+  <script src="{{ url_for('static', filename='jsmol/JSmol.min.js') }}"></script>
+  <script>
+    jmol_isReady = function(applet) {
+      Jmol._getElement(applet, "appletdiv").style.border="1px solid lightgray";
+      Jmol.script(jmolApplet0, "set displaycellparameters false;");
+      Jmol.script(jmolApplet0, "load struct/cif { 1 1 1 };");
+    }
+  </script>
+  <script src="{{ url_for('static', filename='jsmol.js') }}"></script>
+  <!-- END JSmol IMPORTS -->
+
+  <!-- BEGIN PROFILE HIDE/SHOW -->
+  <script>
+    $(document).ready(function() {
+      $('#method').change(function() {
+        if ($(this).val() === 'gaussian' || $(this).val() === 'lorentzian') {
+          $('.gauss-lorentz').show();
+          $('.voigt').hide();
+        }
+        if ($(this).val() === 'pseudo-voigt') {
+          $('.voigt').show();
+          $('.gauss-lorentz').hide();
+        }
+      }).change(); // will trigger when DOM is ready
+    })
+  </script>
+  <!-- END PROFILE HIDE/SHOW -->
+
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <div class="container">
     {% with messages = get_flashed_messages(with_categories=true) %}

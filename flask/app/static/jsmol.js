@@ -1,6 +1,6 @@
 Jmol._isAsync = false;
-var jmolApplet0;
 
+var jmolApplet0;
 var Info = {
   width: 550,
   height: 400,
@@ -21,5 +21,5 @@ function repeatCell(n1, n2, n3) {
 }
 
 $(document).ready(function() {
-  $("#appdiv").html(Jmol.getAppletHtml("jmolApplet0", Info))
+  $("#appdiv").html(Jmol.getAppletHtml("jmolApplet0", Info));
 })

@@ -1,8 +1,18 @@
 {% extends "base.html" %}
 {% import 'bootstrap/wtf.html' as wtf %}
-{% from "_formhelpers.html" import render_field %}
+{% from "_formhelpers.html" import render_field, structure, structure2 %}
 
 {% block app_content %}
+  <!-- BEGIN 2nd JSmol -->
+  <script>
+    jmol2_isReady = function(applet) {
+      Jmol._getElement(applet, "appletdiv").style.border="1px solid lightgray";
+      Jmol.script(jmolApplet1, "set displaycellparameters false;");
+      Jmol.script(jmolApplet1, "load struct2/cif { 1 1 1 };");
+    }
+  </script>
+  <!-- END 2nd JSmol -->
+
   <h1>Virtual X-ray Diffraction: Comparison</h1>
   <div class="row">
     <form class="form" method="post" enctype="multipart/form-data" role="form">
@@ -41,36 +51,22 @@
         </table>
       </div>
       <div class="col-md-6">
-        <!-- JSmol will ultimately go here -->
-        {% if plot %}
-          {{ plot|safe }}
-        {% endif %}
         {% if jsmol %}
-          {{ jsmol|safe }}
+          {{ structure() }}
         {% endif %}
       </div>
     </form>
   </div>
-  <!-- <div class="row">
-    <div class="col-md-12">
+  <div class="row">
+    <div class="col-md-6">
       {% if plot %}
         {{ plot|safe }}
       {% endif %}
     </div>
-  </div> -->
-
-  <script>
-    $(document).ready(function() {
-      $('#method').change(function() {
-        if ($(this).val() === 'gaussian' || $(this).val() === 'lorentzian') {
-          $('.gauss-lorentz').show();
-          $('.voigt').hide();
-        }
-        if ($(this).val() === 'pseudo-voigt') {
-          $('.voigt').show();
-          $('.gauss-lorentz').hide();
-        }
-      }).change(); // will trigger when DOM is ready
-    })
-  </script>
+    <div class="col-md-6">
+      {% if jsmol %}
+        {{ structure2() }}
+      {% endif %}
+    </div>
+  </div>
 {% endblock %}

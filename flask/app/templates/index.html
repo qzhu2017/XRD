@@ -1,35 +1,8 @@
 {% extends "base.html" %}
 {% import 'bootstrap/wtf.html' as wtf %}
-{% from "_formhelpers.html" import render_field %}
-
-{% macro structure() %}
-  <div id="appdiv"></div>
-  <div class="btn-group pull-left">
-    <button type="button" class="btn btn-link dropdown-toggle btn-sm" data-toggle="dropdown">
-    Unit cell <span class="caret"></span>
-    </button>
-    <ul class="dropdown-menu">
-    <li><a onclick="repeatCell(1, 1, 1);">1x1x1</a></li>
-    <li><a onclick="repeatCell(2, 2, 2);">2x2x2</a></li>
-    <li><a onclick="repeatCell(3, 3, 3);">3x3x3</a></li>
-    </ul>
-  </div>
-{% endmacro %}
+{% from "_formhelpers.html" import render_field, structure %}
 
 {% block app_content %}
-  <!-- BEGIN JSmol IMPORTS -->
-  <script src="{{ url_for('static', filename='jsmol/JSmol.min.js') }}"></script>
-  <script>
-    jmol_isReady = function(applet) {
-      Jmol._getElement(applet, "appletdiv").style.border="1px solid lightgray";
-      Jmol.script(jmolApplet0, "set displaycellparameters false;")
-      Jmol.script(jmolApplet0,
-      "load struct/cif { 1 1 1 };");
-    }
-  </script>
-  <script src="{{ url_for('static', filename='jsmol.js') }}"></script>
-  <!-- END JSmol IMPORTS -->
-
   <h1>Virtual X-ray Diffraction</h1>
   <div class="row">
     <form class="form" method="post" enctype="multipart/form-data" role="form">
@@ -79,19 +52,4 @@
       {% endif %}
     </div>
   </div>
-
-  <script>
-    $(document).ready(function() {
-      $('#method').change(function() {
-        if ($(this).val() === 'gaussian' || $(this).val() === 'lorentzian') {
-          $('.gauss-lorentz').show();
-          $('.voigt').hide();
-        }
-        if ($(this).val() === 'pseudo-voigt') {
-          $('.voigt').show();
-          $('.gauss-lorentz').hide();
-        }
-      }).change(); // will trigger when DOM is ready
-    })
-  </script>
 {% endblock %}
