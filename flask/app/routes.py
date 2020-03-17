@@ -145,7 +145,7 @@ def plot():
         kwargs = {
                     'FWHM': session.get("FWHM")
                 }
-    elif method == 'pseudo_voigt':
+    elif method == 'pseudo-voigt':
         kwargs = {
                     'U': session.get("U"), 
                     'V': session.get("V"),
@@ -178,7 +178,7 @@ def compare():
         kwargs = {
                     'FWHM': session.get("FWHM")
                 }
-    elif method == 'pseudo_voigt':
+    elif method == 'pseudo-voigt':
         kwargs = {
                     'U': session.get("U"), 
                     'V': session.get("V"),

@@ -49,7 +49,7 @@ class MainForm(FlaskForm):
         default=0.01)
     profiles = [('gaussian', 'Gaussian'),
                 ('lorentzian', 'Lorentzian'),
-                ('pseudo_voigt', 'Pseudo-Voigt')]
+                ('pseudo-voigt', 'Pseudo-Voigt')]
     method = SelectField(
         label='Profiling Function',
         choices=profiles,
