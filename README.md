@@ -1,7 +1,7 @@
 # XRD
 X-ray diffraction calculations.
 
-## VXRD: X-Ray Diffraction Visualizer
+## VXRD: Virtual X-Ray Diffraction
 In order to run and view VXRD locally, run the following shell commands:
 ```bash
 $ cd XRD
