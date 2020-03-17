@@ -54,6 +54,7 @@ def comparison():
             return render_template('comparison.html', 
                 title='Comparison',
                 form=form,
+                jsmol=True,
                 plot=compare())
     # initial page visit
     return render_template('comparison.html',
@@ -68,6 +69,18 @@ def structure(type: str):
     if type == 'cif':
         fd = io.BytesIO()
         struct.write(fd, 'cif')
+        return fd.getvalue(), 200, []
+    else:
+        1 / 0 # force error for invalid URLs
+
+@app.route('/struct2/<type>')
+def structure2(type: str):
+    """Return 2nd atomic structure as cif"""
+    struct2 = read(session.get("SAVEPATH2"))
+
+    if type == 'cif':
+        fd = io.BytesIO()
+        struct2.write(fd, 'cif')
         return fd.getvalue(), 200, []
     else:
         1 / 0 # force error for invalid URLs
