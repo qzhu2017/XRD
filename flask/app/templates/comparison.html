@@ -1,18 +1,8 @@
 {% extends "base.html" %}
 {% import 'bootstrap/wtf.html' as wtf %}
-{% from "_formhelpers.html" import render_field, structure, structure2 %}
+{% from "_formhelpers.html" import render_field, structure %}
 
 {% block app_content %}
-  <!-- BEGIN 2nd JSmol -->
-  <script>
-    jmol2_isReady = function(applet) {
-      Jmol._getElement(applet, "appletdiv").style.border="1px solid lightgray";
-      Jmol.script(jmolApplet1, "set displaycellparameters false;");
-      Jmol.script(jmolApplet1, "load struct2/cif { 1 1 1 };");
-    }
-  </script>
-  <!-- END 2nd JSmol -->
-
   <h1>Virtual X-ray Diffraction: Comparison</h1>
   <div class="row">
     <form class="form" method="post" enctype="multipart/form-data" role="form">
@@ -65,7 +55,7 @@
     </div>
     <div class="col-md-6">
       {% if jsmol %}
-        {{ structure2() }}
+        {{ structure(2) }}
       {% endif %}
     </div>
   </div>

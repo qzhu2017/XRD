@@ -16,20 +16,15 @@
     </div>
 {% endmacro %}
 
-{% macro structure() %}
-  <div id="appdiv"></div>
+{% macro structure(num) %}
+  <div id="appdiv{{ num }}"></div>
   <div class="btn-group pull-left">
     <button type="button" class="btn btn-link dropdown-toggle btn-sm" data-toggle="dropdown">
       Unit cell <span class="caret"></span>
     </button>
     <ul class="dropdown-menu">
-      <li><a onclick="repeatCell(1, 1, 1);">1x1x1</a></li>
-      <li><a onclick="repeatCell(2, 2, 2);">2x2x2</a></li>
-      <li><a onclick="repeatCell(3, 3, 3);">3x3x3</a></li>
+      <li><a onclick="repeatCell(1, 1, 1, {{ num }});">1x1x1</a></li>
+      <li><a onclick="repeatCell(2, 2, 2, {{ num }});">2x2x2</a></li>
     </ul>
   </div>
-{% endmacro %}
-
-{% macro structure2() %}
-  <div id="appdiv2"></div>
 {% endmacro %}

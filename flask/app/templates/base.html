@@ -33,13 +33,6 @@
 {% block content %}
   <!-- BEGIN JSmol IMPORTS -->
   <script src="{{ url_for('static', filename='jsmol/JSmol.min.js') }}"></script>
-  <script>
-    jmol_isReady = function(applet) {
-      Jmol._getElement(applet, "appletdiv").style.border="1px solid lightgray";
-      Jmol.script(jmolApplet0, "set displaycellparameters false;");
-      Jmol.script(jmolApplet0, "load struct/cif { 1 1 1 };");
-    }
-  </script>
   <script src="{{ url_for('static', filename='jsmol.js') }}"></script>
   <!-- END JSmol IMPORTS -->
 
