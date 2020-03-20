@@ -154,11 +154,12 @@ def plot():
     Process and return PXRD plotly.
     """
     method = session.get("METHOD")
-    if method == 'gaussian' or method == 'lorentzian':
+    if method == 'gaussian' or method == 'lorentzian'\
+        or method == 'pseudo-voigt':
         kwargs = {
                     'FWHM': session.get("FWHM")
                 }
-    elif method == 'pseudo-voigt':
+    elif method == 'mod_pseudo-voigt':
         kwargs = {
                     'U': session.get("U"), 
                     'V': session.get("V"),
@@ -167,7 +168,6 @@ def plot():
                     'eta_h': session.get("ETA_H"),
                     'eta_l': session.get("ETA_L"),
                 }
-
     struct = read(session.get("SAVEPATH"))
     xrd = XRD(struct,
         wavelength=session.get("WAVELENGTH"),
@@ -187,11 +187,12 @@ def compare():
     Process and return comparison PXRD plotly.
     """
     method = session.get("METHOD")
-    if method == 'gaussian' or method == 'lorentzian':
+    if method == 'gaussian' or method == 'lorentzian'\
+        or method == 'pseudo-voigt':
         kwargs = {
                     'FWHM': session.get("FWHM")
                 }
-    elif method == 'pseudo-voigt':
+    elif method == 'mod_pseudo-voigt':
         kwargs = {
                     'U': session.get("U"), 
                     'V': session.get("V"),
@@ -200,7 +201,6 @@ def compare():
                     'eta_h': session.get("ETA_H"),
                     'eta_l': session.get("ETA_L"),
                 }
-
     files = [session.get("FILENAME"),
             session.get("FILENAME2")]
     structs = [read(session.get("SAVEPATH")),
