@@ -26,7 +26,9 @@
         <ul class="nav navbar-nav">
           <li><a href="{{ url_for('index') }}">Single</a></li>
           <li><a href="{{ url_for('comparison') }}">Comparison</a></li>
-          <li><a href="https://github.com/qzhu2017/XRD" target="_blank">GitHub</a></li>
+          <li>
+            <a href="https://github.com/qzhu2017/XRD" target="_blank">GitHub</a>
+          </li>
         </ul>
       </div>
     </div>
@@ -63,7 +65,17 @@
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
       {% for category, message in messages %}
-        <div class="alert alert-{{ category }}" role="alert">{{ message }}</div>
+        <div class="alert alert-{{ category }}" role="alert">
+          {% if 'success alert-dismissible' == category
+            or 'danger alert-dismissible' == category
+            or 'warning alert-dismissible' == category %}
+          <button type="button" class="close" data-dismiss="alert"
+            aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          {% endif %}
+          {{ message }}
+        </div>
       {% endfor %}
     {% endif %}
     {% endwith %}

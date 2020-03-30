@@ -17,8 +17,8 @@ def index():
         if form.upload.data:
             process_upload(form)
         if not session.get("SAVEPATH"): # new session
-            flash(Markup('<b>ERROR</b>: Please upload an\
-                input file.'), 'danger')
+            flash(Markup('<strong>ERROR</strong>: Please upload an\
+                input file.'), 'danger alert-dismissible')
             return render_template('index.html',
                 title='Single',
                 form=form)
@@ -44,8 +44,8 @@ def comparison():
             process_upload(form, True)
         if not session.get("SAVEPATH")\
             or not session.get("SAVEPATH2"): # new session
-            flash(Markup('<b>ERROR</b>: Please upload\
-                <b>two</b> input files.'), 'danger')
+            flash(Markup('<strong>ERROR</strong>: Please upload\
+                <strong>two</strong> input files.'), 'danger alert-dismissible')
             return render_template('comparison.html',
                 title='Comparison',
                 form=form)
@@ -109,13 +109,13 @@ def process_upload(form, comp=False):
         else:
             session["FILENAME"] = f.filename
             session["SAVEPATH"] = savepath
-            flash(Markup('<b>{}</b> successfully\
+            flash(Markup('<strong>{}</strong> successfully\
                 processed.').format(session.get("FILENAME")), 
-                'success')
+                'success alert-dismissible')
     except:
-        flash(Markup('<b>ERROR</b>: Unable to read\
-            <b>{}</b>. Please try again or a different\
-            file.').format(f.filename), 'danger')
+        flash(Markup('<strong>ERROR</strong>: Unable to read\
+            <strong>{}</strong>. Please try again or a different\
+            file.').format(f.filename), 'danger alert-dismissible')
 
 def process_form(form, comp=True):
     """
@@ -128,10 +128,10 @@ def process_form(form, comp=True):
     # Advanced form-level validation
     if min2theta > max2theta:
         min2theta = 0 # use default
-        flash(Markup('WARNING: 2&theta;<sub>min</sub>\
+        flash(Markup('<strong>WARNING</strong>: 2&theta;<sub>min</sub>\
             <i>greater</i> than\
             2&theta;<sub>max</sub>&mdash;defaulting\
-            2&theta;<sub>min</sub> to 0&deg;.'), 'warning')
+            2&theta;<sub>min</sub> to 0&deg;.'), 'warning alert-dismissible')
 
     # Update session keys
     session["WAVELENGTH"] = form.wavelength.data
@@ -176,7 +176,7 @@ def plot():
     xrd.get_profile(method=method,
         res=session.get("RES"),
         user_kwargs=kwargs)
-    flash(Markup('Showing <b>{}</b> with <i>{}</i>\
+    flash(Markup('Showing <strong>{}</strong> with <i>{}</i>\
         profiling.').format(
             session.get("FILENAME"),
             method), 'info')
@@ -237,7 +237,7 @@ def compare():
         yaxis_title = 'Intensity',
         title_text = title, 
         title_x=0.5)
-    flash(Markup('Comparing <b>{}</b> and <b>{}</b> with\
+    flash(Markup('Comparing <strong>{}</strong> and <strong>{}</strong> with\
         <i>{}</i> profiling.').format(
             session.get("FILENAME"),
             session.get("FILENAME2"),
