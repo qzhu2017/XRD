@@ -9,6 +9,7 @@
 {% endblock %}
 
 {% block navbar %}
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='custom.css') }}">
   <nav class="navbar navbar-default">
     <div class="container">
       <div class="navbar-header">
@@ -62,6 +63,18 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">
   </script>
   <div class="container">
+    <!-- BEGIN PROGRESS BAR -->
+    {% if progress %}
+      <div class="progress">
+        <div class="progress-bar progress-bar-danger progress-bar-striped active"
+          role="progressbar" aria-valuenow="{{ progress }}" aria-valuemin="0"
+          aria-valuemax="100" style="min-width: 2em; width: {{ progress }}%;">
+          {{ progress }}%
+        </div>
+      </div>
+    {% endif %}
+    <!-- END PROGRESS BAR -->
+    <!-- BEGIN ALERTS -->
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
       {% for category, message in messages %}
@@ -79,6 +92,7 @@
       {% endfor %}
     {% endif %}
     {% endwith %}
+    <!-- END ALERTS -->
 
     {# application content needs to be provided in the app_content block #}
     {% block app_content %}{% endblock %}

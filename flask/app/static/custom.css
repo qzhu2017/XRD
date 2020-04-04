@@ -1,0 +1,45 @@
+::selection {
+  background:#b10202;
+  color:#fff;
+}
+.navbar-default .navbar-nav>li>a {
+  font-size: large;
+  color: #222;
+}
+.navbar-default .navbar-nav>li>a:focus-within,
+.navbar-default .navbar-nav>li>a:focus,
+.navbar-default .navbar-nav>li>a:hover,
+.navbar-default .navbar-nav>li>a:active,
+.navbar-default .navbar-nav>li>a:active:focus {
+  font-size: large;
+  color: #b10202;
+}
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+  color:#b10202;
+}
+a {
+  color:#b10202;
+}
+a:hover {
+  color:#222;
+}
+.form-control:focus {
+  border-color: #b10202;
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(226, 92, 92, 0.6);
+}
+.btn-primary {
+  background-color: #ca0202;
+  border-color: #b10202;
+}
+.btn-primary:focus-within, .btn-primary:focus, .btn-primary:hover,
+.btn-primary:active, .btn-primary:active:focus {
+  background-color: #970202;
+  border-color: #7e0101;
+}
+.btn-link {
+  color: #b10202;
+}
+.btn-link:focus-within, .btn-link:focus, .btn-link:hover,
+.btn-link:active {
+  color:#222;
+}
