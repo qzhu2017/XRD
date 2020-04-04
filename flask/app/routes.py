@@ -71,7 +71,7 @@ def structure(type: str):
         struct.write(fd, 'cif')
         return fd.getvalue(), 200, []
     else:
-        1 / 0 # force error for invalid URLs
+        return render_template('404.html'), 404
 
 @app.route('/struct2/<type>')
 def structure2(type: str):
