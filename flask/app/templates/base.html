@@ -32,7 +32,7 @@
       </div>
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
-          <li><a href="{{ url_for('index') }}">Single</a></li>
+          <li><a href="{{ url_for('individual') }}">Individual</a></li>
           <li><a href="{{ url_for('comparison') }}">Comparison</a></li>
           <li>
             <a href="https://github.com/qzhu2017/XRD" target="_blank">GitHub</a>
@@ -69,6 +69,8 @@
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">
   </script>
+  {# special full-width block for homepage jumbotron #}
+  {% block splash %}{% endblock %}
   <div class="container">
     <!-- BEGIN PROGRESS BAR -->
     {% if progress %}

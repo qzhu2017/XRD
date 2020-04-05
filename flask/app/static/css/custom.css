@@ -25,6 +25,25 @@
   font-weight: 600;
   color: #b10202;
 }
+.jumbotron {
+  background-image: url("/static/img/grid.jpg");
+
+  /* Position and center the image to scale nicely on all screens */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+}
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
+}
+.cta {
+  text-align: center;
+  padding-top: 40px;
+}
 .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
   color:#b10202;
 }
@@ -40,12 +59,12 @@ a:hover {
 }
 .btn-primary {
   background-color: #ca0202;
-  border-color: #b10202;
+  border-color: #ca0202;
 }
 .btn-primary:focus-within, .btn-primary:focus, .btn-primary:hover,
 .btn-primary:active, .btn-primary:active:focus {
   background-color: #970202;
-  border-color: #7e0101;
+  border-color: #970202;
 }
 .btn-link {
   color: #b10202;

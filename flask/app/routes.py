@@ -9,29 +9,34 @@ from pyxtal_xrd.XRD import XRD
 from pyxtal_xrd.similarity import Similarity
 from ase.io import read
 
-@app.route('/', methods=['GET', 'POST'])
-@app.route('/index', methods=['GET', 'POST'])
+@app.route('/')
+@app.route('/index')
 def index():
+    return render_template('index.html')
+
+@app.route('/individual', methods=['GET', 'POST'])
+def individual():
     form = MainForm()
     if form.validate_on_submit():
         if form.upload.data:
             process_upload(form)
         if not session.get("SAVEPATH"): # new session
-            flash(Markup('<strong>ERROR</strong>: Please upload an\
-                input file.'), 'danger alert-dismissible')
-            return render_template('index.html',
-                title='Single',
+            flash(Markup('<span class="glyphicon glyphicon-exclamation-sign"\
+                aria-hidden="true"></span><span class="sr-only">Error:</span>\
+                Please upload an input file.'), 'danger alert-dismissible')
+            return render_template('individual.html',
+                title='Individual',
                 form=form)
         else:
             process_form(form)
-            return render_template('index.html', 
-                title='Single',
+            return render_template('individual.html', 
+                title='Individual',
                 form=form,
                 jsmol=True,
                 plot=plot())
     # initial page visit
-    return render_template('index.html',
-        title='Single',
+    return render_template('individual.html',
+        title='Individual',
         form=form)
 
 @app.route('/comparison', methods=['GET', 'POST'])
@@ -44,8 +49,10 @@ def comparison():
             process_upload(form, True)
         if not session.get("SAVEPATH")\
             or not session.get("SAVEPATH2"): # new session
-            flash(Markup('<strong>ERROR</strong>: Please upload\
-                <strong>two</strong> input files.'), 'danger alert-dismissible')
+            flash(Markup('<span class="glyphicon glyphicon-exclamation-sign"\
+                aria-hidden="true"></span><span class="sr-only">Error:</span>\
+                Please upload <strong>two (2)</strong> input files.'),
+                'danger alert-dismissible')
             return render_template('comparison.html',
                 title='Comparison',
                 form=form)
@@ -109,13 +116,16 @@ def process_upload(form, comp=False):
         else:
             session["FILENAME"] = f.filename
             session["SAVEPATH"] = savepath
-            flash(Markup('<strong>{}</strong> successfully\
-                processed.').format(session.get("FILENAME")), 
+            flash(Markup('<span class="glyphicon glyphicon-ok-sign"\
+                aria-hidden="true"></span><span class="sr-only">Success:\
+                </span> <strong>{}</strong> successfully processed.')\
+                .format(session.get("FILENAME")), 
                 'success alert-dismissible')
     except:
-        flash(Markup('<strong>ERROR</strong>: Unable to read\
-            <strong>{}</strong>. Please try again or a different\
-            file.').format(f.filename), 'danger alert-dismissible')
+        flash(Markup('<span class="glyphicon glyphicon-exclamation-sign"\
+            aria-hidden="true"></span><span class="sr-only">Error:</span> \
+            Unable to read <strong>{}</strong>. Please try again or a \
+            different file.').format(f.filename), 'danger alert-dismissible')
 
 def process_form(form, comp=True):
     """
@@ -128,10 +138,11 @@ def process_form(form, comp=True):
     # Advanced form-level validation
     if min2theta > max2theta:
         min2theta = 0 # use default
-        flash(Markup('<strong>WARNING</strong>: 2&theta;<sub>min</sub>\
-            <i>greater</i> than\
-            2&theta;<sub>max</sub>&mdash;defaulting\
-            2&theta;<sub>min</sub> to 0&deg;.'), 'warning alert-dismissible')
+        flash(Markup('<span class="glyphicon glyphicon-warning-sign"\
+            aria-hidden="true"></span><span class="sr-only">Error:</span> \
+            2<i>&theta;</i><sub>min</sub> <strong>greater</strong> than\
+            2<i>&theta;</i><sub>max</sub>&mdash;defaulting\
+            2<i>&theta;</i><sub>min</sub> to 0&deg;.'), 'warning alert-dismissible')
 
     # Update session keys
     session["WAVELENGTH"] = form.wavelength.data
@@ -176,10 +187,10 @@ def plot():
     xrd.get_profile(method=method,
         res=session.get("RES"),
         user_kwargs=kwargs)
-    flash(Markup('Showing <strong>{}</strong> with <i>{}</i>\
-        profiling.').format(
-            session.get("FILENAME"),
-            method), 'info')
+    flash(Markup('<span class="glyphicon glyphicon-info-sign"\
+            aria-hidden="true"></span><span class="sr-only">Error:</span> \
+            Showing <strong>{}</strong> with <i>{}</i> profiling.').format(
+            session.get("FILENAME"), method), 'info')
     return xrd.plotly_pxrd()
 
 def compare():
@@ -237,9 +248,9 @@ def compare():
         yaxis_title = 'Intensity',
         title_text = title, 
         title_x=0.5)
-    flash(Markup('Comparing <strong>{}</strong> and <strong>{}</strong> with\
-        <i>{}</i> profiling.').format(
-            session.get("FILENAME"),
-            session.get("FILENAME2"),
-            method), 'info')
+    flash(Markup('<span class="glyphicon glyphicon-info-sign"\
+            aria-hidden="true"></span><span class="sr-only">Error:</span> \
+            Comparing <strong>{}</strong> and <strong>{}</strong> with\
+            <i>{}</i> profiling.').format(session.get("FILENAME"),
+            session.get("FILENAME2"), method), 'info')
     return fig.to_html()
