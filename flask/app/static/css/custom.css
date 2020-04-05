@@ -2,8 +2,18 @@
   background:#b10202;
   color:#fff;
 }
+.navbar {
+  min-height: 65px;
+}
+.navbar-nav {
+  padding-top: 8px;
+}
+.navbar-brand>img {
+  height: 33px;
+}
 .navbar-default .navbar-nav>li>a {
-  font-size: large;
+  font-size: 14px;
+  font-weight: 600;
   color: #222;
 }
 .navbar-default .navbar-nav>li>a:focus-within,
@@ -11,7 +21,8 @@
 .navbar-default .navbar-nav>li>a:hover,
 .navbar-default .navbar-nav>li>a:active,
 .navbar-default .navbar-nav>li>a:active:focus {
-  font-size: large;
+  font-size: 14px;
+  font-weight: 600;
   color: #b10202;
 }
 .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
