@@ -4,6 +4,7 @@
 }
 .navbar {
   min-height: 65px;
+  margin-bottom: 0px;
 }
 .navbar-nav {
   padding-top: 8px;
