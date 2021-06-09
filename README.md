@@ -1,7 +1,12 @@
 # XRD
 X-ray diffraction calculations.
 
+### NOTE
+Much of this functionality has been merged into [PyXtal](https://github.com/qzhu2017/PyXtal) (see this [tutorial notebook](https://nbviewer.jupyter.org/github/qzhu2017/PyXtal/blob/master/examples/tutorials_notebook/03_pxrd.ipynb) for more information).
 ## VXRD: Virtual X-Ray Diffraction
+### NOTE
+The VXRD web app has also been merged into [PyXtal](https://github.com/qzhu2017/PyXtal) (see this [page](https://github.com/qzhu2017/PyXtal/tree/master/flask) for details).
+
 In order to run and view VXRD locally, run the following shell commands:
 ```bash
 $ cd XRD
